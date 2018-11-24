@@ -35,6 +35,7 @@ public class Equipa {
     }
 
 
+
     boolean changeColor(Color color) {
 
         try {
