@@ -6,12 +6,13 @@ public class Equipa {
 
     private int id;
     private String nome;
-    private Color cor = Color.RED;
+    private Color cor;
 
-    Equipa(int id, String nome) {
+    Equipa(int id, String nome, Color cor) {
 
         this.id = id;
         this.nome = nome;
+        this.cor = cor;
 
     }
 
@@ -33,41 +34,6 @@ public class Equipa {
 
     }
 
-    boolean setColor(Color color) {
-
-        try {
-
-            this.cor = color;
-
-            return true;
-
-        } catch (Exception impossibleToAddAColor) {
-
-            System.out.println("Impossible to add a color");
-
-            return false;
-
-        }
-
-    }
-
-    boolean resetColor() {
-
-        try {
-
-            this.cor = Color.RED;
-
-            return true;
-
-        } catch (Exception impossibleToResetColor) {
-
-            System.out.println("Impossible to reset the color!");
-
-            return false;
-
-        }
-
-    }
 
     boolean changeColor(Color color) {
 
