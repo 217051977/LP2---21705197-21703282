@@ -58,7 +58,7 @@ class Position {
 
     }
 
-//    reset the position to the inicial on
+//    reset the position to the initial one
     boolean resetAtualPosition() {
 
         try {
@@ -77,26 +77,7 @@ class Position {
         }
     }
 
-//    reset the inicial position
-    boolean resetInicialPosition(int x, int y) {
-
-    try {
-
-        xInicial = x;
-        yInicial = y;
-
-        return true;
-
-    } catch (Exception notAbleToReset) {
-
-        System.out.println("Não foi possível voltar a posição inicial!");
-
-        return false;
-
-    }
-}
-
-//    reset the position to the inicial on
+//    erase position
     boolean erasePosition() {
         try {
 
