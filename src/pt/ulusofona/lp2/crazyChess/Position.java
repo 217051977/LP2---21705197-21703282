@@ -9,6 +9,7 @@ class Position {
 //  constructor
     Position(int xInicial, int yInicial) {
 
+//      set the variable of this same class as the value received
         this.xInicial = xInicial;
         xAtual = xInicial;
         this.yInicial = yInicial;

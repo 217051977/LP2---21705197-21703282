@@ -13,6 +13,7 @@ class CrazyPiece {
 
     CrazyPiece(int ID, Position position, Tipo tipo, Boolean podeMudarTipo) {
 
+//      set the variable of this same class as the value received
         this.ID = ID;
         this.position = position;
         this.tipo = tipo;
@@ -24,36 +25,42 @@ class CrazyPiece {
 //  gets
     int getID() {
 
+//      return the value of the variable "id" of this same class
         return ID;
 
     }
 
     String getImagePNG() {
 
+//      return the value of the variable "imagePNG" of this same class
         return imagePNG;
 
     }
 
     Position getPosition() {
 
+//      return the value of the variable "position" of this same class
         return position;
 
     }
 
     Tipo getTipo() {
 
+//      return the value of the variable "tipo" of this same class
         return tipo;
 
     }
 
     boolean getPodeMudarTipo() {
 
+//      return the value of the variable "podeMudarTipo" of this same class
         return podeMudarTipo;
 
     }
 
     boolean getMudouTipo() {
 
+//      return the value of the variable "jaMudouTipo" of this same class
         return mudouTipo;
 
     }
@@ -62,22 +69,39 @@ class CrazyPiece {
 //  set
     boolean setImagePNG(String imagePNG) {
 
+//      it tries to chage the value of the variable "tipo"
         try {
 
+//          if the string received doesn't have .png in the end
             if (imagePNG.toLowerCase().charAt(imagePNG.length() - 4) != '.') {
 
                 imagePNG += ".png";
 
+//          if the 4 last letters are different from ".png"
+            } else if (imagePNG.toLowerCase().charAt(imagePNG.length() - 3) != 'p' ||
+                    imagePNG.toLowerCase().charAt(imagePNG.length() - 2) != 'n' ||
+                    imagePNG.toLowerCase().charAt(imagePNG.length() - 1) != 'g') {
+
+//              returns false
+                return false;
+
             }
 
+
+
+//          set the variable of this same class as the value received
             this.imagePNG = imagePNG;
 
+//          return the value of the variable "true" of this same class
             return true;
 
-        } catch (Exception imageNotFound){
+//      if there is any problem in the above code
+        } catch (Exception impossibleToChangeColor) {
 
+//          print this message in screen
             System.out.println("Impossible to remove the image");
 
+//          return the value of the variable "false" of this same class
             return false;
 
         }
