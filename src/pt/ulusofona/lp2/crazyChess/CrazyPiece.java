@@ -10,7 +10,6 @@ class CrazyPiece {
 
 
 //  Construtores
-    CrazyPiece() {}
 
     CrazyPiece(int ID, Position position, Tipo tipo, Boolean podeMudarTipo) {
 
@@ -59,12 +58,13 @@ class CrazyPiece {
 
     }
 
+
 //  set
     boolean setImagePNG(String imagePNG) {
 
         try {
 
-            if (!imagePNG.toLowerCase().contains(".png")) {
+            if (imagePNG.toLowerCase().charAt(imagePNG.length() - 4) != '.') {
 
                 imagePNG += ".png";
 
@@ -83,7 +83,6 @@ class CrazyPiece {
         }
 
     }
-
 
 //  remove
     boolean removeIamgePNG(){
@@ -104,12 +103,14 @@ class CrazyPiece {
 
     }
 
+
 //  has
     boolean hasImagePNG(String imagePNG) {
 
         return this.imagePNG.equals(imagePNG);
 
     }
+
 
 //  change
     boolean changePosition(int xPos, int yPos) {
