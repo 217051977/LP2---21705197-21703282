@@ -9,8 +9,8 @@ import java.util.Scanner;
 class Simulador {
 
     private int tamanhoTabuleiro;
+    private List<CrazyPiece> pecasMalucas;
     private List<String> autores, resultados;
-    private HashMap<Position, CrazyPiece> Pecas;
     private int idEquipaAJogar = 0;
     private List<Equipa> team;
 
@@ -43,21 +43,31 @@ class Simulador {
 
     }
 
-    int getIDPeca(int xPosition, int yPosition) {
+    int getIDPeca(int x, int y) {
+
+        int idPeca = -1;
 
         try {
 
-            Position position = new Position(xPosition, yPosition);
+            Position position = new Position(x, y);
 
-            return this.Pecas.get(position);
+            for (CrazyPiece peca: pecasMalucas){
+
+                if (peca.getPosition().equals(position)) {
+
+                    idPeca = peca.getID();
+                    break;
+                }
+
+            }
 
         }catch(Exception KeyNotFound) {
 
             System.out.println("Peça not founded!");
 
-            return 0;
-
         }
+
+        return idPeca;
 
     }
 
@@ -67,11 +77,12 @@ class Simulador {
 
     }
 
-    boolean setPeca(HashMap<Position, Integer> pecas) {
+    boolean setPeca(CrazyPiece peca) {
 
         try {
 
-            this.Pecas = pecas;
+            this.pecasMalucas.add(peca);
+
 
             return true;
 
@@ -85,11 +96,11 @@ class Simulador {
 
     }
 
-    boolean removePeca(HashMap<Position, Integer> peca) {
+    boolean removePeca(CrazyPiece peca) {
 
         try {
 
-            this.Pecas.put(peca);
+            this.pecasMalucas.remove(peca);
 
             return true;
 
@@ -136,7 +147,7 @@ class Simulador {
 //mesma e devolver true. Em caso
 //contrário, deve devolver false.
 
-    boolean processaJogada(int xO, int yO, int xD, int Yd){
+    boolean processaJogada(int xO, int yO, int xD, int yD){
 
         //confirmar se a jogada e valida
 
