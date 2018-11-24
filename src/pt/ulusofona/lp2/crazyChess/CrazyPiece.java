@@ -7,17 +7,18 @@ class CrazyPiece {
     private Position position;
     private Tipo tipo;
     private boolean podeMudarTipo, mudouTipo = false;
+    private Equipa team;
 
 
-//  Construtores
-
-    CrazyPiece(int ID, Position position, Tipo tipo, Boolean podeMudarTipo) {
+//  Constructor
+    CrazyPiece(int ID, Position position, Tipo tipo, Boolean podeMudarTipo, Equipa team) {
 
 //      set the variable of this same class as the value received
         this.ID = ID;
         this.position = position;
         this.tipo = tipo;
         this.podeMudarTipo = podeMudarTipo;
+        this.team = team;
 
     }
 
@@ -65,11 +66,18 @@ class CrazyPiece {
 
     }
 
+    Equipa getTeam() {
+
+//      return the value of the variable "idTeam" of this same class
+        return team;
+
+    }
+
 
 //  set
     boolean setImagePNG(String imagePNG) {
 
-//      it tries to chage the value of the variable "tipo"
+//      it tries to set image
         try {
 
 //          if the string received doesn't have .png in the end
@@ -111,16 +119,22 @@ class CrazyPiece {
 //  remove
     boolean removeIamgePNG(){
 
-        try{
+//      it tries to remove the image
+        try {
 
+//          set the variable of this same class as null
             this.imagePNG = null;
 
+//          return the value of the variable "true" of this same class
             return true;
 
-        } catch (Exception impossibleToRemoveImage){
+//      if there is any problem in the above code
+        } catch (Exception impossibleToChangeColor) {
 
+//          print this message in screen
             System.out.println("Impossible to remove the image");
 
+//          return the value of the variable "false" of this same class
             return false;
 
         }
@@ -131,6 +145,7 @@ class CrazyPiece {
 //  has
     boolean hasImagePNG(String imagePNG) {
 
+//      return true if the image received is the same of this piece
         return this.imagePNG.equals(imagePNG);
 
     }
@@ -139,19 +154,25 @@ class CrazyPiece {
 //  change
     boolean changePosition(int xPos, int yPos) {
 
+//      return the return fo the method called
         return position.chagePosition(xPos, yPos);
 
     }
 
     boolean changeType(Tipo tipo) {
 
+//      if this piece can change type AND it hasn't changed yet
         if (podeMudarTipo && !mudouTipo && tipo.changeTipo(tipo)){
 
-            mudouTipo = true;
+//          set this class variable "mudouTipo" as true
+            this.mudouTipo = true;
+
+//          return true
             return true;
 
         }
 
+//      else return false
         return false;
 
     }
@@ -160,19 +181,27 @@ class CrazyPiece {
 //  toString (por acabar)
     public String toString() {
 
+//      set a string type variable called string as the toString settings
         String string = "ID = " + ID +
                         " | Tipo = " + tipo.getTipo() +
-                        " | ID Equipa = " /*missing id equipa e \n alcunha*/;
+                        " | ID Equipa = " + team.getId() +
+                        " | Alcunha da equipa = " + team.getNome() +
+                        " | Posição = ";
+
+//      if actual position in x axis as the value of null OR actual position in y axis as the value of null
         if(position.getxAtual() == null || position.getyAtual() == null){
 
+//          add this to the variable string
             string += "(n/a)";
 
         }else {
 
+//          add this to the variable string
             string += "(<" + position.getxAtual() + ">, <" + position.getyAtual() + ">)";
 
         }
 
+//      return the value of the variable string
         return string;
     }
 
