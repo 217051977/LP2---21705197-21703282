@@ -15,7 +15,11 @@ class Simulador {
     private List<Equipa> team;
 
 //    Construtor(s)
-    Simulador() {}
+    Simulador(int tamanhoTabuleiro) {
+
+        this.tamanhoTabuleiro = tamanhoTabuleiro;
+
+    }
 
 
 //    gets
@@ -37,6 +41,8 @@ class Simulador {
 
     }
 
+
+//  Nao pode devolver null
     List<String> getResultados() {
 
         return resultados;
@@ -147,7 +153,7 @@ class Simulador {
 //mesma e devolver true. Em caso
 //contrário, deve devolver false.
 
-    boolean processaJogada(int xO, int yO, int xD, int yD){
+    boolean processaJogada(int xO, int yO, int xD, int yD) {
 
         //confirmar se a jogada e valida
 
