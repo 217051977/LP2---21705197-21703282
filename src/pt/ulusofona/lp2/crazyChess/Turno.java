@@ -1,8 +1,9 @@
 package pt.ulusofona.lp2.crazyChess;
 
-public class Turno {
+class Turno {
 
-    private int count;
+    private int count = 0;
+    private byte idTeam;
 
     Turno() {}
 
@@ -13,15 +14,33 @@ public class Turno {
 
     }
 
+    byte getIdTeam() {
+
+        return idTeam;
+
+    }
+
     void addCount() {
 
         this.count++;
+
+        if (count % 2 == 0) {
+
+            this.idTeam = 1;
+
+        } else {
+
+            this.idTeam = 0;
+
+        }
 
     }
 
     void resetCount() {
 
         this.count = 0;
+
+        this.idTeam = 1;
 
     }
 

@@ -13,6 +13,7 @@ class Simulador {
     private List<String> autores, resultados;
     private int idEquipaAJogar = 0;
     private List<Equipa> team;
+    private Turno turno;
 
 //    Construtor(s)
     Simulador(int tamanhoTabuleiro) {
@@ -83,6 +84,24 @@ class Simulador {
 
     }
 
+    Turno getTurno() {
+
+        return turno;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     boolean setPeca(CrazyPiece peca) {
 
         try {
@@ -148,8 +167,8 @@ class Simulador {
 //  comentar
     boolean processaJogada(int xO, int yO, int xD, int yD) {
 
-        if (xD >= 0 && xD <= tamanhoTabuleiro &&
-            yD >= 0 && yD <= tamanhoTabuleiro) {
+        if (xD >= 0 && xD <= (tamanhoTabuleiro - 1) &&
+            yD >= 0 && yD <= (tamanhoTabuleiro - 1)) {
 
             Position newPosition = new Position(xD, yD);
 
@@ -157,15 +176,19 @@ class Simulador {
 
                 if (peca.getPosition().equals(newPosition)) {
 
-                    int xDiference = xD - xO;
-                    int yDiference = yD - yO;
+                    if (peca.getTeam().getId() == turno.getIdTeam()) {
 
-                    if (peca.getTipo().getMinMovHorizontal() >= xDiference &&
-                        peca.getTipo().getMaxMovHorizontal() <= xDiference &&
-                        peca.getTipo().getMinMovVertical() >= yDiference &&
-                        peca.getTipo().getMaxMovVertical() <= yDiference){
+                        int xDiference = xD - xO;
+                        int yDiference = yD - yO;
 
-                        return verificaMovimentoHorizontal(peca, xDiference, yDiference);
+                        if (peca.getTipo().getMinMovHorizontal() >= xDiference &&
+                                peca.getTipo().getMaxMovHorizontal() <= xDiference &&
+                                peca.getTipo().getMinMovVertical() >= yDiference &&
+                                peca.getTipo().getMaxMovVertical() <= yDiference) {
+
+                            return verificaMovimentoHorizontal(peca, xDiference, yDiference, newPosition);
+
+                        }
 
                     }
 
@@ -214,15 +237,15 @@ class Simulador {
 
 
 //  private functions
-    private boolean verificaMovimentoHorizontal(CrazyPiece peca, int xDiference, int yDiference) {
+    private boolean verificaMovimentoHorizontal(CrazyPiece peca, int xDiference, int yDiference, Position newPosition) {
 
         if (xDiference > 0) {
 
             if (peca.getTipo().getMoveDireita()) {
 
-                return verificaMovimentoVertical(peca, xDiference, yDiference, 'R');
+                return verificaMovimentoVertical(peca, xDiference, yDiference, 'R', newPosition);
 
-            } else if (verificarMovimentoDiagonal(peca, xDiference, yDiference)) {
+            } else if (verificarMovimentoDiagonal(peca, xDiference, yDiference, newPosition)) {
 
                 return true;
 
@@ -234,8 +257,12 @@ class Simulador {
 
             if (peca.getTipo().getMoveEsquerda()) {
 
-                return verificaMovimentoVertical(peca, xDiference, yDiference, 'L');
+                return verificaMovimentoVertical(peca, xDiference, yDiference, 'L', newPosition);
 
+
+            } else if (verificarMovimentoDiagonal(peca, xDiference, yDiference, newPosition)) {
+
+                return true;
 
             }
 
@@ -243,11 +270,12 @@ class Simulador {
 
         }
 
-        return verificaMovimentoVertical(peca, xDiference, yDiference, 'N');
+        return verificaMovimentoVertical(peca, xDiference, yDiference, 'N', newPosition);
 
     }
 
-    private boolean verificaMovimentoVertical(CrazyPiece peca, int xDiference, int yDiference, char leftOrRight) {
+    private boolean verificaMovimentoVertical(CrazyPiece peca, int xDiference, int yDiference, char leftOrRight,
+                                                Position newPosition) {
 
         switch (leftOrRight) {
 
@@ -257,8 +285,14 @@ class Simulador {
 
                     if (peca.getTipo().getMoveCima()) {
 
-                        peca.moveUp(yDiference);
-                        peca.moveRight(xDiference);
+                        for (CrazyPiece peca2 : pecasMalucas) {
+
+                            if (peca2.getPosition())
+
+                            peca.moveUp(yDiference);
+                            peca.moveRight(xDiference);
+
+                        }
 
                     } else {
 
@@ -361,7 +395,7 @@ class Simulador {
     }
 
 //  comentar
-    private boolean verificarMovimentoDiagonal(CrazyPiece peca, int xDiference, int yDiference) {
+    private boolean verificarMovimentoDiagonal(CrazyPiece peca, int xDiference, int yDiference, Position newPosition) {
 
         if (xDiference > 0) {
 
