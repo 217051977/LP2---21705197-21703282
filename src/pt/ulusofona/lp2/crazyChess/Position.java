@@ -49,28 +49,27 @@ class Position {
 
 
 //  change
-    boolean chagePosition(int x, int y) {
+    void changeXPositionRight(int x){
 
-//      it tries to chage the value of the variable "tipo"
-        try {
+        this.xAtual += x;
 
-//          set the variable of this same class as the value received
-            this.xAtual = x;
-            this.yAtual = y;
+    }
 
-//          return the value of the variable "true" of this same class
-            return true;
+    void changeXPositionLeft(int x){
 
-//      if there is any problem in the above code
-        } catch (Exception impossibleToChangeColor) {
+        this.xAtual -= x;
 
-//          print this message in screen
-            System.out.println("Impossible to change the position!");
+    }
 
-//          return the value of the variable "false" of this same class
-            return false;
+    void changeYPositionUp(int y){
 
-        }
+        this.yAtual += y;
+
+    }
+
+    void changeYPositionDown(int y){
+
+        this.yAtual -= y;
 
     }
 

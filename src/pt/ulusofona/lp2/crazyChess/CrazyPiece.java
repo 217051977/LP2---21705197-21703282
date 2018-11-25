@@ -75,7 +75,7 @@ class CrazyPiece {
 
 
 //  set
-    boolean setImagePNG(String imagePNG) {
+    void setImagePNG(String imagePNG) {
 
 //      it tries to set image
         try {
@@ -90,8 +90,8 @@ class CrazyPiece {
                     imagePNG.toLowerCase().charAt(imagePNG.length() - 2) != 'n' ||
                     imagePNG.toLowerCase().charAt(imagePNG.length() - 1) != 'g') {
 
-//              returns false
-                return false;
+//              throws an arithmetic Exception with this message
+                throw new ArithmeticException("Format not valid!");
 
             }
 
@@ -100,17 +100,15 @@ class CrazyPiece {
 //          set the variable of this same class as the value received
             this.imagePNG = imagePNG;
 
-//          return the value of the variable "true" of this same class
-            return true;
-
 //      if there is any problem in the above code
+        } catch (ArithmeticException formatNotValid) {
+
+            System.out.println(formatNotValid.getMessage());
+
         } catch (Exception impossibleToChangeColor) {
 
 //          print this message in screen
             System.out.println("Impossible to remove the image");
-
-//          return the value of the variable "false" of this same class
-            return false;
 
         }
 
@@ -152,13 +150,6 @@ class CrazyPiece {
 
 
 //  change
-    boolean changePosition(int xPos, int yPos) {
-
-//      return the return fo the method called
-        return position.chagePosition(xPos, yPos);
-
-    }
-
     boolean changeType(Tipo tipo) {
 
 //      if this piece can change type AND it hasn't changed yet
@@ -174,6 +165,32 @@ class CrazyPiece {
 
 //      else return false
         return false;
+
+    }
+
+
+//  move
+    void moveRight(int countMoves) {
+
+        position.changeXPositionRight(countMoves);
+
+    }
+
+    void moveLeft(int countMoves) {
+
+        position.changeXPositionLeft(countMoves);
+
+    }
+
+    void moveUp(int countMoves) {
+
+        position.changeYPositionUp(countMoves);
+
+    }
+
+    void moveDown(int countMoves) {
+
+        position.changeYPositionDown(countMoves);
 
     }
 

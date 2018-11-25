@@ -4,18 +4,25 @@ class Tipo {
 
 //  variable
     private String tipo;
+    private boolean moveCima, moveBaixo, moveEsquerda, moveDireita;
+    private int maxMov;
 
 
 //  constructor
-    Tipo(String tipo) {
+    Tipo(String tipo, boolean moveBaixo, boolean moveEsquerda, boolean moveDireita, boolean moveCima, int maxMov) {
 
 //      set the variable of this same class as the value received
         this.tipo = tipo;
+        this.moveBaixo = moveBaixo;
+        this.moveEsquerda = moveEsquerda;
+        this.moveDireita = moveDireita;
+        this.moveCima = moveCima;
+        this.maxMov = maxMov;
 
     }
 
 
-//  get
+//  gets
     String getTipo() {
 
 //      return the value of the variable "tipo" of this same class
@@ -23,8 +30,38 @@ class Tipo {
 
     }
 
+    boolean getMoveCima() {
 
-//  change
+        return moveCima;
+
+    }
+
+    boolean getMoveBaixo() {
+
+        return moveBaixo;
+
+    }
+
+    boolean getMoveEsquerda() {
+
+        return moveEsquerda;
+
+    }
+
+    boolean getMoveDireita() {
+
+        return moveDireita;
+
+    }
+
+    public int getMaxMov() {
+
+        return maxMov;
+
+    }
+
+
+    //  change
     boolean changeTipo(Tipo tipo) {
 
 //      it tries to chage the value of the variable "tipo"

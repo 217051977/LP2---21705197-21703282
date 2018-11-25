@@ -157,14 +157,37 @@ class Simulador {
 
         //confirmar se a jogada e valida
 
+
+
+        int xDiference = xD - xO;
+        int yDiference = yD - yO;
+
+        Position newPosition = new Position(xD, yD);
+
+        if (xDiference <= tamanhoTabuleiro && yDiference <= tamanhoTabuleiro) {
+
+            for (CrazyPiece peca : pecasMalucas) {
+
+                if (peca.getPosition().equals(newPosition)) {
+
+                    verificaMovimentoHorizontal(peca, xDiference, yDiference);
+
+                }
+
+            }
+
+        }
+
+
+
         return true;
 
     }
 
+
 //  Deve devolver true caso já tenha sido
 //alcançada uma das condições de paragem
 //do jogo () e false em caso contrário.
-
     boolean jogoTerminado() {
 
         //Deve devolver true caso já tenha sido
@@ -191,6 +214,131 @@ class Simulador {
             return false;
 
         }
+
+    }
+
+
+//  private functions
+    private boolean verificaPossiveisMovimentos(CrazyPiece peca) {
+
+        System.out.println("This piece can be moved in this ways: " +
+                "\nLeft: " + peca.getTipo().getMoveEsquerda() +
+                "\nRight: " + peca.getTipo().getMoveDireita() +
+                "\nUp: " + peca.getTipo().getMoveCima() +
+                "\nDown: :" + peca.getTipo().getMoveBaixo());
+
+        return false;
+
+    }
+
+    private boolean verificaMovimentoVertical(CrazyPiece peca, int yDiference, int leftOrRight, int xDiference) {
+
+        switch (leftOrRight) {
+
+            case 0: {
+
+                if (yDiference > 0) {
+
+                    if (peca.getTipo().getMoveCima()) {
+
+                        peca.moveUp(yDiference);
+                        peca.moveRight(xDiference);
+
+                    } else {
+
+                        return verificaPossiveisMovimentos(peca);
+
+                    }
+
+                } else if (yDiference < 0) {
+
+                    if (peca.getTipo().getMoveBaixo()) {
+
+                        peca.moveDown(yDiference);
+
+
+                    } else {
+
+                        return verificaPossiveisMovimentos(peca);
+
+                    }
+
+
+                }
+
+            } break;
+
+            case 1: {
+
+                if (yDiference > 0) {
+
+                    if (peca.getTipo().getMoveCima()) {
+
+                        peca.moveUp(yDiference);
+                        peca.moveLeft(xDiference);
+
+                    } else {
+
+                        return verificaPossiveisMovimentos(peca);
+
+                    }
+
+                } else if (yDiference < 0) {
+
+                    if (peca.getTipo().getMoveBaixo()) {
+
+                        peca.moveDown(yDiference);
+
+
+                    } else {
+
+                        return verificaPossiveisMovimentos(peca);
+
+                    }
+
+
+                }
+
+            }
+
+        }
+
+
+        return true;
+
+    }
+
+    private boolean verificaMovimentoHorizontal(CrazyPiece peca, int xDiference, int yDiference) {
+
+        if (xDiference > 0) {
+
+            if (peca.getTipo().getMoveDireita()) {
+
+                verificaMovimentoVertical(peca, yDiference, 0, xDiference);
+
+            } else {
+
+                return verificaPossiveisMovimentos(peca);
+
+            }
+
+        } else if (xDiference < 0) {
+
+            if (peca.getTipo().getMoveEsquerda()) {
+
+                verificaMovimentoVertical(peca, yDiference, 1, xDiference);
+
+
+            } else {
+
+                return verificaPossiveisMovimentos(peca);
+
+            }
+
+
+        }
+
+        return true;
 
     }
 
