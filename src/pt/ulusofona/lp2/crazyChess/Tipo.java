@@ -4,12 +4,16 @@ class Tipo {
 
 //  variable
     private String tipo;
-    private boolean moveCima, moveBaixo, moveEsquerda, moveDireita;
-    private int maxMov;
+    private boolean moveCima, moveBaixo, moveEsquerda, moveDireita,
+                moveCimaDireita, moveCimaEsquerda, moveBaixoDireita, moveBaixoEsquerda;
+    private int maxMovHorizontal, maxMovVertical;
 
 
 //  constructor
-    Tipo(String tipo, boolean moveBaixo, boolean moveEsquerda, boolean moveDireita, boolean moveCima, int maxMov) {
+    Tipo(String tipo,
+         boolean moveBaixo, boolean moveEsquerda, boolean moveDireita, boolean moveCima,
+         boolean moveBaixoDireta, boolean moveBaixoEsquerda, boolean moveCimaDireta, boolean moveCimaEsquerda,
+         int maxMovHorizontal, int maxMovVertical) {
 
 //      set the variable of this same class as the value received
         this.tipo = tipo;
@@ -17,7 +21,12 @@ class Tipo {
         this.moveEsquerda = moveEsquerda;
         this.moveDireita = moveDireita;
         this.moveCima = moveCima;
-        this.maxMov = maxMov;
+        this.moveCimaDireita = moveCimaDireta;
+        this.moveCimaEsquerda = moveCimaEsquerda;
+        this.moveBaixoDireita = moveBaixoDireta;
+        this.moveBaixoEsquerda = moveBaixoEsquerda;
+        this.maxMovHorizontal = maxMovHorizontal;
+        this.maxMovVertical = maxMovVertical;
 
     }
 
@@ -54,12 +63,41 @@ class Tipo {
 
     }
 
-    public int getMaxMov() {
+    boolean getMoveBaixoDireta() {
 
-        return maxMov;
+        return moveBaixoDireita;
 
     }
 
+    boolean getMoveBaixoEsquerda() {
+
+        return moveBaixoEsquerda;
+
+    }
+
+    boolean getMoveCimaDireita() {
+
+        return moveCimaDireita;
+
+    }
+
+    boolean getMoveCimaEsquerda() {
+
+        return moveCimaEsquerda;
+
+    }
+
+    public int getMaxMovHorizontal() {
+
+        return maxMovHorizontal;
+
+    }
+
+    public int getMaxMovVertical() {
+
+        return maxMovVertical;
+
+    }
 
     //  change
     boolean changeTipo(Tipo tipo) {
