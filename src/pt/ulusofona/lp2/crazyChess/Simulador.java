@@ -153,14 +153,21 @@ class Simulador {
 
             Position newPosition = new Position(xD, yD);
 
-            int xDiference = xD - xO;
-            int yDiference = yD - yO;
-
             for (CrazyPiece peca : pecasMalucas) {
 
                 if (peca.getPosition().equals(newPosition)) {
 
-                    return verificaMovimentoHorizontal(peca, xDiference, yDiference);
+                    int xDiference = xD - xO;
+                    int yDiference = yD - yO;
+
+                    if (peca.getTipo().getMinMovHorizontal() >= xDiference &&
+                        peca.getTipo().getMaxMovHorizontal() <= xDiference &&
+                        peca.getTipo().getMinMovVertical() >= yDiference &&
+                        peca.getTipo().getMaxMovVertical() <= yDiference){
+
+                        return verificaMovimentoHorizontal(peca, xDiference, yDiference);
+
+                    }
 
                 }
 

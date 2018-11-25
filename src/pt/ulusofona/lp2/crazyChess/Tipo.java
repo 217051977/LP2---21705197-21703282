@@ -3,36 +3,131 @@ package pt.ulusofona.lp2.crazyChess;
 class Tipo {
 
 //  variable
-    private String tipo;
+
+//  0 - Rei
+//  1 - Rainha
+//  2 -
+//  3 -
+//  4 -
+//  5 -
+//  6 -
+//  7 -
+//  8 -
+//  9 -
+//  10 -
+    private byte tipo;
+
     private boolean moveCima, moveBaixo, moveEsquerda, moveDireita,
                 moveCimaDireita, moveCimaEsquerda, moveBaixoDireita, moveBaixoEsquerda;
-    private int maxMovHorizontal, maxMovVertical;
+
+    private int maxMovHorizontal, maxMovVertical, minMovHorizontal, minMovVertical;
 
 
 //  constructor
-    Tipo(String tipo,
-         boolean moveBaixo, boolean moveEsquerda, boolean moveDireita, boolean moveCima,
-         boolean moveBaixoDireta, boolean moveBaixoEsquerda, boolean moveCimaDireta, boolean moveCimaEsquerda,
-         int maxMovHorizontal, int maxMovVertical) {
+    Tipo(byte tipo) {
 
 //      set the variable of this same class as the value received
         this.tipo = tipo;
-        this.moveBaixo = moveBaixo;
-        this.moveEsquerda = moveEsquerda;
-        this.moveDireita = moveDireita;
-        this.moveCima = moveCima;
-        this.moveCimaDireita = moveCimaDireta;
-        this.moveCimaEsquerda = moveCimaEsquerda;
-        this.moveBaixoDireita = moveBaixoDireta;
-        this.moveBaixoEsquerda = moveBaixoEsquerda;
-        this.maxMovHorizontal = maxMovHorizontal;
-        this.maxMovVertical = maxMovVertical;
+
+        switch (tipo) {
+
+            case 0: {
+
+                this.moveBaixo = true;
+                this.moveEsquerda = true;
+                this.moveDireita = true;
+                this.moveCima = true;
+                this.moveCimaDireita = true;
+                this.moveCimaEsquerda = true;
+                this.moveBaixoDireita = true;
+                this.moveBaixoEsquerda = true;
+                this.maxMovHorizontal = 1;
+                this.maxMovVertical = 1;
+                this.minMovHorizontal = 1;
+                this.minMovVertical = 1;
+
+            }break;
+
+            case 1: {
+
+                System.out.println("Coming soon");
+
+            }break;
+
+            case 2: {
+
+                System.out.println("Coming soon");
+
+            }break;
+
+            case 3: {
+
+                System.out.println("Coming soon");
+
+            }break;
+
+            case 4: {
+
+                System.out.println("Coming soon");
+
+            }break;
+
+            case 5: {
+
+                System.out.println("Coming soon");
+
+            }break;
+
+            case 6: {
+
+                System.out.println("Coming soon");
+
+            }break;
+
+            case 7: {
+
+                System.out.println("Coming soon");
+
+            }break;
+
+            case 8: {
+
+                System.out.println("Coming soon");
+
+            }break;
+
+            case 9: {
+
+                System.out.println("Coming soon");
+
+            }break;
+
+            case 10: {
+
+                System.out.println("Coming soon");
+
+            }break;
+
+            case 11: {
+
+                System.out.println("Coming soon");
+
+            }break;
+
+            default: {
+
+                System.out.println("That type does not exists!");
+
+            }
+
+        }
+
 
     }
 
 
 //  gets
-    String getTipo() {
+    byte getTipo() {
 
 //      return the value of the variable "tipo" of this same class
         return tipo;
@@ -87,15 +182,27 @@ class Tipo {
 
     }
 
-    public int getMaxMovHorizontal() {
+    int getMaxMovHorizontal() {
 
         return maxMovHorizontal;
 
     }
 
-    public int getMaxMovVertical() {
+    int getMaxMovVertical() {
 
         return maxMovVertical;
+
+    }
+
+    int getMinMovHorizontal() {
+
+        return minMovHorizontal;
+
+    }
+
+    int getMinMovVertical() {
+
+        return minMovVertical;
 
     }
 

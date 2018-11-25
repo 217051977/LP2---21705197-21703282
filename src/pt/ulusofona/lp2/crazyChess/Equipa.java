@@ -5,18 +5,28 @@ import java.awt.*;
 public class Equipa {
 
 //  variables
+//  can be 0 - white - or 1 - black starts first-
     private int id;
     private String nome;
     private Color cor;
 
 
 //  constructor
-    Equipa(int id, String nome, Color cor) {
+    Equipa(int id, String nome) {
 
 //      set the variable of this same class as the value received
         this.id = id;
         this.nome = nome;
-        this.cor = cor;
+
+        if (id == 1) {
+
+            this.cor = Color.BLACK;
+
+        } else if (id == 0) {
+
+            this.cor = Color.WHITE;
+
+        }
 
     }
 
