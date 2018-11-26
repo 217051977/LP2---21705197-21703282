@@ -2,7 +2,6 @@ package pt.ulusofona.lp2.crazyChess;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,6 +13,7 @@ class Simulador {
     private int idEquipaAJogar = 0;
     private List<Equipa> team;
     private Turno turno;
+    private boolean primeiraCaptura = false;
 
 //    Construtor(s)
     Simulador(int tamanhoTabuleiro) {
@@ -87,6 +87,12 @@ class Simulador {
     Turno getTurno() {
 
         return turno;
+
+    }
+
+    boolean getPrimeiraCaptura() {
+
+        return this.primeiraCaptura;
 
     }
 
@@ -202,17 +208,64 @@ class Simulador {
 
     }
 
-
-//  Deve devolver true caso já tenha sido
-//alcançada uma das condições de paragem
-//do jogo () e false em caso contrário.
+//  falta a pontuacao
     boolean jogoTerminado() {
 
-        //Deve devolver true caso já tenha sido
-        //alcançada uma das condições de paragem
-        //do jogo () e false em caso contrário.
+        int reiBranco = 0;
+        int reiPreto = 0;
 
-        return true;
+        if (turno.getCountNoCapture() == 10 && primeiraCaptura) {
+
+            turno.resetCount();
+            turno.resetCountNoCapture();
+
+            return true;
+
+        } else {
+
+            for (CrazyPiece peca : pecasMalucas) {
+
+                if (peca.getTipo().getid() == 0) {
+
+                    if (peca.getTeam().getId() == 0) {
+
+                        reiBranco++;
+
+                    } else if (peca.getTeam().getId() == 1) {
+
+                        reiPreto++;
+
+                    }
+
+                }
+
+            }
+
+            if (reiPreto == 0) {
+
+                System.out.println("The whites wins!");
+
+                return true;
+
+            } else if (reiBranco == 0) {
+
+                System.out.println("The blacks wins!");
+
+                return true;
+
+            } else if (reiPreto == 1 && reiBranco ==1) {
+
+                System.out.println("It's a draw");
+
+                return true;
+
+            } else {
+
+                return false;
+
+            }
+
+        }
 
     }
 
@@ -285,39 +338,43 @@ class Simulador {
 
                     if (peca.getTipo().getMoveCima()) {
 
-                        for (CrazyPiece peca2 : pecasMalucas) {
+                        if (verificaPosicaoVazia(newPosition)) {
 
-                            if (peca2.getPosition())
+                            moveUpRight(peca, xDiference, yDiference);
 
-                            peca.moveUp(yDiference);
-                            peca.moveRight(xDiference);
+                            return true;
 
                         }
 
-                    } else {
-
-                        return verificaPossiveisMovimentos(peca);
-
                     }
+
+                    return verificaPossiveisMovimentos(peca);
 
                 } else if (yDiference < 0) {
 
                     if (peca.getTipo().getMoveBaixo()) {
 
-                        peca.moveDown((yDiference * (-1)));
-                        peca.moveRight(xDiference);
+                        if (verificaPosicaoVazia(newPosition)) {
 
+                            moveDownRight(peca, xDiference, yDiference);
 
-                    } else {
+                            return true;
 
-                        return verificaPossiveisMovimentos(peca);
+                        }
+
 
                     }
+
+                    return verificaPossiveisMovimentos(peca);
 
 
                 }
 
-            } break;
+                moveRight(peca, xDiference);
+
+                return true;
+
+            }
 
             case 'L': {
 
@@ -325,33 +382,43 @@ class Simulador {
 
                     if (peca.getTipo().getMoveCima()) {
 
-                        peca.moveUp(yDiference);
-                        peca.moveLeft((xDiference * (-1)));
+                        if (verificaPosicaoVazia(newPosition)) {
 
-                    } else {
+                            moveUpLeft(peca, xDiference, yDiference);
 
-                        return verificaPossiveisMovimentos(peca);
+                            return true;
+
+                        }
 
                     }
+
+                    return verificaPossiveisMovimentos(peca);
 
                 } else if (yDiference < 0) {
 
                     if (peca.getTipo().getMoveBaixo()) {
 
-                        peca.moveDown((yDiference * (-1)));
-                        peca.moveLeft((xDiference * (-1)));
+                        if (verificaPosicaoVazia(newPosition)) {
 
+                            moveDownLeft(peca, xDiference, yDiference);
 
-                    } else {
+                            return true;
 
-                        return verificaPossiveisMovimentos(peca);
+                        }
+
 
                     }
+
+                    return verificaPossiveisMovimentos(peca);
 
 
                 }
 
-            } break;
+                moveLeft(peca, xDiference);
+
+                return true;
+
+            }
 
             default: {
 
@@ -359,26 +426,34 @@ class Simulador {
 
                     if (peca.getTipo().getMoveCima()) {
 
-                        peca.moveUp(yDiference);
+                        if (verificaPosicaoVazia(newPosition)) {
 
-                    } else {
+                            moveUp(peca, yDiference);
 
-                        return verificaPossiveisMovimentos(peca);
+                            return true;
+
+                        }
 
                     }
+
+                    return verificaPossiveisMovimentos(peca);
 
                 } else if (yDiference < 0) {
 
                     if (peca.getTipo().getMoveBaixo()) {
 
-                        peca.moveDown((yDiference * (-1)));
+                        if (verificaPosicaoVazia(newPosition)) {
 
+                            moveDown(peca, yDiference);
 
-                    } else {
+                            return true;
 
-                        return verificaPossiveisMovimentos(peca);
+                        }
+
 
                     }
+
+                    return verificaPossiveisMovimentos(peca);
 
 
                 }
@@ -390,8 +465,6 @@ class Simulador {
 
         }
 
-        return true;
-
     }
 
 //  comentar
@@ -401,15 +474,23 @@ class Simulador {
 
             if (peca.getTipo().getMoveCimaDireita()) {
 
-                peca.moveUp(yDiference);
-                peca.moveRight(xDiference);
-                return true;
+                if (verificaPosicaoVazia(newPosition)) {
+
+                    moveUpRight(peca, xDiference, yDiference);
+
+                    return true;
+
+                }
 
             } else if (peca.getTipo().getMoveBaixoDireta()) {
 
-                peca.moveDown((yDiference * (-1)));
-                peca.moveRight(xDiference);
-                return true;
+                if (verificaPosicaoVazia(newPosition)) {
+
+                    moveDownRight(peca, xDiference, yDiference);
+
+                    return true;
+
+                }
 
             }
 
@@ -417,15 +498,23 @@ class Simulador {
 
             if (peca.getTipo().getMoveCimaEsquerda()) {
 
-                peca.moveUp(yDiference);
-                peca.moveLeft((xDiference * (-1)));
-                return true;
+                if (verificaPosicaoVazia(newPosition)) {
+
+                    moveUpLeft(peca, xDiference, yDiference);
+
+                    return true;
+
+                }
 
             } else if (peca.getTipo().getMoveBaixoEsquerda()) {
 
-                peca.moveDown((yDiference * (-1)));
-                peca.moveLeft((xDiference * (-1)));
-                return true;
+                if (verificaPosicaoVazia(newPosition)) {
+
+                    moveDownLeft(peca, xDiference, yDiference);
+
+                    return true;
+
+                }
 
             }
 
@@ -434,6 +523,36 @@ class Simulador {
 //      return false because a diagonal MUST be able to move in the x axis or because i can not move in the diagonal
 //  or staying in the same position
         return false;
+
+    }
+
+    private boolean verificaPosicaoVazia(Position newPosition) {
+
+        for (CrazyPiece peca : pecasMalucas) {
+
+            if (peca.getPosition() == newPosition) {
+
+                if (peca.getTeam().getId() != turno.getIdTeam()) {
+
+                    pecasMalucas.remove(peca);
+                    primeiraCaptura = true;
+                    turno.addCountNoCapture();
+
+                } else {
+
+                    System.out.println("There's already a piece of the same team on that position!");
+                    return false;
+
+                }
+
+                break;
+
+            }
+
+        }
+
+        turno.resetCountNoCapture();
+        return true;
 
     }
 
@@ -451,6 +570,66 @@ class Simulador {
                 "\nUp and Right: " + peca.getTipo().getMoveCimaDireita());
 
         return false;
+
+    }
+
+    private void moveLeft(CrazyPiece peca, int xDiference) {
+
+        peca.moveLeft((xDiference * (-1)));
+        turno.addCount();
+
+    }
+
+    private void moveRight(CrazyPiece peca, int xDiference) {
+
+        peca.moveRight(xDiference);
+        turno.addCount();
+
+    }
+
+    private void moveUp(CrazyPiece peca, int yDiference) {
+
+        peca.moveUp(yDiference);
+        turno.addCount();
+
+    }
+
+    private void moveDown(CrazyPiece peca, int yDiference) {
+
+        peca.moveDown((yDiference * (-1)));
+        turno.addCount();
+
+    }
+
+    private void moveDownLeft(CrazyPiece peca, int xDiference, int yDiference) {
+
+        peca.moveDown((yDiference * (-1)));
+        peca.moveLeft((xDiference * (-1)));
+        turno.addCount();
+
+    }
+
+    private void moveUpLeft(CrazyPiece peca, int xDiference, int yDiference) {
+
+        peca.moveUp(yDiference);
+        peca.moveLeft((xDiference * (-1)));
+        turno.addCount();
+
+    }
+
+    private void moveUpRight(CrazyPiece peca, int xDiference, int yDiference) {
+
+        peca.moveUp(yDiference);
+        peca.moveRight(xDiference);
+        turno.addCount();
+
+    }
+
+    private void moveDownRight(CrazyPiece peca, int xDiference, int yDiference) {
+
+        peca.moveDown((yDiference * (-1)));
+        peca.moveRight(xDiference);
+        turno.addCount();
 
     }
 

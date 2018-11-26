@@ -15,7 +15,7 @@ class Tipo {
 //  8 -
 //  9 -
 //  10 -
-    private byte tipo;
+    private byte id;
 
     private boolean moveCima, moveBaixo, moveEsquerda, moveDireita,
                 moveCimaDireita, moveCimaEsquerda, moveBaixoDireita, moveBaixoEsquerda;
@@ -24,12 +24,12 @@ class Tipo {
 
 
 //  constructor
-    Tipo(byte tipo) {
+    Tipo(byte id) {
 
 //      set the variable of this same class as the value received
-        this.tipo = tipo;
+        this.id = id;
 
-        switch (tipo) {
+        switch (id) {
 
             case 0: {
 
@@ -127,10 +127,10 @@ class Tipo {
 
 
 //  gets
-    byte getTipo() {
+    byte getid() {
 
 //      return the value of the variable "tipo" of this same class
-        return tipo;
+        return id;
 
     }
 
@@ -213,7 +213,19 @@ class Tipo {
         try {
 
 //          set the variable of this same class as the value received
-            this.tipo = tipo.getTipo();
+            this.id = tipo.getid();
+            this.moveCima = tipo.getMoveCima();
+            this.moveBaixo = tipo.getMoveBaixo();
+            this.moveEsquerda = tipo.getMoveEsquerda();
+            this.moveDireita = tipo.getMoveDireita();
+            this.moveCimaDireita = tipo.getMoveCimaDireita();
+            this.moveCimaEsquerda = tipo.getMoveCimaEsquerda();
+            this.moveBaixoDireita = tipo.getMoveBaixoDireta();
+            this.moveBaixoEsquerda = tipo.getMoveBaixoEsquerda();
+            this.maxMovHorizontal = tipo.getMaxMovHorizontal();
+            this.minMovHorizontal = tipo.getMinMovHorizontal();
+            this.maxMovVertical = tipo.getMaxMovVertical();
+            this.minMovVertical = tipo.getMinMovVertical();
 
 //          return the value of the variable "true" of this same class
             return true;

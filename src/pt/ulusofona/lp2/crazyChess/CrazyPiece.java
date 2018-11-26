@@ -200,7 +200,7 @@ class CrazyPiece {
 
 //      set a string type variable called string as the toString settings
         String string = "ID = " + ID +
-                        " | Tipo = " + tipo.getTipo() +
+                        " | Tipo = " + tipo.getid() +
                         " | ID Equipa = " + team.getId() +
                         " | Alcunha da equipa = " + team.getNome() +
                         " | Posição = ";

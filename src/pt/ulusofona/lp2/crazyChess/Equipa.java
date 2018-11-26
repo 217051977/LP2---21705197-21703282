@@ -5,7 +5,7 @@ import java.awt.*;
 public class Equipa {
 
 //  variables
-//  can be 0 - white - or 1 - black starts first-
+//  can be 0 - white - or 1 - black (starts first)-
     private int id;
     private String nome;
     private Color cor;
