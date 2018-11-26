@@ -129,4 +129,10 @@ class Position {
 
     }
 
+    public String toString() {
+
+        return "xAtual = " + xAtual + " | yAtual = " + yAtual;
+
+    }
+
 }

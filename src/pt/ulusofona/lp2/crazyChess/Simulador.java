@@ -8,10 +8,10 @@ import java.util.Scanner;
 
 public class Simulador {
 
-    private int tamanhoTabuleiro = -1;
+    private int tamanhoTabuleiro;
     private List<CrazyPiece> pecasMalucas = new ArrayList<>();
     private List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
-    private int idEquipaAJogar = 0;
+    private int idEquipaAJogar = 1;
     private List<Equipa> team = new ArrayList<>();
     private Turno turno;
     private boolean primeiraCaptura = false;
@@ -34,7 +34,7 @@ public class Simulador {
 
     }
 
-    public List<CrazyPiece> getPieces() {
+    public List<CrazyPiece> getPecasMalucas() {
 
         return pecasMalucas;
 
@@ -43,7 +43,7 @@ public class Simulador {
     public List<String> getAutores() {
 
         this.autores.add("Bruno Miguel Dias Leal, nº 21705197");
-        this.autores.add("João Domingos, nº 2170");
+        this.autores.add("João Domingos, nº 21703282");
         return autores;
 
     }
@@ -58,29 +58,24 @@ public class Simulador {
 
     public int getIDPeca(int x, int y) {
 
-        int idPeca = -1;
+        Position position = new Position(x, y);
 
-        try {
+        //System.out.println(position);
 
-            Position position = new Position(x, y);
+        for (CrazyPiece peca: pecasMalucas){
 
-            for (CrazyPiece peca: pecasMalucas){
+            if (peca.getPosition() == position) {
 
-                if (peca.getPosition().equals(position)) {
-
-                    idPeca = peca.getID();
-                    break;
-                }
+                System.out.println("\n\n\n\n\n\n");
+                return peca.getID();
 
             }
 
-        }catch(Exception KeyNotFound) {
-
-            System.out.println("Peça not founded!");
-
         }
 
-        return idPeca;
+        System.out.println("Peça not founded!");
+
+        return 0;
 
     }
 
@@ -149,7 +144,8 @@ public class Simulador {
             int nPieces = 0,
                     nPiecesMaxIndex,
                     tamanhoTabuleiroMaxIndex,
-                    nLines = 0;
+                    nLines = 0,
+                    yPosition = 0;
             String[] piecesInfo;
             String[] boardInfo;
 
@@ -172,6 +168,8 @@ public class Simulador {
 
                 */
 
+
+                // check if the number of pieces is lower than the tamnhoTabuleiro^2
 
                 if (nLines == 0) {
 
@@ -201,12 +199,13 @@ public class Simulador {
 
                         if (Integer.parseInt(boardInfo[index]) != 0) {
 
-                            for (CrazyPiece peca : pecasMalucas) {
+                            for (CrazyPiece peca : pecasMalucas) { //peca olaf
 
                                 if (peca.getID() == Integer.parseInt(boardInfo[index])) {
 
-                                    Position position = new Position(index, nLines);
+                                    Position position = new Position(index, yPosition);
                                     peca.setPosition(position);
+                                    System.out.println(peca);
 
                                 }
 
@@ -215,6 +214,7 @@ public class Simulador {
                         }
 
                     }
+                    yPosition++;
 
                 } else {
 
@@ -245,8 +245,8 @@ public class Simulador {
 
             System.out.println("There's information missing in the file!");
 
-            return false;
 
+            return false;
         }
 
     }
@@ -717,11 +717,5 @@ public class Simulador {
         turno.addCount();
 
     }
-    /*
-    private List<String> setAutores() {
 
-        List<String> autores = new ArrayList<>();
-
-    }
-*/
 }

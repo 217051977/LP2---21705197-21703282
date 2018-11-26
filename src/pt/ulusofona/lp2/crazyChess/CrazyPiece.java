@@ -42,8 +42,10 @@ public class CrazyPiece {
 
     Position getPosition() {
 
+        //System.out.println(this.position);
+
 //      return the value of the variable "position" of this same class
-        return position;
+        return this.position;
 
     }
 
