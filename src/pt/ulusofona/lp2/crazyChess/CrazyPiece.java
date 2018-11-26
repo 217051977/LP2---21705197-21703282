@@ -1,6 +1,6 @@
 package pt.ulusofona.lp2.crazyChess;
 
-class CrazyPiece {
+public class CrazyPiece {
 
     private int ID;
     private String imagePNG = null;
@@ -8,17 +8,19 @@ class CrazyPiece {
     private Tipo tipo;
     private boolean podeMudarTipo, mudouTipo = false;
     private Equipa team;
+    private String nome;
 
 
 //  Constructor
-    CrazyPiece(int ID, Position position, Tipo tipo, Boolean podeMudarTipo, Equipa team) {
+    CrazyPiece() {}
+
+    CrazyPiece(int ID, Tipo tipo, Equipa team, String nome) {
 
 //      set the variable of this same class as the value received
         this.ID = ID;
-        this.position = position;
         this.tipo = tipo;
-        this.podeMudarTipo = podeMudarTipo;
         this.team = team;
+        this.nome = nome;
 
     }
 
@@ -73,6 +75,13 @@ class CrazyPiece {
 
     }
 
+    String getNome() {
+
+//      return the value of the variable "nome" of this same class
+        return nome;
+
+    }
+
 
 //  set
     void setImagePNG(String imagePNG) {
@@ -111,6 +120,18 @@ class CrazyPiece {
             System.out.println("Impossible to remove the image");
 
         }
+
+    }
+
+    void setPosition(Position position) {
+
+        this.position = position;
+
+    }
+
+    void setPodeMudarTipo(boolean podeMudarTipo) {
+
+        this.podeMudarTipo = podeMudarTipo;
 
     }
 
@@ -168,6 +189,30 @@ class CrazyPiece {
 
     }
 
+    boolean changeName(String nome) {
+
+//      it tries to chage the value of the variable "tipo"
+        try {
+
+//          set the variable of this same class as the value received
+            this.nome = nome;
+
+//          return the value of the variable "true" of this same class
+            return true;
+
+//      if there is any problem in the above code
+        } catch (Exception impossibleToChangeName) {
+
+//          print this message in screen
+            System.out.println("Impossible to change the name");
+
+//          return the value of the variable "false" of this same class
+            return false;
+
+        }
+
+    }
+
 
 //  move
     void moveRight(int countMoves) {
@@ -202,7 +247,7 @@ class CrazyPiece {
         String string = "ID = " + ID +
                         " | Tipo = " + tipo.getid() +
                         " | ID Equipa = " + team.getId() +
-                        " | Alcunha da equipa = " + team.getNome() +
+                        " | Alcunha da peça = " + nome +
                         " | Posição = ";
 
 //      if actual position in x axis as the value of null OR actual position in y axis as the value of null

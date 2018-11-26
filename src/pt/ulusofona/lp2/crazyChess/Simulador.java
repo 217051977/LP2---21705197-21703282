@@ -2,21 +2,25 @@ package pt.ulusofona.lp2.crazyChess;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-class Simulador {
+public class Simulador {
 
-    private int tamanhoTabuleiro;
-    private List<CrazyPiece> pecasMalucas;
-    private List<String> autores, resultados;
+    private int tamanhoTabuleiro = -1;
+    private List<CrazyPiece> pecasMalucas = new ArrayList<>();
+    private List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
     private int idEquipaAJogar = 0;
-    private List<Equipa> team;
+    private List<Equipa> team = new ArrayList<>();
     private Turno turno;
     private boolean primeiraCaptura = false;
 
 //    Construtor(s)
-    Simulador(int tamanhoTabuleiro) {
+
+    public Simulador() {}
+
+    public Simulador(int tamanhoTabuleiro) {
 
         this.tamanhoTabuleiro = tamanhoTabuleiro;
 
@@ -24,33 +28,35 @@ class Simulador {
 
 
 //    gets
-    int getTamanhoTabuleiro() {
+    public int getTamanhoTabuleiro() {
 
         return tamanhoTabuleiro;
 
     }
 
-    List<CrazyPiece> getPecasMalucas() {
+    public List<CrazyPiece> getPieces() {
 
         return pecasMalucas;
 
     }
 
-    List<String> getAutores() {
+    public List<String> getAutores() {
 
+        this.autores.add("Bruno Miguel Dias Leal, nº 21705197");
+        this.autores.add("João Domingos, nº 2170");
         return autores;
 
     }
 
 
 //  Nao pode devolver null
-    List<String> getResultados() {
+    public List<String> getResultados() {
 
         return resultados;
 
     }
 
-    int getIDPeca(int x, int y) {
+    public int getIDPeca(int x, int y) {
 
         int idPeca = -1;
 
@@ -78,37 +84,25 @@ class Simulador {
 
     }
 
-    int getIDEquipaAJogar() {
+    public int getIDEquipaAJogar() {
 
         return idEquipaAJogar;
 
     }
 
-    Turno getTurno() {
+    public Turno getTurno() {
 
         return turno;
 
     }
 
-    boolean getPrimeiraCaptura() {
+    public boolean getPrimeiraCaptura() {
 
         return this.primeiraCaptura;
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    boolean setPeca(CrazyPiece peca) {
+    public boolean setPeca(CrazyPiece peca) {
 
         try {
 
@@ -127,7 +121,7 @@ class Simulador {
 
     }
 
-    boolean removePeca(CrazyPiece peca) {
+    public boolean removePeca(CrazyPiece peca) {
 
         try {
 
@@ -146,16 +140,90 @@ class Simulador {
     }
 
 //  falta completar guardar a informaçao lida do ficheiro na memoria
-    boolean iniciaJogo(File ficheiroInicial) {
+    public boolean iniciaJogo(File ficheiroInicial) {
 
         try {
 
             Scanner scan = new Scanner(ficheiroInicial);
 
-            while (scan.hasNextLine()){
+            int nPieces = 0,
+                    nPiecesMaxIndex,
+                    tamanhoTabuleiroMaxIndex,
+                    nLines = 0;
+            String[] piecesInfo;
+            String[] boardInfo;
+
+            while (scan.hasNextLine()) {
 
                 String linha = scan.nextLine();
+                System.out.println(linha);
+                nPiecesMaxIndex = nPieces + 2;
+                tamanhoTabuleiroMaxIndex = tamanhoTabuleiro + nPiecesMaxIndex;
 
+                /*
+
+                quatro partes;
+
+                1 - dimensoes do tabuleiro => int
+                2 - quantidade peças existentes no tabuleiro
+                3 - descreve as pecas existentes no tabuleiro
+                4 - conteudo inicial do tabuleiro ( posicao das pecas)
+
+
+                */
+
+
+                if (nLines == 0) {
+
+                    tamanhoTabuleiro = Integer.parseInt(linha);
+
+                } else if (nLines == 1) {
+
+                    nPieces = Integer.parseInt(linha);
+
+                } else if (nLines < nPiecesMaxIndex) {
+
+                    piecesInfo = linha.split(":");
+                    Tipo tipo = new Tipo(Byte.parseByte(piecesInfo[1])); //check if there's only 0 type
+                    Equipa equipa = new Equipa(Integer.parseInt(piecesInfo[2]));
+                    CrazyPiece peca = new CrazyPiece(Integer.parseInt(piecesInfo[0]),
+                            tipo,
+                            equipa,
+                            piecesInfo[3]);
+
+                    pecasMalucas.add(peca);
+
+                } else if (nLines < tamanhoTabuleiroMaxIndex) {
+
+                    boardInfo = linha.split(":");
+
+                    for (int index = 0; index < boardInfo.length; index++) {
+
+                        if (Integer.parseInt(boardInfo[index]) != 0) {
+
+                            for (CrazyPiece peca : pecasMalucas) {
+
+                                if (peca.getID() == Integer.parseInt(boardInfo[index])) {
+
+                                    Position position = new Position(index, nLines);
+                                    peca.setPosition(position);
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                } else {
+
+                    System.out.println("There's too much info!");
+                    return false;
+
+                }
+
+                nLines++;
 
             }
 
@@ -166,21 +234,34 @@ class Simulador {
             System.out.println(ficheiroInicial.getName() + " not founded!");
 
             return false;
+
+        } catch (NumberFormatException notInt) {
+
+            System.out.println("The file inputs are not valid!");
+
+            return false;
+
+        } catch (NullPointerException notEnoughInfo) {
+
+            System.out.println("There's information missing in the file!");
+
+            return false;
+
         }
 
     }
 
 //  comentar
-    boolean processaJogada(int xO, int yO, int xD, int yD) {
+    public boolean processaJogada(int xO, int yO, int xD, int yD) {
 
         if (xD >= 0 && xD <= (tamanhoTabuleiro - 1) &&
             yD >= 0 && yD <= (tamanhoTabuleiro - 1)) {
 
-            Position newPosition = new Position(xD, yD);
+            Position positionOrigin = new Position(xO, yO);
 
             for (CrazyPiece peca : pecasMalucas) {
 
-                if (peca.getPosition().equals(newPosition)) {
+                if (peca.getPosition().equals(positionOrigin)) {
 
                     if (peca.getTeam().getId() == turno.getIdTeam()) {
 
@@ -191,6 +272,8 @@ class Simulador {
                                 peca.getTipo().getMaxMovHorizontal() <= xDiference &&
                                 peca.getTipo().getMinMovVertical() >= yDiference &&
                                 peca.getTipo().getMaxMovVertical() <= yDiference) {
+
+                            Position newPosition = new Position(xD, yD);
 
                             return verificaMovimentoHorizontal(peca, xDiference, yDiference, newPosition);
 
@@ -209,7 +292,7 @@ class Simulador {
     }
 
 //  falta a pontuacao
-    boolean jogoTerminado() {
+    public boolean jogoTerminado() {
 
         int reiBranco = 0;
         int reiPreto = 0;
@@ -269,11 +352,11 @@ class Simulador {
 
     }
 
-    boolean chageTeam(Equipa nextTeam) {
+    public boolean chageTeam(Equipa nextTeam) {
 
         try {
 
-            System.out.println(nextTeam.getNome());
+            System.out.println(nextTeam.getId());
             idEquipaAJogar = nextTeam.getId();
 
             return true;
@@ -538,20 +621,22 @@ class Simulador {
                     primeiraCaptura = true;
                     turno.addCountNoCapture();
 
+                    return true;
+
                 } else {
 
                     System.out.println("There's already a piece of the same team on that position!");
+
                     return false;
 
                 }
-
-                break;
 
             }
 
         }
 
         turno.resetCountNoCapture();
+
         return true;
 
     }
@@ -632,5 +717,11 @@ class Simulador {
         turno.addCount();
 
     }
+    /*
+    private List<String> setAutores() {
 
+        List<String> autores = new ArrayList<>();
+
+    }
+*/
 }

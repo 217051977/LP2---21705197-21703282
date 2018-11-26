@@ -24,6 +24,8 @@ class Tipo {
 
 
 //  constructor
+    Tipo() {}
+
     Tipo(byte id) {
 
 //      set the variable of this same class as the value received

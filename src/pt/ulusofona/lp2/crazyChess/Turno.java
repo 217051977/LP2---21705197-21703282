@@ -1,11 +1,11 @@
 package pt.ulusofona.lp2.crazyChess;
 
-class Turno {
+public class Turno {
 
     private int count = 0, countNoCapture = 0;
     private byte idTeam = 1;
 
-    Turno() {}
+    public Turno() {}
 
 
     int getCount() {

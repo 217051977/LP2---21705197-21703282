@@ -7,6 +7,8 @@ class Position {
 
 
 //  constructor
+    Position() {}
+
     Position(int xInicial, int yInicial) {
 
 //      set the variable of this same class as the value received
