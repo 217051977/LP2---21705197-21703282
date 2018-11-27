@@ -720,13 +720,13 @@ public class Simulador {
 
                         case 0: {
 
-                            addResultsStats(0,1,0,1,0,0);
+                            addResultsStats(0,1,0,1);
 
                         }break;
 
                         case 1: {
 
-                            addResultsStats(1,0,0,1,0,0);
+                            addResultsStats(1,0,1,0);
 
                         }
 
@@ -738,23 +738,25 @@ public class Simulador {
 
                     System.out.println("There's already a piece of the same team on that position!");
 
-                    switch (turno.getIdTeam()) {
-
-                        case 0: {
-
-                            addResultsStats(0,0,0,0,1,0);
-
-                        }break;
-
-                        case 1: {
-
-                            addResultsStats(0,0,0,0,0,1);
-
-                        }
-
-                    }
+                    addResultsStatsInvalid();
 
                     return false;
+
+                }
+
+            }
+
+            switch (turno.getIdTeam()) {
+
+                case 0: {
+
+                    addResultsStats(0,0,0,1);
+
+                }break;
+
+                case 1: {
+
+                    addResultsStats(0,0,1,0);
 
                 }
 
@@ -848,14 +850,12 @@ public class Simulador {
     }
 
     private void addResultsStats(int pretasCapturas, int brancasCapturadas, int tentativasBrancas,
-                                 int tentativasPretas, int pretasInvalidas, int brancasInvalidas) {
+                                 int tentativasPretas) {
 
         this.pretasCapturas += pretasCapturas;
         this.brancasCapturadas += brancasCapturadas;
         this.tentativasBrancas += tentativasBrancas;
         this.tentativasPretas += tentativasPretas;
-        this.pretasInvalidas += pretasInvalidas;
-        this.brancasInvalidas += brancasInvalidas;
 
     }
 
@@ -865,13 +865,13 @@ public class Simulador {
 
             case 0: {
 
-                addResultsStats(0,0,0,1,0,0);
+                pretasInvalidas++;
 
             }break;
 
             case 1: {
 
-                addResultsStats(0,0,1,0,0,0);
+                brancasInvalidas++;
 
             }
 
