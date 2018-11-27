@@ -12,9 +12,9 @@ public class CrazyPiece {
 
 
 //  Constructor
-    CrazyPiece() {}
+    public CrazyPiece() {}
 
-    CrazyPiece(int ID, Tipo tipo, Equipa team, String nome) {
+    public CrazyPiece(int ID, Tipo tipo, Equipa team, String nome) {
 
 //      set the variable of this same class as the value received
         this.ID = ID;
@@ -26,21 +26,21 @@ public class CrazyPiece {
 
 
 //  gets
-    int getID() {
+    public int getId() {
 
 //      return the value of the variable "id" of this same class
         return ID;
 
     }
 
-    String getImagePNG() {
+    public String getImagePNG() {
 
 //      return the value of the variable "imagePNG" of this same class
         return imagePNG;
 
     }
 
-    Position getPosition() {
+    public Position getPosition() {
 
         //System.out.println(this.position);
 
@@ -49,35 +49,35 @@ public class CrazyPiece {
 
     }
 
-    Tipo getTipo() {
+    public Tipo getTipo() {
 
 //      return the value of the variable "tipo" of this same class
         return tipo;
 
     }
 
-    boolean getPodeMudarTipo() {
+    public boolean getPodeMudarTipo() {
 
 //      return the value of the variable "podeMudarTipo" of this same class
         return podeMudarTipo;
 
     }
 
-    boolean getMudouTipo() {
+    public boolean getMudouTipo() {
 
 //      return the value of the variable "jaMudouTipo" of this same class
         return mudouTipo;
 
     }
 
-    Equipa getTeam() {
+    public Equipa getTeam() {
 
 //      return the value of the variable "idTeam" of this same class
         return team;
 
     }
 
-    String getNome() {
+    public String getNome() {
 
 //      return the value of the variable "nome" of this same class
         return nome;
@@ -86,7 +86,7 @@ public class CrazyPiece {
 
 
 //  set
-    void setImagePNG(String imagePNG) {
+    public void setImagePNG(String imagePNG) {
 
 //      it tries to set image
         try {
@@ -125,20 +125,20 @@ public class CrazyPiece {
 
     }
 
-    void setPosition(Position position) {
+    public void setPosition(Position position) {
 
         this.position = position;
 
     }
 
-    void setPodeMudarTipo(boolean podeMudarTipo) {
+    public void setPodeMudarTipo(boolean podeMudarTipo) {
 
         this.podeMudarTipo = podeMudarTipo;
 
     }
 
 //  remove
-    boolean removeIamgePNG(){
+    public boolean removeIamgePNG(){
 
 //      it tries to remove the image
         try {
@@ -164,7 +164,7 @@ public class CrazyPiece {
 
 
 //  has
-    boolean hasImagePNG(String imagePNG) {
+    public boolean hasImagePNG(String imagePNG) {
 
 //      return true if the image received is the same of this piece
         return this.imagePNG.equals(imagePNG);
@@ -173,7 +173,7 @@ public class CrazyPiece {
 
 
 //  change
-    boolean changeType(Tipo tipo) {
+    public boolean changeType(Tipo tipo) {
 
 //      if this piece can change type AND it hasn't changed yet
         if (podeMudarTipo && !mudouTipo && tipo.changeTipo(tipo)){
@@ -191,7 +191,7 @@ public class CrazyPiece {
 
     }
 
-    boolean changeName(String nome) {
+    public boolean changeName(String nome) {
 
 //      it tries to chage the value of the variable "tipo"
         try {
@@ -217,7 +217,7 @@ public class CrazyPiece {
 
 
 //  move
-    void moveRight(int countMoves) {
+    public void moveRight(int countMoves) {
 
         position.changeXPositionRight(countMoves);
 

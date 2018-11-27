@@ -13,7 +13,7 @@ public class Simulador {
     private List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
     private int idEquipaAJogar = 1;
     private List<Equipa> team = new ArrayList<>();
-    private Turno turno;
+    private Turno turno = new Turno();
     private boolean primeiraCaptura = false;
 
 //    Construtor(s)
@@ -42,8 +42,13 @@ public class Simulador {
 
     public List<String> getAutores() {
 
-        this.autores.add("Bruno Miguel Dias Leal, nº 21705197");
-        this.autores.add("João Domingos, nº 21703282");
+        if (autores.size() == 0) {
+
+            this.autores.add("Bruno Miguel Dias Leal, nº 21705197");
+            this.autores.add("João Domingos, nº 21703282");
+
+        }
+
         return autores;
 
     }
@@ -60,20 +65,17 @@ public class Simulador {
 
         Position position = new Position(x, y);
 
-        //System.out.println(position);
-
         for (CrazyPiece peca: pecasMalucas){
 
-            if (peca.getPosition() == position) {
+            if (peca.getPosition().equals(position)) {
 
-                System.out.println("\n\n\n\n\n\n");
-                return peca.getID();
+                return peca.getId();
 
             }
 
         }
 
-        System.out.println("Peça not founded!");
+        System.out.println("Piece not founded!");
 
         return 0;
 
@@ -201,7 +203,7 @@ public class Simulador {
 
                             for (CrazyPiece peca : pecasMalucas) { //peca olaf
 
-                                if (peca.getID() == Integer.parseInt(boardInfo[index])) {
+                                if (peca.getId() == Integer.parseInt(boardInfo[index])) {
 
                                     Position position = new Position(index, yPosition);
                                     peca.setPosition(position);
@@ -267,11 +269,24 @@ public class Simulador {
 
                         int xDiference = xD - xO;
                         int yDiference = yD - yO;
+                        int xDiferenceABS = xDiference;
+                        int yDiferenceABS = yDiference;
 
-                        if (peca.getTipo().getMinMovHorizontal() >= xDiference &&
-                                peca.getTipo().getMaxMovHorizontal() <= xDiference &&
-                                peca.getTipo().getMinMovVertical() >= yDiference &&
-                                peca.getTipo().getMaxMovVertical() <= yDiference) {
+                        if (xDiference < 0) {
+
+                            xDiferenceABS = ((xDiference * (-1)));
+
+                        }
+                        if (yDiference < 0) {
+
+                            yDiferenceABS = ((yDiference * (-1)));
+
+                        }
+
+                        if (peca.getTipo().getMinMovHorizontal() <= xDiferenceABS &&
+                                peca.getTipo().getMaxMovHorizontal() >= xDiferenceABS &&
+                                peca.getTipo().getMinMovVertical() <= yDiferenceABS &&
+                                peca.getTipo().getMaxMovVertical() >= yDiferenceABS) {
 
                             Position newPosition = new Position(xD, yD);
 

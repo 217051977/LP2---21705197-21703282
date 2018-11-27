@@ -45,8 +45,8 @@ class Tipo {
                 this.moveBaixoEsquerda = true;
                 this.maxMovHorizontal = 1;
                 this.maxMovVertical = 1;
-                this.minMovHorizontal = 1;
-                this.minMovVertical = 1;
+                this.minMovHorizontal = 0;
+                this.minMovVertical = 0;
 
             }break;
 

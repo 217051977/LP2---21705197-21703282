@@ -102,6 +102,11 @@ class Position {
 
     }
 
+    boolean equals(Position position) {
+
+        return position.getxAtual().equals(xAtual) && position.getyAtual().equals(yAtual);
+
+    }
 
 //  erase
     boolean erasePosition() {
