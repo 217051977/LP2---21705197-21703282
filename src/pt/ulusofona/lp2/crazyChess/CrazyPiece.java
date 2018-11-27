@@ -2,7 +2,7 @@ package pt.ulusofona.lp2.crazyChess;
 
 public class CrazyPiece {
 
-    private int ID;
+    private int iD;
     private String imagePNG = null;
     private Position position;
     private Tipo tipo;
@@ -14,10 +14,10 @@ public class CrazyPiece {
 //  Constructor
     public CrazyPiece() {}
 
-    public CrazyPiece(int ID, Tipo tipo, Equipa team, String nome) {
+    public CrazyPiece(int iD, Tipo tipo, Equipa team, String nome) {
 
 //      set the variable of this same class as the value received
-        this.ID = ID;
+        this.iD = iD;
         this.tipo = tipo;
         this.team = team;
         this.nome = nome;
@@ -44,7 +44,7 @@ public class CrazyPiece {
     public int getId() {
 
 //      return the value of the variable "id" of this same class
-        return ID;
+        return iD;
 
     }
 
@@ -261,7 +261,7 @@ public class CrazyPiece {
     public String toString() {
 
 //      set a string type variable called string as the toString settings
-        String string = ID +
+        String string = iD +
                         " | " + tipo.getid() +
                         " | " + team.getId() +
                         " | " + nome +
