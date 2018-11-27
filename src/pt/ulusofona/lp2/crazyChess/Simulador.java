@@ -389,7 +389,7 @@ public class Simulador {
 
                 System.out.println("The whites wins!");
 
-                resultados.add("VENCERAM AS BRANCAS, ---, Equipa das Pretas, " +
+                resultados.add("JOGO DE CRAZY CHESS, VENCERAM AS PRETAS, ---, Equipa das Pretas, " +
                         brancasCapturadas + ", " +
                         pretasInvalidas + ", "  +
                         tentativasPretas + ", " +
@@ -404,7 +404,7 @@ public class Simulador {
 
                 System.out.println("The blacks wins!");
 
-                resultados.add("VENCERAM AS PRETAS, ---, Equipa das Pretas, " +
+                resultados.add("JOGO DE CRAZY CHESS, VENCERAM AS BRANCAS, ---, Equipa das Pretas, " +
                         brancasCapturadas + ", " +
                         pretasInvalidas + ", "  +
                         tentativasPretas + ", " +
