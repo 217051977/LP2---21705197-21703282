@@ -261,11 +261,11 @@ public class CrazyPiece {
     public String toString() {
 
 //      set a string type variable called string as the toString settings
-        String string = "ID = " + ID +
-                        " | Tipo = " + tipo.getid() +
-                        " | ID Equipa = " + team.getId() +
-                        " | Alcunha da peça = " + nome +
-                        " | Posição = ";
+        String string = ID +
+                        " | " + tipo.getid() +
+                        " | " + team.getId() +
+                        " | " + nome +
+                        " | ";
 
 //      if actual position in x axis as the value of null OR actual position in y axis as the value of null
         if(position.getxAtual() == null || position.getyAtual() == null){
@@ -276,7 +276,7 @@ public class CrazyPiece {
         }else {
 
 //          add this to the variable string
-            string += "(<" + position.getxAtual() + ">, <" + position.getyAtual() + ">)";
+            string += "(" + position.getxAtual() + ", " + position.getyAtual() + ")";
 
         }
 
