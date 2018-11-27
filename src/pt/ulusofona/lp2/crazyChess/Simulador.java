@@ -256,6 +256,7 @@ public class Simulador {
                         }
 
                     }
+
                     yPosition++;
 
                 } else {
@@ -268,18 +269,12 @@ public class Simulador {
                 nLines++;
 
             }
-  /*
-            if (jogoTerminado()){
 
-                return
-
-            }
-*/
             return true;
 
         } catch (FileNotFoundException e) {
 
-            System.out.println(ficheiroInicial.getName() + " not founded!");
+            System.out.println(ficheiroInicial.getName() + " not found!");
 
             return false;
 
@@ -292,7 +287,6 @@ public class Simulador {
         } catch (NullPointerException notEnoughInfo) {
 
             System.out.println("There's information missing in the file!");
-
 
             return false;
         }
