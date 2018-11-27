@@ -53,7 +53,7 @@ public class Turno {
 
         this.count = 0;
 
-        this.idTeam = 1;
+        this.idTeam = 0;
 
     }
 

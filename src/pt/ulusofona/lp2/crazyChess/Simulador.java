@@ -340,7 +340,11 @@ public class Simulador {
 
                         }
 
+                        addResultsStatsInvalid();
+
                     }
+
+                    break;
 
                 }
 
@@ -714,7 +718,8 @@ public class Simulador {
 
                     pecasMalucas.remove(peca);
                     primeiraCaptura = true;
-                    turno.addCountNoCapture();
+                    turno.addCount();
+                    turno.resetCountNoCapture();
 
                     switch (turno.getIdTeam()) {
 
@@ -746,27 +751,24 @@ public class Simulador {
 
             }
 
-            switch (turno.getIdTeam()) {
+        }
+        turno.addCountNoCapture();
 
-                case 0: {
+        switch (turno.getIdTeam()) {
 
-                    addResultsStats(0,0,0,1);
+            case 0: {
 
-                }break;
+                addResultsStats(0,0,0,1);
 
-                case 1: {
+            }break;
 
-                    addResultsStats(0,0,1,0);
+            case 1: {
 
-                }
+                addResultsStats(0,0,1,0);
 
             }
 
         }
-
-        turno.resetCountNoCapture();
-
-        addResultsStatsInvalid();
 
         return true;
 
