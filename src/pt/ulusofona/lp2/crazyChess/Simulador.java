@@ -9,6 +9,12 @@ import java.util.Scanner;
 public class Simulador {
 
     private int tamanhoTabuleiro;
+    private int pretasCapturas = 0,
+            brancasCapturadas = 0,
+            tentativasBrancas = 0,
+            tentativasPretas = 0,
+            pretasInvalidas = 0,
+            brancasInvalidas = 0;
     private List<CrazyPiece> pecasMalucas = new ArrayList<>();
     private List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
     private List<Equipa> team = new ArrayList<>();
@@ -52,8 +58,43 @@ public class Simulador {
 
     }
 
+    public int getBrancasCapturadas() {
 
-//  Nao pode devolver null
+        return brancasCapturadas;
+
+    }
+
+    public int getBrancasInvalidas() {
+
+        return brancasInvalidas;
+
+    }
+
+    public int getPretasCapturas() {
+
+        return pretasCapturas;
+
+    }
+
+    public int getPretasInvalidas() {
+
+        return pretasInvalidas;
+
+    }
+
+    public int getTentativasBrancas() {
+
+        return tentativasBrancas;
+
+    }
+
+    public int getTentativasPretas() {
+
+        return tentativasPretas;
+
+    }
+
+    //  Nao pode devolver null
     public List<String> getResultados() {
 
         return resultados;
@@ -227,7 +268,13 @@ public class Simulador {
                 nLines++;
 
             }
+  /*
+            if (jogoTerminado()){
 
+                return
+
+            }
+*/
             return true;
 
         } catch (FileNotFoundException e) {
@@ -308,8 +355,8 @@ public class Simulador {
 //  falta a pontuacao
     public boolean jogoTerminado() {
 
-        int reiBranco = 0;
-        int reiPreto = 0;
+        int nreiBranco = 0;
+        int nreiPreto = 0;
 
         if (turno.getCountNoCapture() == 10 && primeiraCaptura) {
 
@@ -326,11 +373,11 @@ public class Simulador {
 
                     if (peca.getTeam().getId() == 0) {
 
-                        reiBranco++;
+                        nreiBranco++;
 
                     } else if (peca.getTeam().getId() == 1) {
 
-                        reiPreto++;
+                        nreiPreto++;
 
                     }
 
@@ -338,19 +385,21 @@ public class Simulador {
 
             }
 
-            if (reiPreto == 0) {
+            if (nreiPreto == 0) {
 
                 System.out.println("The whites wins!");
 
+
+
                 return true;
 
-            } else if (reiBranco == 0) {
+            } else if (nreiBranco == 0) {
 
                 System.out.println("The blacks wins!");
 
                 return true;
 
-            } else if (reiPreto == 1 && reiBranco ==1) {
+            } else if (nreiPreto == 1 && nreiBranco == 1) {
 
                 System.out.println("It's a draw");
 
@@ -622,14 +671,44 @@ public class Simulador {
                     pecasMalucas.remove(peca);
                     primeiraCaptura = true;
                     turno.addCountNoCapture();
-                    System.out.println("\n");
+
+                    switch (turno.getIdTeam()) {
+
+                        case 0: {
+
+                            addResultsStats(0,1,0,1,0,0);
+
+                        }break;
+
+                        case 1: {
+
+                            addResultsStats(1,0,0,1,0,0);
+
+                        }
+
+                    }
 
                     return true;
 
                 } else {
 
                     System.out.println("There's already a piece of the same team on that position!");
-                    System.out.println("\n");
+
+                    switch (turno.getIdTeam()) {
+
+                        case 0: {
+
+                            addResultsStats(0,0,0,0,1,0);
+
+                        }break;
+
+                        case 1: {
+
+                            addResultsStats(0,0,0,0,0,1);
+
+                        }
+
+                    }
 
                     return false;
 
@@ -640,7 +719,22 @@ public class Simulador {
         }
 
         turno.resetCountNoCapture();
-        System.out.println("\n");
+
+        switch (turno.getIdTeam()) {
+
+            case 0: {
+
+                addResultsStats(0,0,0,1,0,0);
+
+            }break;
+
+            case 1: {
+
+                addResultsStats(0,0,1,0,0,0);
+
+            }
+
+        }
 
         return true;
 
@@ -720,6 +814,18 @@ public class Simulador {
         peca.moveDown((yDiference * (-1)));
         peca.moveRight(xDiference);
         turno.addCount();
+
+    }
+
+    private void addResultsStats(int pretasCapturas, int brancasCapturadas, int tentativasBrancas,
+                                 int tentativasPretas, int pretasInvalidas, int brancasInvalidas) {
+
+        this.pretasCapturas += pretasCapturas;
+        this.brancasCapturadas += brancasCapturadas;
+        this.tentativasBrancas += tentativasBrancas;
+        this.tentativasPretas += tentativasPretas;
+        this.pretasInvalidas += pretasInvalidas;
+        this.brancasInvalidas += brancasInvalidas;
 
     }
 

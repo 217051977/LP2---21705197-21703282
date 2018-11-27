@@ -26,12 +26,12 @@ public class CrazyPiece {
 
             case 0: {
 
-                imagePNG = "crazy_emoji_white.png";
+                imagePNG = "crazy_emoji_black.png";
 
             }break;
             case 1: {
 
-                imagePNG = "crazy_emoji_black.png";
+                imagePNG = "crazy_emoji_white.png";
 
             }
 
