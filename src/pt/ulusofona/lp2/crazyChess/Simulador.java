@@ -389,13 +389,29 @@ public class Simulador {
 
                 System.out.println("The whites wins!");
 
-
+                resultados.add("VENCERAM AS BRANCAS, ---, Equipa das Pretas, " +
+                        brancasCapturadas + ", " +
+                        pretasInvalidas + ", "  +
+                        tentativasPretas + ", " +
+                        "Equipa das Brancas, " +
+                        pretasCapturas + ", " +
+                        brancasInvalidas + ", "  +
+                        tentativasBrancas);
 
                 return true;
 
             } else if (nreiBranco == 0) {
 
                 System.out.println("The blacks wins!");
+
+                resultados.add("VENCERAM AS PRETAS, ---, Equipa das Pretas, " +
+                        brancasCapturadas + ", " +
+                        pretasInvalidas + ", "  +
+                        tentativasPretas + ", " +
+                        "Equipa das Brancas, " +
+                        pretasCapturas + ", " +
+                        brancasInvalidas + ", "  +
+                        tentativasBrancas);
 
                 return true;
 
