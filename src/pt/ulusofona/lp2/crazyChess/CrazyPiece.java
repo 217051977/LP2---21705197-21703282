@@ -265,7 +265,7 @@ public class CrazyPiece {
                         " | " + tipo.getid() +
                         " | " + team.getId() +
                         " | " + nome +
-                        " | ";
+                        " @ ";
 
 //      if actual position in x axis as the value of null OR actual position in y axis as the value of null
         if(position.getxAtual() == null || position.getyAtual() == null){
