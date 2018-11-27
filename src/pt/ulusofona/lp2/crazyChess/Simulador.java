@@ -446,6 +446,8 @@ public class Simulador {
 
             }
 
+            addResultsStatsInvalid();
+
             return verificaPossiveisMovimentos(peca);
 
         } else if (xDiference < 0) {
@@ -460,6 +462,8 @@ public class Simulador {
                 return true;
 
             }
+
+            addResultsStatsInvalid();
 
             return verificaPossiveisMovimentos(peca);
 
@@ -490,6 +494,8 @@ public class Simulador {
 
                     }
 
+                    addResultsStatsInvalid();
+
                     return verificaPossiveisMovimentos(peca);
 
                 } else if (yDiference < 0) {
@@ -506,6 +512,8 @@ public class Simulador {
 
 
                     }
+
+                    addResultsStatsInvalid();
 
                     return verificaPossiveisMovimentos(peca);
 
@@ -538,6 +546,8 @@ public class Simulador {
 
                     }
 
+                    addResultsStatsInvalid();
+
                     return verificaPossiveisMovimentos(peca);
 
                 } else if (yDiference < 0) {
@@ -554,6 +564,8 @@ public class Simulador {
 
 
                     }
+
+                    addResultsStatsInvalid();
 
                     return verificaPossiveisMovimentos(peca);
 
@@ -586,6 +598,8 @@ public class Simulador {
 
                     }
 
+                    addResultsStatsInvalid();
+
                     return verificaPossiveisMovimentos(peca);
 
                 } else if (yDiference < 0) {
@@ -603,10 +617,14 @@ public class Simulador {
 
                     }
 
+                    addResultsStatsInvalid();
+
                     return verificaPossiveisMovimentos(peca);
 
 
                 }
+
+                addResultsStatsInvalid();
 
 //              return false because it can not stay in the same position
                 return false;
@@ -632,6 +650,8 @@ public class Simulador {
 
                 }
 
+                addResultsStatsInvalid();
+
             } else if (peca.getTipo().getMoveBaixoDireta()) {
 
                 if (verificaPosicaoVazia(newPosition)) {
@@ -641,6 +661,8 @@ public class Simulador {
                     return true;
 
                 }
+
+                addResultsStatsInvalid();
 
             }
 
@@ -656,6 +678,8 @@ public class Simulador {
 
                 }
 
+                addResultsStatsInvalid();
+
             } else if (peca.getTipo().getMoveBaixoEsquerda()) {
 
                 if (verificaPosicaoVazia(newPosition)) {
@@ -666,9 +690,13 @@ public class Simulador {
 
                 }
 
+                addResultsStatsInvalid();
+
             }
 
         }
+
+        addResultsStatsInvalid();
 
 //      return false because a diagonal MUST be able to move in the x axis or because i can not move in the diagonal
 //  or staying in the same position
@@ -736,21 +764,7 @@ public class Simulador {
 
         turno.resetCountNoCapture();
 
-        switch (turno.getIdTeam()) {
-
-            case 0: {
-
-                addResultsStats(0,0,0,1,0,0);
-
-            }break;
-
-            case 1: {
-
-                addResultsStats(0,0,1,0,0,0);
-
-            }
-
-        }
+        addResultsStatsInvalid();
 
         return true;
 
@@ -842,6 +856,26 @@ public class Simulador {
         this.tentativasPretas += tentativasPretas;
         this.pretasInvalidas += pretasInvalidas;
         this.brancasInvalidas += brancasInvalidas;
+
+    }
+
+    private void addResultsStatsInvalid() {
+
+        switch (turno.getIdTeam()) {
+
+            case 0: {
+
+                addResultsStats(0,0,0,1,0,0);
+
+            }break;
+
+            case 1: {
+
+                addResultsStats(0,0,1,0,0,0);
+
+            }
+
+        }
 
     }
 
