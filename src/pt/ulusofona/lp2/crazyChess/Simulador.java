@@ -719,7 +719,7 @@ public class Simulador {
                     pecasMalucas.remove(peca);
                     primeiraCaptura = true;
                     turno.addCount();
-                    //turno.resetCountNoCapture();
+                    turno.resetCountNoCapture();
 
                     switch (turno.getIdTeam()) {
 
