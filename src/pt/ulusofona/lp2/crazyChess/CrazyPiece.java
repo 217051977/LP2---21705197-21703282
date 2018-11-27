@@ -22,6 +22,21 @@ public class CrazyPiece {
         this.team = team;
         this.nome = nome;
 
+        switch (team.getId()) {
+
+            case 0: {
+
+                imagePNG = "crazy_emoji_white.png";
+
+            }break;
+            case 1: {
+
+                imagePNG = "crazy_emoji_black.png";
+
+            }
+
+        }
+
     }
 
 

@@ -11,7 +11,6 @@ public class Simulador {
     private int tamanhoTabuleiro;
     private List<CrazyPiece> pecasMalucas = new ArrayList<>();
     private List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
-    private int idEquipaAJogar = 1;
     private List<Equipa> team = new ArrayList<>();
     private Turno turno = new Turno();
     private boolean primeiraCaptura = false;
@@ -83,7 +82,7 @@ public class Simulador {
 
     public int getIDEquipaAJogar() {
 
-        return idEquipaAJogar;
+        return turno.getIdTeam();
 
     }
 
@@ -367,26 +366,6 @@ public class Simulador {
 
     }
 
-    public boolean chageTeam(Equipa nextTeam) {
-
-        try {
-
-            System.out.println(nextTeam.getId());
-            idEquipaAJogar = nextTeam.getId();
-
-            return true;
-
-        } catch (Exception impossibleToChangeTeam) {
-
-            System.out.println("Impossible to change team");
-
-            return false;
-
-        }
-
-    }
-
-
 //  private functions
     private boolean verificaMovimentoHorizontal(CrazyPiece peca, int xDiference, int yDiference, Position newPosition) {
 
@@ -468,9 +447,13 @@ public class Simulador {
 
                 }
 
-                moveRight(peca, xDiference);
+                if (verificaPosicaoVazia(newPosition)) {
 
-                return true;
+                    moveRight(peca, xDiference);
+
+                    return true;
+
+                }
 
             }
 
@@ -512,9 +495,13 @@ public class Simulador {
 
                 }
 
-                moveLeft(peca, xDiference);
+                if (verificaPosicaoVazia(newPosition)) {
 
-                return true;
+                    moveLeft(peca, xDiference);
+
+                    return true;
+
+                }
 
             }
 
@@ -628,19 +615,21 @@ public class Simulador {
 
         for (CrazyPiece peca : pecasMalucas) {
 
-            if (peca.getPosition() == newPosition) {
+            if (peca.getPosition().equals(newPosition)) {
 
                 if (peca.getTeam().getId() != turno.getIdTeam()) {
 
                     pecasMalucas.remove(peca);
                     primeiraCaptura = true;
                     turno.addCountNoCapture();
+                    System.out.println("\n");
 
                     return true;
 
                 } else {
 
                     System.out.println("There's already a piece of the same team on that position!");
+                    System.out.println("\n");
 
                     return false;
 
@@ -651,6 +640,7 @@ public class Simulador {
         }
 
         turno.resetCountNoCapture();
+        System.out.println("\n");
 
         return true;
 
