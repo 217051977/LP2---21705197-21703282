@@ -393,7 +393,7 @@ public class Simulador {
 
                 System.out.println("ENCERAM AS BRANCAS");
 
-                addResoultsStatsToPrint("ENCERAM AS BRANCAS");
+                addResoultsStatsToPrint("VENCERAM AS BRANCAS");
 
                 return true;
 
@@ -401,7 +401,7 @@ public class Simulador {
 
                 System.out.println("ENCERAM AS PRETAS");
 
-                addResoultsStatsToPrint("ENCERAM AS PRETAS");
+                addResoultsStatsToPrint("VENCERAM AS PRETAS");
 
                 return true;
 
