@@ -375,11 +375,11 @@ public class Simulador {
 
                 if (peca.getTipo().getid() == 0) {
 
-                    if (peca.getTeam().getId() == 0) {
+                    if (peca.getTeam().getId() == 1) {
 
                         nreiPreto++;
 
-                    } else if (peca.getTeam().getId() == 1) {
+                    } else if (peca.getTeam().getId() == 0) {
 
                         nreiBranco++;
 
