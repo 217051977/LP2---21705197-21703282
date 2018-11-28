@@ -16,7 +16,6 @@ public class Simulador {
             pretasInvalidas = 0,
             brancasInvalidas = 0;
     private List<CrazyPiece> pecasMalucas = new ArrayList<>();
-    private List<CrazyPiece> pecasComidas = new ArrayList<>();
     private List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
     private List<Equipa> team = new ArrayList<>();
     private Turno turno = new Turno();
@@ -33,7 +32,7 @@ public class Simulador {
     }
 
 
-//    gets
+    //    gets
     public int getTamanhoTabuleiro() {
 
         return tamanhoTabuleiro;
@@ -177,7 +176,7 @@ public class Simulador {
 
     }
 
-//  falta completar guardar a informaçao lida do ficheiro na memoria
+    //  falta completar guardar a informaçao lida do ficheiro na memoria
     public boolean iniciaJogo(File ficheiroInicial) {
 
         try {
@@ -200,15 +199,11 @@ public class Simulador {
                 tamanhoTabuleiroMaxIndex = tamanhoTabuleiro + nPiecesMaxIndex;
 
                 /*
-
                 quatro partes;
-
                 1 - dimensoes do tabuleiro => int
                 2 - quantidade peças existentes no tabuleiro
                 3 - descreve as pecas existentes no tabuleiro
                 4 - conteudo inicial do tabuleiro ( posicao das pecas)
-
-
                 */
 
 
@@ -294,11 +289,11 @@ public class Simulador {
 
     }
 
-//  comentar
+    //  comentar
     public boolean processaJogada(int xO, int yO, int xD, int yD) {
 
         if (xD >= 0 && xD <= (tamanhoTabuleiro - 1) &&
-            yD >= 0 && yD <= (tamanhoTabuleiro - 1)) {
+                yD >= 0 && yD <= (tamanhoTabuleiro - 1)) {
 
             Position positionOrigin = new Position(xO, yO);
 
@@ -351,7 +346,7 @@ public class Simulador {
 
     }
 
-//  falta a pontuacao
+    //  falta a pontuacao
     public boolean jogoTerminado() {
 
         int nreiBranco = 0;
@@ -367,8 +362,6 @@ public class Simulador {
 
             turno.resetCount();
             turno.resetCountNoCapture();
-
-            restorePecasMalucas();
 
             return true;
 
@@ -398,8 +391,6 @@ public class Simulador {
 
                 addResoultsStatsToPrint("VENCERAM AS BRANCAS");
 
-                restorePecasMalucas();
-
                 return true;
 
             } else if (nreiBranco == 0) {
@@ -408,15 +399,11 @@ public class Simulador {
 
                 addResoultsStatsToPrint("VENCERAM AS PRETAS");
 
-                restorePecasMalucas();
-
                 return true;
 
             } else if (nreiPreto == 1 && nreiBranco == 1) {
 
                 addResoultsStatsToPrint("EMPATE");
-
-                restorePecasMalucas();
 
                 return true;
 
@@ -430,7 +417,7 @@ public class Simulador {
 
     }
 
-//  private functions
+    //  private functions
     private boolean verificaMovimentoHorizontal(CrazyPiece peca, int xDiference, int yDiference, Position newPosition) {
 
         if (xDiference > 0) {
@@ -473,7 +460,7 @@ public class Simulador {
     }
 
     private boolean verificaMovimentoVertical(CrazyPiece peca, int xDiference, int yDiference, char leftOrRight,
-                                                Position newPosition) {
+                                              Position newPosition) {
 
         switch (leftOrRight) {
 
@@ -634,7 +621,7 @@ public class Simulador {
 
     }
 
-//  comentar
+    //  comentar
     private boolean verificarMovimentoDiagonal(CrazyPiece peca, int xDiference, int yDiference, Position newPosition) {
 
         if (xDiference > 0) {
@@ -727,7 +714,6 @@ public class Simulador {
 
                     }
 
-                    pecasComidas.add(peca);
                     pecasMalucas.remove(peca);
                     primeiraCaptura = true;
                     turno.resetCountNoCapture();
@@ -770,7 +756,7 @@ public class Simulador {
 
     }
 
-//  comentar
+    //  comentar
     private boolean verificaPossiveisMovimentos(CrazyPiece peca) {
 
         System.out.println("This piece can be moved in this ways: " +
@@ -891,27 +877,6 @@ public class Simulador {
         resultados.add(String.valueOf(tentativasBrancas));
         resultados.add(String.valueOf(brancasInvalidas));
 
-    }
-
-    private void restorePecasMalucas() {
-
-        pecasMalucas.addAll(pecasComidas);
-        int pecasComidasCount = pecasComidas.size();
-
-        for (int i = 0; i <= pecasComidas.size(); i++) {
-
-            pecasComidas.remove(pecasComidas.get(i));
-            System.out.println(pecasComidas);
-            System.out.println(pecasMalucas);
-
-        }
-/*
-        for (int i = 0; i < pecasComidasCount; i++) {
-
-            pecasComidas.remove(pecasComidas.get(i));
-
-        }
-*/
     }
 
 }
