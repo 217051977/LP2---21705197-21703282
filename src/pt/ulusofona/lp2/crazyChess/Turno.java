@@ -45,7 +45,6 @@ public class Turno {
     void addCountNoCapture() {
 
         countNoCapture++;
-        count++;
 
         if (count % 2 == 0) {
 

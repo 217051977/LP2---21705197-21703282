@@ -362,6 +362,8 @@ public class Simulador {
 
         } else if (turno.getCountNoCapture() == 10 && primeiraCaptura) {
 
+            addResoultsStatsToPrint("EMPATE");
+
             turno.resetCount();
             turno.resetCountNoCapture();
 
@@ -389,44 +391,23 @@ public class Simulador {
 
             if (nreiPreto == 0) {
 
-                System.out.println("The whites wins!");
+                System.out.println("ENCERAM AS BRANCAS");
 
-                resultados.add("JOGO DE CRAZY CHESS\nResultado: VENCERAM AS BRANCAS\n---\nEquipa das Pretas\n" +
-                        brancasCapturadas + "\n" +
-                        pretasInvalidas + "\n" +
-                        tentativasPretas + "\n" +
-                        "Equipa das Brancas\n" +
-                        pretasCapturas + "\n" +
-                        brancasInvalidas + "\n" +
-                        tentativasBrancas);
+                addResoultsStatsToPrint("ENCERAM AS BRANCAS");
 
                 return true;
 
             } else if (nreiBranco == 0) {
 
-                System.out.println("The blacks wins!");
+                System.out.println("ENCERAM AS PRETAS");
 
-                resultados.add("JOGO DE CRAZY CHESS\nResultado: VENCERAM AS PRETAS\n---\nEquipa das Pretas\n" +
-                        brancasCapturadas + "\n" +
-                        pretasInvalidas + "\n" +
-                        tentativasPretas + "\n" +
-                        "Equipa das Brancas\n" +
-                        pretasCapturas + "\n" +
-                        brancasInvalidas + "\n" +
-                        tentativasBrancas);
+                addResoultsStatsToPrint("ENCERAM AS PRETAS");
 
                 return true;
 
             } else if (nreiPreto == 1 && nreiBranco == 1) {
 
-                resultados.add("JOGO DE CRAZY CHESS\nResultado: EMPATE\n---\nEquipa das Pretas\n" +
-                        brancasCapturadas + "\n" +
-                        pretasInvalidas + "\n" +
-                        tentativasPretas + "\n" +
-                        "Equipa das Brancas\n" +
-                        pretasCapturas + "\n" +
-                        brancasInvalidas + "\n" +
-                        tentativasBrancas);
+                addResoultsStatsToPrint("EMPATE");
 
                 return true;
 
@@ -883,6 +864,22 @@ public class Simulador {
             }
 
         }
+
+    }
+
+    private void addResoultsStatsToPrint(String s) {
+
+        resultados.add("JOGO DE CRAZY CHESS");
+        resultados.add("Resultado: " + s);
+        resultados.add("---");
+        resultados.add("Equipa das Pretas");
+        resultados.add(String.valueOf(brancasCapturadas));
+        resultados.add(String.valueOf(tentativasPretas));
+        resultados.add(String.valueOf(pretasInvalidas));
+        resultados.add("Equipa das Brancas\n");
+        resultados.add(String.valueOf(pretasCapturas));
+        resultados.add(String.valueOf(tentativasBrancas));
+        resultados.add(String.valueOf(brancasInvalidas));
 
     }
 
