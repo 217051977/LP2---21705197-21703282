@@ -247,6 +247,7 @@ public class Simulador {
 
                                     Position position = new Position(index, yPosition);
                                     peca.setPosition(position);
+                                    peca.estaEmJogo();
                                     System.out.println(peca);
 
                                 }
@@ -373,15 +374,19 @@ public class Simulador {
 
             for (CrazyPiece peca : pecasMalucas) {
 
-                if (peca.getTipo().getid() == 0) {
+                if (peca.getEmJogo()) {
 
-                    if (peca.getTeam().getId() == 0) {
+                    if (peca.getTipo().getid() == 0) {
 
-                        nreiPreto++;
+                        if (peca.getTeam().getId() == 0) {
 
-                    } else if (peca.getTeam().getId() == 1) {
+                            nreiPreto++;
 
-                        nreiBranco++;
+                        } else if (peca.getTeam().getId() == 1) {
+
+                            nreiBranco++;
+
+                        }
 
                     }
 
