@@ -77,6 +77,7 @@ public class Simulador {
 
         //System.out.println("Piece not founded!");
 
+
         return 0;
 
     }
