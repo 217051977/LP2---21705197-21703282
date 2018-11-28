@@ -876,7 +876,7 @@ public class Simulador {
         resultados.add(String.valueOf(brancasCapturadas));
         resultados.add(String.valueOf(tentativasPretas));
         resultados.add(String.valueOf(pretasInvalidas));
-        resultados.add("Equipa das Brancas\n");
+        resultados.add("Equipa das Brancas");
         resultados.add(String.valueOf(pretasCapturas));
         resultados.add(String.valueOf(tentativasBrancas));
         resultados.add(String.valueOf(brancasInvalidas));
