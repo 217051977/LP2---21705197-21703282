@@ -353,11 +353,11 @@ public class Simulador {
         int nreiBranco = 0;
         int nreiPreto = 0;
 
-        if (pecasMalucas.size() == 0) {
+        /*if (pecasMalucas.size() == 0) {
 
             return true;
 
-        } else if (turno.getCountNoCapture() == 10 && primeiraCaptura) {
+        } else*/ if (turno.getCountNoCapture() == 10 && primeiraCaptura) {
 
             addResoultsStatsToPrint("EMPATE");
 
