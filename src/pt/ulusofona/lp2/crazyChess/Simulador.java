@@ -391,13 +391,13 @@ public class Simulador {
 
                 System.out.println("The whites wins!");
 
-                resultados.add("JOGO DE CRAZY CHESS, Resultado: VENCERAM AS BRANCAS, ---, Equipa das Pretas, " +
-                        brancasCapturadas + ", " +
-                        pretasInvalidas + ", "  +
-                        tentativasPretas + ", " +
-                        "Equipa das Brancas, " +
-                        pretasCapturas + ", " +
-                        brancasInvalidas + ", "  +
+                resultados.add("JOGO DE CRAZY CHESS\nResultado: VENCERAM AS BRANCAS\n---\nEquipa das Pretas\n" +
+                        brancasCapturadas + "\n" +
+                        pretasInvalidas + "\n" +
+                        tentativasPretas + "\n" +
+                        "Equipa das Brancas\n" +
+                        pretasCapturas + "\n" +
+                        brancasInvalidas + "\n" +
                         tentativasBrancas);
 
                 return true;
@@ -406,26 +406,26 @@ public class Simulador {
 
                 System.out.println("The blacks wins!");
 
-                resultados.add("JOGO DE CRAZY CHESS, Resultado: VENCERAM AS PRETAS, ---, Equipa das Pretas, " +
-                        brancasCapturadas + ", " +
-                        pretasInvalidas + ", "  +
-                        tentativasPretas + ", " +
-                        "Equipa das Brancas, " +
-                        pretasCapturas + ", " +
-                        brancasInvalidas + ", "  +
+                resultados.add("JOGO DE CRAZY CHESS\nResultado: VENCERAM AS PRETAS\n---\nEquipa das Pretas\n" +
+                        brancasCapturadas + "\n" +
+                        pretasInvalidas + "\n" +
+                        tentativasPretas + "\n" +
+                        "Equipa das Brancas\n" +
+                        pretasCapturas + "\n" +
+                        brancasInvalidas + "\n" +
                         tentativasBrancas);
 
                 return true;
 
             } else if (nreiPreto == 1 && nreiBranco == 1) {
 
-                resultados.add("JOGO DE CRAZY CHESS, Resultado: EMPATE, ---, Equipa das Pretas, " +
-                        brancasCapturadas + ", " +
-                        pretasInvalidas + ", "  +
-                        tentativasPretas + ", " +
-                        "Equipa das Brancas, " +
-                        pretasCapturas + ", " +
-                        brancasInvalidas + ", "  +
+                resultados.add("JOGO DE CRAZY CHESS\nResultado: EMPATE\n---\nEquipa das Pretas\n" +
+                        brancasCapturadas + "\n" +
+                        pretasInvalidas + "\n" +
+                        tentativasPretas + "\n" +
+                        "Equipa das Brancas\n" +
+                        pretasCapturas + "\n" +
+                        brancasInvalidas + "\n" +
                         tentativasBrancas);
 
                 return true;
