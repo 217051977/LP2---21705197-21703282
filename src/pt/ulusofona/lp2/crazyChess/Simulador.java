@@ -20,7 +20,7 @@ public class Simulador {
     private List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
     private List<Equipa> team = new ArrayList<>();
     private Turno turno = new Turno();
-    private boolean primeiraCaptura = false;
+    private boolean primeiraCaptura = false, hasBlackPieces = false;
 
 //    Construtor(s)
 
@@ -221,6 +221,11 @@ public class Simulador {
                 } else if (nLines < nPiecesMaxIndex) {
 
                     piecesInfo = linha.split(":");
+                    if (Integer.parseInt(piecesInfo[2]) == 0) {
+
+                        hasBlackPieces = true;
+
+                    }
                     Tipo tipo = new Tipo(Byte.parseByte(piecesInfo[1])); //check if there's only 0 type
                     Equipa equipa = new Equipa(Integer.parseInt(piecesInfo[2]));
                     CrazyPiece peca = new CrazyPiece(Integer.parseInt(piecesInfo[0]),
@@ -293,6 +298,11 @@ public class Simulador {
     //  comentar
     public boolean processaJogada(int xO, int yO, int xD, int yD) {
 
+        if (!hasBlackPieces){
+
+            return true;
+
+        }
         if (xD >= 0 && xD <= (tamanhoTabuleiro - 1) &&
                 yD >= 0 && yD <= (tamanhoTabuleiro - 1)) {
 
@@ -370,16 +380,24 @@ public class Simulador {
 
         } else {
 
+//          percorre a lista pecasMalucas para ver cada peça
             for (CrazyPiece peca : pecasMalucas) {
 
+//              caso o tipo da peça seja um rei
                 if (peca.getTipo().getid() == 0) {
 
+//                  verifica se é uma peça preta
                     if (peca.getTeam().getId() == 0) {
 
+//                      se for incrementa um na variavel declarada a zero no inicio do metodo de modo a contar
+//                  o numero de reis existentes na equipa preta
                         nreiPreto++;
 
+//                  verifica se é uma peça brnaca
                     } else if (peca.getTeam().getId() == 1) {
 
+//                      se for incrementa um na variavel declarada a zero no inicio do metodo de modo a contar
+//                  o numero de reis existentes na equipa preta
                         nreiBranco++;
 
                     }
@@ -388,26 +406,34 @@ public class Simulador {
 
             }
 
-            if (nreiPreto == 0 && nreiBranco > 0) {
+//          se não houver reis pretos
+            if (nreiPreto == 0) {
 
                 System.out.println("VENCERAM AS BRANCAS");
 
+//              adiciona os resultados a lista resultados
                 addResoultsStatsToPrint("VENCERAM AS BRANCAS");
 
+//              recupera o tamanho inicial da lista pecasMalucas
                 restorePecasMalucas();
 
+//              retorna true
                 return true;
 
             }
 
-            if (nreiBranco == 0 && nreiPreto > 0) {
+//          se não houver reis brancos
+            if (nreiBranco == 0) {
 
                 System.out.println("ENCERAM AS PRETAS");
 
+//              adiciona os resultados a lista resultados
                 addResoultsStatsToPrint("VENCERAM AS PRETAS");
 
+//              recupera o tamanho inicial da lista pecasMalucas
                 restorePecasMalucas();
 
+//              retorna true
                 return true;
 
             }
