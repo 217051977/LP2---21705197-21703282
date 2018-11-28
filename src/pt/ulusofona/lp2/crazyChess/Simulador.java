@@ -16,6 +16,7 @@ public class Simulador {
             pretasInvalidas = 0,
             brancasInvalidas = 0;
     private List<CrazyPiece> pecasMalucas = new ArrayList<>();
+    private List<CrazyPiece> pecasComidas = new ArrayList<>();
     private List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
     private List<Equipa> team = new ArrayList<>();
     private Turno turno = new Turno();
@@ -367,6 +368,8 @@ public class Simulador {
             turno.resetCount();
             turno.resetCountNoCapture();
 
+            restorePecasMalucas();
+
             return true;
 
         } else {
@@ -395,6 +398,8 @@ public class Simulador {
 
                 addResoultsStatsToPrint("VENCERAM AS BRANCAS");
 
+                restorePecasMalucas();
+
                 return true;
 
             } else if (nreiBranco == 0) {
@@ -403,11 +408,15 @@ public class Simulador {
 
                 addResoultsStatsToPrint("VENCERAM AS PRETAS");
 
+                restorePecasMalucas();
+
                 return true;
 
             } else if (nreiPreto == 1 && nreiBranco == 1) {
 
                 addResoultsStatsToPrint("EMPATE");
+
+                restorePecasMalucas();
 
                 return true;
 
@@ -718,6 +727,7 @@ public class Simulador {
 
                     }
 
+                    pecasComidas.add(peca);
                     pecasMalucas.remove(peca);
                     primeiraCaptura = true;
                     turno.resetCountNoCapture();
@@ -881,6 +891,27 @@ public class Simulador {
         resultados.add(String.valueOf(tentativasBrancas));
         resultados.add(String.valueOf(brancasInvalidas));
 
+    }
+
+    private void restorePecasMalucas() {
+
+        pecasMalucas.addAll(pecasComidas);
+        int pecasComidasCount = pecasComidas.size();
+
+        for (int i = 0; i <= pecasComidas.size(); i++) {
+
+            pecasComidas.remove(pecasComidas.get(i));
+            System.out.println(pecasComidas);
+            System.out.println(pecasMalucas);
+
+        }
+/*
+        for (int i = 0; i < pecasComidasCount; i++) {
+
+            pecasComidas.remove(pecasComidas.get(i));
+
+        }
+*/
     }
 
 }
