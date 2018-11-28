@@ -356,7 +356,7 @@ public class Simulador {
         int nreiBranco = 0;
         int nreiPreto = 0;
 
-        if (pecasMalucas == null) {
+        if (pecasMalucas.size() == 0) {
 
             return true;
 
