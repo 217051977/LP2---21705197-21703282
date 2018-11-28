@@ -1,3 +1,5 @@
+//lkijhgfd
+
 package pt.ulusofona.lp2.crazyChess;
 
 class Tipo {

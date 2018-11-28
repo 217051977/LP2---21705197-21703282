@@ -388,7 +388,7 @@ public class Simulador {
 
             }
 
-            if (nreiPreto == 0 && nreiBranco > 1) {
+            if (nreiPreto == 0 && nreiBranco > 0) {
 
                 System.out.println("VENCERAM AS BRANCAS");
 
@@ -400,7 +400,7 @@ public class Simulador {
 
             }
 
-            if (nreiBranco == 0 && nreiPreto > 1) {
+            if (nreiBranco == 0 && nreiPreto > 0) {
 
                 System.out.println("ENCERAM AS PRETAS");
 
