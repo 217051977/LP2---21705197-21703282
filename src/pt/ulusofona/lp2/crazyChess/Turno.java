@@ -48,16 +48,6 @@ public class Turno {
 
         countNoCapture++;
 
-        if (count % 2 == 0) {
-
-            this.idTeam = 0;
-
-        } else {
-
-            this.idTeam = 1;
-
-        }
-
     }
 
 

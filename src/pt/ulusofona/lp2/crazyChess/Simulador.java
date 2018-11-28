@@ -762,7 +762,6 @@ public class Simulador {
         }
 
         turno.addCountNoCapture();
-        turno.addCount();
 
         return true;
 
