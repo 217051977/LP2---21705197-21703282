@@ -6,7 +6,7 @@ public class CrazyPiece {
     private String imagePNG = null;
     private Position position;
     private Tipo tipo;
-    private boolean podeMudarTipo, mudouTipo = false, emJogo = false;
+    private boolean podeMudarTipo, mudouTipo = false;
     private Equipa team;
     private String nome;
 
@@ -99,13 +99,8 @@ public class CrazyPiece {
 
     }
 
-    public boolean getEmJogo() {
 
-        return emJogo;
-
-    }
-
-    //  set
+//  set
     public void setImagePNG(String imagePNG) {
 
 //      it tries to set image
@@ -258,12 +253,6 @@ public class CrazyPiece {
     void moveDown(int countMoves) {
 
         position.changeYPositionDown(countMoves);
-
-    }
-
-    void estaEmJogo() {
-
-        emJogo = true;
 
     }
 
