@@ -3,7 +3,7 @@ package pt.ulusofona.lp2.crazyChess;
 public class Turno {
 
     private int count = 0, countNoCapture = 0;
-    private byte idTeam = 1;
+    private byte idTeam = 0;
 
     public Turno() {}
 
@@ -32,11 +32,11 @@ public class Turno {
 
         if (count % 2 == 0) {
 
-            this.idTeam = 1;
+            this.idTeam = 0;
 
         } else {
 
-            this.idTeam = 0;
+            this.idTeam = 1;
 
         }
 
@@ -46,6 +46,16 @@ public class Turno {
 
         countNoCapture++;
 
+        if (count % 2 == 0) {
+
+            this.idTeam = 0;
+
+        } else {
+
+            this.idTeam = 1;
+
+        }
+
     }
 
 
@@ -53,7 +63,7 @@ public class Turno {
 
         this.count = 0;
 
-        this.idTeam = 1;
+        this.idTeam = 0;
 
     }
 

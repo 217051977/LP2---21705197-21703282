@@ -2,7 +2,7 @@ package pt.ulusofona.lp2.crazyChess;
 
 public class CrazyPiece {
 
-    private int ID;
+    private int iD;
     private String imagePNG = null;
     private Position position;
     private Tipo tipo;
@@ -14,13 +14,28 @@ public class CrazyPiece {
 //  Constructor
     public CrazyPiece() {}
 
-    public CrazyPiece(int ID, Tipo tipo, Equipa team, String nome) {
+    public CrazyPiece(int iD, Tipo tipo, Equipa team, String nome) {
 
 //      set the variable of this same class as the value received
-        this.ID = ID;
+        this.iD = iD;
         this.tipo = tipo;
         this.team = team;
         this.nome = nome;
+
+        switch (team.getId()) {
+
+            case 0: {
+
+                imagePNG = "crazy_emoji_black.png";
+
+            }break;
+            case 1: {
+
+                imagePNG = "crazy_emoji_white.png";
+
+            }
+
+        }
 
     }
 
@@ -29,7 +44,7 @@ public class CrazyPiece {
     public int getId() {
 
 //      return the value of the variable "id" of this same class
-        return ID;
+        return iD;
 
     }
 
@@ -246,11 +261,11 @@ public class CrazyPiece {
     public String toString() {
 
 //      set a string type variable called string as the toString settings
-        String string = "ID = " + ID +
-                        " | Tipo = " + tipo.getid() +
-                        " | ID Equipa = " + team.getId() +
-                        " | Alcunha da peça = " + nome +
-                        " | Posição = ";
+        String string = iD +
+                        " | " + tipo.getid() +
+                        " | " + team.getId() +
+                        " | " + nome +
+                        " @ ";
 
 //      if actual position in x axis as the value of null OR actual position in y axis as the value of null
         if(position.getxAtual() == null || position.getyAtual() == null){
@@ -261,7 +276,7 @@ public class CrazyPiece {
         }else {
 
 //          add this to the variable string
-            string += "(<" + position.getxAtual() + ">, <" + position.getyAtual() + ">)";
+            string += "(" + position.getxAtual() + ", " + position.getyAtual() + ")";
 
         }
 

@@ -9,9 +9,14 @@ import java.util.Scanner;
 public class Simulador {
 
     private int tamanhoTabuleiro;
+    private int pretasCapturas = 0,
+            brancasCapturadas = 0,
+            tentativasBrancas = 0,
+            tentativasPretas = 0,
+            pretasInvalidas = 0,
+            brancasInvalidas = 0;
     private List<CrazyPiece> pecasMalucas = new ArrayList<>();
     private List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
-    private int idEquipaAJogar = 1;
     private List<Equipa> team = new ArrayList<>();
     private Turno turno = new Turno();
     private boolean primeiraCaptura = false;
@@ -53,8 +58,43 @@ public class Simulador {
 
     }
 
+    public int getBrancasCapturadas() {
 
-//  Nao pode devolver null
+        return brancasCapturadas;
+
+    }
+
+    public int getBrancasInvalidas() {
+
+        return brancasInvalidas;
+
+    }
+
+    public int getPretasCapturas() {
+
+        return pretasCapturas;
+
+    }
+
+    public int getPretasInvalidas() {
+
+        return pretasInvalidas;
+
+    }
+
+    public int getTentativasBrancas() {
+
+        return tentativasBrancas;
+
+    }
+
+    public int getTentativasPretas() {
+
+        return tentativasPretas;
+
+    }
+
+    //  Nao pode devolver null
     public List<String> getResultados() {
 
         return resultados;
@@ -83,7 +123,7 @@ public class Simulador {
 
     public int getIDEquipaAJogar() {
 
-        return idEquipaAJogar;
+        return turno.getIdTeam();
 
     }
 
@@ -216,6 +256,7 @@ public class Simulador {
                         }
 
                     }
+
                     yPosition++;
 
                 } else {
@@ -233,7 +274,7 @@ public class Simulador {
 
         } catch (FileNotFoundException e) {
 
-            System.out.println(ficheiroInicial.getName() + " not founded!");
+            System.out.println(ficheiroInicial.getName() + " not found!");
 
             return false;
 
@@ -246,7 +287,6 @@ public class Simulador {
         } catch (NullPointerException notEnoughInfo) {
 
             System.out.println("There's information missing in the file!");
-
 
             return false;
         }
@@ -296,6 +336,10 @@ public class Simulador {
 
                     }
 
+                    addResultsStatsInvalid();
+
+                    break;
+
                 }
 
             }
@@ -309,10 +353,16 @@ public class Simulador {
 //  falta a pontuacao
     public boolean jogoTerminado() {
 
-        int reiBranco = 0;
-        int reiPreto = 0;
+        int nreiBranco = 0;
+        int nreiPreto = 0;
 
-        if (turno.getCountNoCapture() == 10 && primeiraCaptura) {
+        if (pecasMalucas.size() == 0) {
+
+            return true;
+
+        } else if (turno.getCountNoCapture() == 10 && primeiraCaptura) {
+
+            addResoultsStatsToPrint("EMPATE");
 
             turno.resetCount();
             turno.resetCountNoCapture();
@@ -327,11 +377,11 @@ public class Simulador {
 
                     if (peca.getTeam().getId() == 0) {
 
-                        reiBranco++;
+                        nreiPreto++;
 
                     } else if (peca.getTeam().getId() == 1) {
 
-                        reiPreto++;
+                        nreiBranco++;
 
                     }
 
@@ -339,21 +389,25 @@ public class Simulador {
 
             }
 
-            if (reiPreto == 0) {
+            if (nreiPreto == 0) {
 
-                System.out.println("The whites wins!");
+                System.out.println("ENCERAM AS BRANCAS");
 
-                return true;
-
-            } else if (reiBranco == 0) {
-
-                System.out.println("The blacks wins!");
+                addResoultsStatsToPrint("VENCERAM AS BRANCAS");
 
                 return true;
 
-            } else if (reiPreto == 1 && reiBranco ==1) {
+            } else if (nreiBranco == 0) {
 
-                System.out.println("It's a draw");
+                System.out.println("ENCERAM AS PRETAS");
+
+                addResoultsStatsToPrint("VENCERAM AS PRETAS");
+
+                return true;
+
+            } else if (nreiPreto == 1 && nreiBranco == 1) {
+
+                addResoultsStatsToPrint("EMPATE");
 
                 return true;
 
@@ -366,26 +420,6 @@ public class Simulador {
         }
 
     }
-
-    public boolean chageTeam(Equipa nextTeam) {
-
-        try {
-
-            System.out.println(nextTeam.getId());
-            idEquipaAJogar = nextTeam.getId();
-
-            return true;
-
-        } catch (Exception impossibleToChangeTeam) {
-
-            System.out.println("Impossible to change team");
-
-            return false;
-
-        }
-
-    }
-
 
 //  private functions
     private boolean verificaMovimentoHorizontal(CrazyPiece peca, int xDiference, int yDiference, Position newPosition) {
@@ -402,6 +436,8 @@ public class Simulador {
 
             }
 
+            addResultsStatsInvalid();
+
             return verificaPossiveisMovimentos(peca);
 
         } else if (xDiference < 0) {
@@ -416,6 +452,8 @@ public class Simulador {
                 return true;
 
             }
+
+            addResultsStatsInvalid();
 
             return verificaPossiveisMovimentos(peca);
 
@@ -446,6 +484,8 @@ public class Simulador {
 
                     }
 
+                    addResultsStatsInvalid();
+
                     return verificaPossiveisMovimentos(peca);
 
                 } else if (yDiference < 0) {
@@ -463,14 +503,20 @@ public class Simulador {
 
                     }
 
+                    addResultsStatsInvalid();
+
                     return verificaPossiveisMovimentos(peca);
 
 
                 }
 
-                moveRight(peca, xDiference);
+                if (verificaPosicaoVazia(newPosition)) {
 
-                return true;
+                    moveRight(peca, xDiference);
+
+                    return true;
+
+                }
 
             }
 
@@ -490,6 +536,8 @@ public class Simulador {
 
                     }
 
+                    addResultsStatsInvalid();
+
                     return verificaPossiveisMovimentos(peca);
 
                 } else if (yDiference < 0) {
@@ -507,14 +555,20 @@ public class Simulador {
 
                     }
 
+                    addResultsStatsInvalid();
+
                     return verificaPossiveisMovimentos(peca);
 
 
                 }
 
-                moveLeft(peca, xDiference);
+                if (verificaPosicaoVazia(newPosition)) {
 
-                return true;
+                    moveLeft(peca, xDiference);
+
+                    return true;
+
+                }
 
             }
 
@@ -534,6 +588,8 @@ public class Simulador {
 
                     }
 
+                    addResultsStatsInvalid();
+
                     return verificaPossiveisMovimentos(peca);
 
                 } else if (yDiference < 0) {
@@ -551,10 +607,14 @@ public class Simulador {
 
                     }
 
+                    addResultsStatsInvalid();
+
                     return verificaPossiveisMovimentos(peca);
 
 
                 }
+
+                addResultsStatsInvalid();
 
 //              return false because it can not stay in the same position
                 return false;
@@ -580,6 +640,8 @@ public class Simulador {
 
                 }
 
+                addResultsStatsInvalid();
+
             } else if (peca.getTipo().getMoveBaixoDireta()) {
 
                 if (verificaPosicaoVazia(newPosition)) {
@@ -589,6 +651,8 @@ public class Simulador {
                     return true;
 
                 }
+
+                addResultsStatsInvalid();
 
             }
 
@@ -604,6 +668,8 @@ public class Simulador {
 
                 }
 
+                addResultsStatsInvalid();
+
             } else if (peca.getTipo().getMoveBaixoEsquerda()) {
 
                 if (verificaPosicaoVazia(newPosition)) {
@@ -614,9 +680,13 @@ public class Simulador {
 
                 }
 
+                addResultsStatsInvalid();
+
             }
 
         }
+
+        addResultsStatsInvalid();
 
 //      return false because a diagonal MUST be able to move in the x axis or because i can not move in the diagonal
 //  or staying in the same position
@@ -628,19 +698,37 @@ public class Simulador {
 
         for (CrazyPiece peca : pecasMalucas) {
 
-            if (peca.getPosition() == newPosition) {
+            if (peca.getPosition().equals(newPosition)) {
 
                 if (peca.getTeam().getId() != turno.getIdTeam()) {
 
+                    switch (turno.getIdTeam()) {
+
+                        case 0: {
+
+                            addResultsStats(0,1,0,1);
+
+                        }break;
+
+                        case 1: {
+
+                            addResultsStats(1,0,1,0);
+
+                        }
+
+                    }
+
                     pecasMalucas.remove(peca);
                     primeiraCaptura = true;
-                    turno.addCountNoCapture();
+                    turno.resetCountNoCapture();
 
                     return true;
 
                 } else {
 
                     System.out.println("There's already a piece of the same team on that position!");
+
+                    addResultsStatsInvalid();
 
                     return false;
 
@@ -650,7 +738,23 @@ public class Simulador {
 
         }
 
-        turno.resetCountNoCapture();
+        switch (turno.getIdTeam()) {
+
+            case 0: {
+
+                addResultsStats(0,0,0,1);
+
+            }break;
+
+            case 1: {
+
+                addResultsStats(0,0,1,0);
+
+            }
+
+        }
+
+        turno.addCountNoCapture();
 
         return true;
 
@@ -730,6 +834,52 @@ public class Simulador {
         peca.moveDown((yDiference * (-1)));
         peca.moveRight(xDiference);
         turno.addCount();
+
+    }
+
+    private void addResultsStats(int pretasCapturas, int brancasCapturadas, int tentativasBrancas,
+                                 int tentativasPretas) {
+
+        this.pretasCapturas += pretasCapturas;
+        this.brancasCapturadas += brancasCapturadas;
+        this.tentativasBrancas += tentativasBrancas;
+        this.tentativasPretas += tentativasPretas;
+
+    }
+
+    private void addResultsStatsInvalid() {
+
+        switch (turno.getIdTeam()) {
+
+            case 0: {
+
+                pretasInvalidas++;
+
+            }break;
+
+            case 1: {
+
+                brancasInvalidas++;
+
+            }
+
+        }
+
+    }
+
+    private void addResoultsStatsToPrint(String s) {
+
+        resultados.add("JOGO DE CRAZY CHESS");
+        resultados.add("Resultado: " + s);
+        resultados.add("---");
+        resultados.add("Equipa das Pretas");
+        resultados.add(String.valueOf(brancasCapturadas));
+        resultados.add(String.valueOf(tentativasPretas));
+        resultados.add(String.valueOf(pretasInvalidas));
+        resultados.add("Equipa das Brancas");
+        resultados.add(String.valueOf(pretasCapturas));
+        resultados.add(String.valueOf(tentativasBrancas));
+        resultados.add(String.valueOf(brancasInvalidas));
 
     }
 
