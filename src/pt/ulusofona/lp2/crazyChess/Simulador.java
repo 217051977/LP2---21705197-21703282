@@ -356,7 +356,11 @@ public class Simulador {
         int nreiBranco = 0;
         int nreiPreto = 0;
 
-        if (turno.getCountNoCapture() == 10 && primeiraCaptura) {
+        if (pecasMalucas.size() == 0) {
+
+            return true;
+
+        } else if (turno.getCountNoCapture() == 10 && primeiraCaptura) {
 
             turno.resetCount();
             turno.resetCountNoCapture();
@@ -371,11 +375,11 @@ public class Simulador {
 
                     if (peca.getTeam().getId() == 0) {
 
-                        nreiBranco++;
+                        nreiPreto++;
 
                     } else if (peca.getTeam().getId() == 1) {
 
-                        nreiPreto++;
+                        nreiBranco++;
 
                     }
 
@@ -387,7 +391,7 @@ public class Simulador {
 
                 System.out.println("The whites wins!");
 
-                resultados.add("JOGO DE CRAZY CHESS, VENCERAM AS PRETAS, ---, Equipa das Pretas, " +
+                resultados.add("JOGO DE CRAZY CHESS, Resultado: VENCERAM AS BRANCAS, ---, Equipa das Pretas, " +
                         brancasCapturadas + ", " +
                         pretasInvalidas + ", "  +
                         tentativasPretas + ", " +
@@ -402,7 +406,7 @@ public class Simulador {
 
                 System.out.println("The blacks wins!");
 
-                resultados.add("JOGO DE CRAZY CHESS, VENCERAM AS BRANCAS, ---, Equipa das Pretas, " +
+                resultados.add("JOGO DE CRAZY CHESS, Resultado: VENCERAM AS PRETAS, ---, Equipa das Pretas, " +
                         brancasCapturadas + ", " +
                         pretasInvalidas + ", "  +
                         tentativasPretas + ", " +
@@ -415,7 +419,14 @@ public class Simulador {
 
             } else if (nreiPreto == 1 && nreiBranco == 1) {
 
-                System.out.println("It's a draw");
+                resultados.add("JOGO DE CRAZY CHESS, Resultado: EMPATE, ---, Equipa das Pretas, " +
+                        brancasCapturadas + ", " +
+                        pretasInvalidas + ", "  +
+                        tentativasPretas + ", " +
+                        "Equipa das Brancas, " +
+                        pretasCapturas + ", " +
+                        brancasInvalidas + ", "  +
+                        tentativasBrancas);
 
                 return true;
 
@@ -710,10 +721,6 @@ public class Simulador {
 
                 if (peca.getTeam().getId() != turno.getIdTeam()) {
 
-                    pecasMalucas.remove(peca);
-                    primeiraCaptura = true;
-                    turno.resetCountNoCapture();
-
                     switch (turno.getIdTeam()) {
 
                         case 0: {
@@ -730,6 +737,10 @@ public class Simulador {
 
                     }
 
+                    pecasMalucas.remove(peca);
+                    primeiraCaptura = true;
+                    turno.resetCountNoCapture();
+
                     return true;
 
                 } else {
@@ -745,7 +756,6 @@ public class Simulador {
             }
 
         }
-        turno.addCountNoCapture();
 
         switch (turno.getIdTeam()) {
 
@@ -762,6 +772,8 @@ public class Simulador {
             }
 
         }
+
+        turno.addCountNoCapture();
 
         return true;
 
