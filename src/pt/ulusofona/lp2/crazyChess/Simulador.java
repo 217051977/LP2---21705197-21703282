@@ -334,9 +334,9 @@ public class Simulador {
 
                         }
 
-                        addResultsStatsInvalid();
-
                     }
+
+                    addResultsStatsInvalid();
 
                     break;
 
