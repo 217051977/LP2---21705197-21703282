@@ -398,7 +398,9 @@ public class Simulador {
 
                 return true;
 
-            } else if (nreiBranco == 0) {
+            }
+
+            if (nreiBranco == 0) {
 
                 System.out.println("ENCERAM AS PRETAS");
 
@@ -408,7 +410,9 @@ public class Simulador {
 
                 return true;
 
-            } else if (nreiPreto == 1 && nreiBranco == 1) {
+            }
+
+            if (nreiPreto == 1 && nreiBranco == 1) {
 
                 addResoultsStatsToPrint("EMPATE");
 
@@ -416,11 +420,9 @@ public class Simulador {
 
                 return true;
 
-            } else {
-
-                return false;
-
             }
+
+            return false;
 
         }
 
