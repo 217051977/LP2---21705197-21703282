@@ -8,18 +8,18 @@ import java.util.Scanner;
 
 public class Simulador {
 
-    private int tamanhoTabuleiro;
-    private int pretasCapturas = 0,
-            brancasCapturadas = 0,
-            tentativasBrancas = 0,
-            tentativasPretas = 0,
-            pretasInvalidas = 0,
-            brancasInvalidas = 0;
-    private List<CrazyPiece> pecasMalucas = new ArrayList<>();
-    private List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
-    private List<Equipa> team = new ArrayList<>();
-    private Turno turno = new Turno();
-    private boolean primeiraCaptura = false;
+    public int tamanhoTabuleiro;
+    public int pretasCapturas = 0,
+           brancasCapturadas = 0,
+           tentativasBrancas = 0,
+           tentativasPretas = 0,
+           pretasInvalidas = 0,
+           brancasInvalidas = 0;
+    public List<CrazyPiece> pecasMalucas = new ArrayList<>();
+    public List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
+    public List<Equipa> team = new ArrayList<>();
+    public Turno turno = new Turno();
+    public boolean primeiraCaptura = false;
 
 //    Construtor(s)
 
