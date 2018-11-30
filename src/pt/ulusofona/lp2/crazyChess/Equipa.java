@@ -5,7 +5,7 @@ package pt.ulusofona.lp2.crazyChess;
 import java.awt.*;
 
 public class Equipa {
-
+//
 //  variables
 //  can be 1 - white - or 0 - black (starts first)-
     private int id;
