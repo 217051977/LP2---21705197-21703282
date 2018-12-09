@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+//  corrigir metodo verificar jogada
+
 public class Simulador {
 
     public int tamanhoTabuleiro;
