@@ -11,12 +11,12 @@ import java.util.Scanner;
 public class Simulador {
 
     public int tamanhoTabuleiro;
-    public int pretasCapturas = 0,
-           brancasCapturadas = 0,
-           tentativasBrancas = 0,
-           tentativasPretas = 0,
-           pretasInvalidas = 0,
-           brancasInvalidas = 0;
+    public int numeroDePretasCapturas = 0,
+           numeroDeBrancasCapturadas = 0,
+           numeroDeTentativasBrancas = 0,
+           numeroDeTentativasPretas = 0,
+           numeroDePretasInvalidas = 0,
+           numeroDeBrancasInvalidas = 0;
     public List<CrazyPiece> pecasMalucas = new ArrayList<>();
     public List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
     public List<Equipa> team = new ArrayList<>();
@@ -60,43 +60,42 @@ public class Simulador {
 
     }
 
-    public int getBrancasCapturadas() {
+    public int getNumeroDeBrancasCapturadas() {
 
-        return brancasCapturadas;
-
-    }
-
-    public int getBrancasInvalidas() {
-
-        return brancasInvalidas;
+        return numeroDeBrancasCapturadas;
 
     }
 
-    public int getPretasCapturas() {
+    public int getNumeroDeBrancasInvalidas() {
 
-        return pretasCapturas;
-
-    }
-
-    public int getPretasInvalidas() {
-
-        return pretasInvalidas;
+        return numeroDeBrancasInvalidas;
 
     }
 
-    public int getTentativasBrancas() {
+    public int getNumeroDePretasCapturas() {
 
-        return tentativasBrancas;
-
-    }
-
-    public int getTentativasPretas() {
-
-        return tentativasPretas;
+        return numeroDePretasCapturas;
 
     }
 
-    //  Nao pode devolver null
+    public int getNumeroDePretasInvalidas() {
+
+        return numeroDePretasInvalidas;
+
+    }
+
+    public int getNumeroDeTentativasBrancas() {
+
+        return numeroDeTentativasBrancas;
+
+    }
+
+    public int getNumeroDeTentativasPretas() {
+
+        return numeroDeTentativasPretas;
+
+    }
+
     public List<String> getResultados() {
 
         return resultados;
@@ -141,44 +140,45 @@ public class Simulador {
 
     }
 
-    public boolean setPeca(CrazyPiece peca) {
 
-        try {
+//  sets
+//    public boolean setPeca(CrazyPiece peca) {
+//
+//        try {
+//
+//            this.pecasMalucas.add(peca);
+//
+//
+//            return true;
+//
+//        } catch (Exception impossibleToAddANexPiece) {
+//
+//            System.out.println("Impossible to add a new piece");
+//
+//            return false;
+//
+//        }
+//
+//    }
+//
+//    public boolean removePeca(CrazyPiece peca) {
+//
+//        try {
+//
+//            this.pecasMalucas.remove(peca);
+//
+//            return true;
+//
+//        } catch (Exception impossibleToAddANexPiece) {
+//
+//            System.out.println("Impossible to add a new piece");
+//
+//            return false;
+//
+//        }
+//
+//    }
 
-            this.pecasMalucas.add(peca);
-
-
-            return true;
-
-        } catch (Exception impossibleToAddANexPiece) {
-
-            System.out.println("Impossible to add a new piece");
-
-            return false;
-
-        }
-
-    }
-
-    public boolean removePeca(CrazyPiece peca) {
-
-        try {
-
-            this.pecasMalucas.remove(peca);
-
-            return true;
-
-        } catch (Exception impossibleToAddANexPiece) {
-
-            System.out.println("Impossible to add a new piece");
-
-            return false;
-
-        }
-
-    }
-
-//  falta completar guardar a informaçao lida do ficheiro na memoria
     public boolean iniciaJogo(File ficheiroInicial) {
 
         try {
@@ -227,10 +227,9 @@ public class Simulador {
 
                     piecesInfo = linha.split(":");
                     Tipo tipo = new Tipo(Byte.parseByte(piecesInfo[1])); //check if there's only 0 type
-                    Equipa equipa = new Equipa(Integer.parseInt(piecesInfo[2]));
                     CrazyPiece peca = new CrazyPiece(Integer.parseInt(piecesInfo[0]),
                             tipo,
-                            equipa,
+                            Integer.parseInt(piecesInfo[2]),
                             piecesInfo[3]);
 
                     pecasMalucas.add(peca);
@@ -308,7 +307,7 @@ public class Simulador {
 
                 if (peca.getPosition().equals(positionOrigin)) {
 
-                    if (peca.getTeam().getId() == turno.getIdTeam()) {
+                    if (peca.getIDTeam() == turno.getIdTeam()) {
 
                         int xDiference = xD - xO;
                         int yDiference = yD - yO;
@@ -380,11 +379,11 @@ public class Simulador {
 
                     if (peca.getTipo().getid() == 0) {
 
-                        if (peca.getTeam().getId() == 0) {
+                        if (peca.getIDTeam() == 0) {
 
                             nreiPreto++;
 
-                        } else if (peca.getTeam().getId() == 1) {
+                        } else if (peca.getIDTeam() == 1) {
 
                             nreiBranco++;
 
@@ -707,7 +706,7 @@ public class Simulador {
 
             if (peca.getPosition().equals(newPosition)) {
 
-                if (peca.getTeam().getId() != turno.getIdTeam()) {
+                if (peca.getIDTeam() != turno.getIdTeam()) {
 
                     switch (turno.getIdTeam()) {
 
@@ -844,13 +843,13 @@ public class Simulador {
 
     }
 
-    private void addResultsStats(int pretasCapturas, int brancasCapturadas, int tentativasBrancas,
-                                 int tentativasPretas) {
+    private void addResultsStats(int numeroDePretasCapturas, int numeroDeBrancasCapturadas, int numeroDeTentativasBrancas,
+                                 int numeroDeTentativasPretas) {
 
-        this.pretasCapturas += pretasCapturas;
-        this.brancasCapturadas += brancasCapturadas;
-        this.tentativasBrancas += tentativasBrancas;
-        this.tentativasPretas += tentativasPretas;
+        this.numeroDePretasCapturas += numeroDePretasCapturas;
+        this.numeroDeBrancasCapturadas += numeroDeBrancasCapturadas;
+        this.numeroDeTentativasBrancas += numeroDeTentativasBrancas;
+        this.numeroDeTentativasPretas += numeroDeTentativasPretas;
 
     }
 
@@ -860,13 +859,13 @@ public class Simulador {
 
             case 0: {
 
-                pretasInvalidas++;
+                numeroDePretasInvalidas++;
 
             }break;
 
             case 1: {
 
-                brancasInvalidas++;
+                numeroDeBrancasInvalidas++;
 
             }
 
@@ -880,13 +879,13 @@ public class Simulador {
         resultados.add("Resultado: " + s);
         resultados.add("---");
         resultados.add("Equipa das Pretas");
-        resultados.add(String.valueOf(brancasCapturadas));
-        resultados.add(String.valueOf(tentativasPretas));
-        resultados.add(String.valueOf(pretasInvalidas));
+        resultados.add(String.valueOf(numeroDeBrancasCapturadas));
+        resultados.add(String.valueOf(numeroDeTentativasPretas));
+        resultados.add(String.valueOf(numeroDePretasInvalidas));
         resultados.add("Equipa das Brancas");
-        resultados.add(String.valueOf(pretasCapturas));
-        resultados.add(String.valueOf(tentativasBrancas));
-        resultados.add(String.valueOf(brancasInvalidas));
+        resultados.add(String.valueOf(numeroDePretasCapturas));
+        resultados.add(String.valueOf(numeroDeTentativasBrancas));
+        resultados.add(String.valueOf(numeroDeBrancasInvalidas));
 
     }
 

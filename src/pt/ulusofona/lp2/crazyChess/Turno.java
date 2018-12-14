@@ -1,4 +1,3 @@
-//lkijhgfd
 
 package pt.ulusofona.lp2.crazyChess;
 
@@ -8,7 +7,6 @@ public class Turno {
     private byte idTeam = 0;
 
     public Turno() {}
-
 
     int getCount() {
 
@@ -30,17 +28,41 @@ public class Turno {
 
     void addCount() {
 
-        this.count++;
+        count++;
 
         if (count % 2 == 0) {
 
-            this.idTeam = 0;
+            idTeam = 0;
 
         } else {
 
-            this.idTeam = 1;
+            idTeam = 1;
 
         }
+
+    }
+
+    boolean removeCount() {
+
+        if (count > 0) {
+
+            this.count--;
+
+            if (idTeam == 1) {
+
+                idTeam = 0;
+
+            } else {
+
+                idTeam = 1;
+
+            }
+
+            return true;
+
+        }
+
+        return false;
 
     }
 
@@ -50,12 +72,19 @@ public class Turno {
 
     }
 
+    void removeCountNoCapture() {
+
+        if (countNoCapture > 0) {
+
+            countNoCapture--;
+
+        }
+
+    }
 
     void resetCount() {
 
-        this.count = 0;
-
-        this.idTeam = 0;
+        count = countNoCapture = idTeam = 0;
 
     }
 

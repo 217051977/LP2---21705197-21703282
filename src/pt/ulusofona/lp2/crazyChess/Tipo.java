@@ -1,22 +1,8 @@
-//lkijhgfd
 
 package pt.ulusofona.lp2.crazyChess;
 
 class Tipo {
 
-//  variable
-
-//  0 - Rei
-//  1 - Rainha
-//  2 -
-//  3 -
-//  4 -
-//  5 -
-//  6 -
-//  7 -
-//  8 -
-//  9 -
-//  10 -
     private byte id;
 
     private boolean moveCima, moveBaixo, moveEsquerda, moveDireita,

@@ -26,4 +26,18 @@ public class Joker extends CrazyPiece{
 
     }
 
+    public void undoPieceType() {
+
+        if (pieceId != 1) {
+
+            pieceId--;
+
+        } else {
+
+            pieceId = 7;
+
+        }
+
+    }
+
 }

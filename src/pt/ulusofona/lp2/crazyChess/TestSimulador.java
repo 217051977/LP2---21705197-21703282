@@ -26,14 +26,12 @@ public class TestSimulador {
     @Test
     public void testgetPecasMalucas(){
         Simulador simulador = new Simulador();
-        Equipa pretas = new Equipa(0);
-        Equipa brancas = new Equipa(1);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca1 = new Position(0,0);
         Position positionPeca3 = new Position(0,3);
-        CrazyPiece peca1 = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca1 = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca1.setPosition(positionPeca1);
-        CrazyPiece peca3 = new CrazyPiece(9, rei, brancas, "This is crazy");
+        CrazyPiece peca3 = new CrazyPiece(9, rei, 1, "This is crazy");
         peca3.setPosition(positionPeca3);
         simulador.pecasMalucas.add(peca1);
         simulador.pecasMalucas.add(peca3);
@@ -57,14 +55,14 @@ public class TestSimulador {
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca1 = new Position(0,0);
         Position positionPeca2 = new Position(0,1);
-        CrazyPiece peca1 = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca1 = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca1.setPosition(positionPeca1);
-        CrazyPiece peca2 = new CrazyPiece(8, rei, brancas, "Mr. Cenas");
+        CrazyPiece peca2 = new CrazyPiece(8, rei, 1, "Mr. Cenas");
         peca2.setPosition(positionPeca2);
         simulador.pecasMalucas.add(peca1);
         simulador.pecasMalucas.add(peca2);
         simulador.processaJogada(0,0,0,1);
-        assertEquals("Erro", simulador.brancasCapturadas, simulador.getBrancasCapturadas());
+        assertEquals("Erro", simulador.numeroDeBrancasCapturadas, simulador.getNumeroDeBrancasCapturadas());
     }
 
     @Test
@@ -76,14 +74,14 @@ public class TestSimulador {
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca1 = new Position(0,0);
         Position positionPeca2 = new Position(0,1);
-        CrazyPiece peca1 = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca1 = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca1.setPosition(positionPeca1);
-        CrazyPiece peca2 = new CrazyPiece(8, rei, brancas, "Mr. Cenas");
+        CrazyPiece peca2 = new CrazyPiece(8, rei, 1, "Mr. Cenas");
         peca2.setPosition(positionPeca2);
         simulador.pecasMalucas.add(peca1);
         simulador.pecasMalucas.add(peca2);
         simulador.processaJogada(0,1,0,0);
-        assertEquals("Erro", simulador.pretasCapturas, simulador.getPretasCapturas());
+        assertEquals("Erro", simulador.numeroDePretasCapturas, simulador.getNumeroDePretasCapturas());
     }
 
     @Test
@@ -93,11 +91,11 @@ public class TestSimulador {
         Equipa pretas = new Equipa(0);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         simulador.processaJogada(0,0,0,2);
-        assertEquals("Erro", simulador.brancasInvalidas, simulador.getBrancasInvalidas());
+        assertEquals("Erro", simulador.numeroDeBrancasInvalidas, simulador.getNumeroDeBrancasInvalidas());
     }
 
     @Test
@@ -107,11 +105,11 @@ public class TestSimulador {
         Equipa pretas = new Equipa(0);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         simulador.processaJogada(0,1,0,1);
-        assertEquals("Erro", simulador.brancasInvalidas, simulador.getBrancasInvalidas());
+        assertEquals("Erro", simulador.numeroDeBrancasInvalidas, simulador.getNumeroDeBrancasInvalidas());
     }
 
     @Test
@@ -121,11 +119,11 @@ public class TestSimulador {
         Equipa brancas = new Equipa(1);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 1, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         simulador.processaJogada(0,1,0,0);
-        assertEquals("Erro", simulador.brancasInvalidas, simulador.getBrancasInvalidas());
+        assertEquals("Erro", simulador.numeroDeBrancasInvalidas, simulador.getNumeroDeBrancasInvalidas());
     }
 
     @Test
@@ -135,11 +133,11 @@ public class TestSimulador {
         Equipa pretas = new Equipa(0);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         simulador.processaJogada(0,0,0,2);
-        assertEquals("Erro", simulador.pretasInvalidas, simulador.getPretasInvalidas());
+        assertEquals("Erro", simulador.numeroDePretasInvalidas, simulador.getNumeroDePretasInvalidas());
     }
 
     @Test
@@ -149,11 +147,11 @@ public class TestSimulador {
         Equipa pretas = new Equipa(0);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         simulador.processaJogada(0,1,0,1);
-        assertEquals("Erro", simulador.pretasInvalidas, simulador.getPretasInvalidas());
+        assertEquals("Erro", simulador.numeroDePretasInvalidas, simulador.getNumeroDePretasInvalidas());
     }
 
     @Test
@@ -163,11 +161,11 @@ public class TestSimulador {
         Equipa brancas = new Equipa(1);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 1, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         simulador.processaJogada(0,1,0,0);
-        assertEquals("Erro", simulador.pretasInvalidas, simulador.getPretasInvalidas());
+        assertEquals("Erro", simulador.numeroDePretasInvalidas, simulador.getNumeroDePretasInvalidas());
     }
 
     @Test
@@ -177,11 +175,11 @@ public class TestSimulador {
         Equipa pretas = new Equipa(0);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         simulador.processaJogada(0,0,0,1);
-        assertEquals("Erro", simulador.tentativasBrancas, simulador.getTentativasBrancas());
+        assertEquals("Erro", simulador.numeroDeBrancasInvalidas, simulador.getNumeroDeBrancasInvalidas());
     }
 
     @Test
@@ -191,11 +189,11 @@ public class TestSimulador {
         Equipa pretas = new Equipa(0);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         simulador.processaJogada(0,1,0,0);
-        assertEquals("Erro", simulador.tentativasBrancas, simulador.getTentativasBrancas());
+        assertEquals("Erro", simulador.numeroDeBrancasInvalidas, simulador.getNumeroDeBrancasInvalidas());
     }
 
     @Test
@@ -205,11 +203,11 @@ public class TestSimulador {
         Equipa brancas = new Equipa(1);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 1, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         simulador.processaJogada(0,1,1,0);
-        assertEquals("Erro", simulador.tentativasBrancas, simulador.getTentativasBrancas());
+        assertEquals("Erro", simulador.numeroDeBrancasInvalidas, simulador.getNumeroDeBrancasInvalidas());
     }
 
     @Test
@@ -219,11 +217,11 @@ public class TestSimulador {
         Equipa pretas = new Equipa(0);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         simulador.processaJogada(0,0,0,1);
-        assertEquals("Erro", simulador.tentativasPretas, simulador.getTentativasPretas());
+        assertEquals("Erro", simulador.numeroDePretasInvalidas, simulador.getNumeroDePretasInvalidas());
     }
 
     @Test
@@ -233,11 +231,11 @@ public class TestSimulador {
         Equipa pretas = new Equipa(0);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         simulador.processaJogada(0,1,0,0);
-        assertEquals("Erro", simulador.tentativasPretas, simulador.getTentativasPretas());
+        assertEquals("Erro", simulador.numeroDePretasInvalidas, simulador.getNumeroDePretasInvalidas());
     }
 
     @Test
@@ -247,11 +245,11 @@ public class TestSimulador {
         Equipa brancas = new Equipa(1);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 1, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         simulador.processaJogada(0,1,1,0);
-        assertEquals("Erro", simulador.tentativasPretas, simulador.getTentativasPretas());
+        assertEquals("Erro", simulador.numeroDePretasInvalidas, simulador.getNumeroDePretasInvalidas());
     }
 
     @Test
@@ -267,7 +265,7 @@ public class TestSimulador {
         Equipa brancas = new Equipa(1);
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
+        CrazyPiece peca = new CrazyPiece(7, rei, 1, "Jonny Macarrony");
         peca.setPosition(positionPeca);
         simulador.pecasMalucas.add(peca);
         assertEquals("Erro", peca.getId(), simulador.getIDPeca(0, 0));
@@ -296,8 +294,8 @@ public class TestSimulador {
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca1 = new Position(0,0);
         Position positionPeca2 = new Position(1,1);
-        CrazyPiece peca1 = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
-        CrazyPiece peca2 = new CrazyPiece(7, rei, pretas, "The lazy");
+        CrazyPiece peca1 = new CrazyPiece(7, rei, 1, "Jonny Macarrony");
+        CrazyPiece peca2 = new CrazyPiece(7, rei, 0, "The lazy");
         peca1.setPosition(positionPeca1);
         peca2.setPosition(positionPeca2);
         simulador.pecasMalucas.add(peca1);
@@ -306,32 +304,32 @@ public class TestSimulador {
         assertEquals("Erro", simulador.primeiraCaptura, simulador.getPrimeiraCaptura());
     }
 
-    @Test
-    public void testsetPeca(){
-        Simulador simulador = new Simulador();
-        Equipa brancas = new Equipa(1);
-        Tipo rei = new Tipo((byte) 0);
-        Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
-        peca.setPosition(positionPeca);
-        simulador.setPeca(peca);
-        simulador.processaJogada(0,1,1,0);
-        assertEquals("Erro", 1, simulador.pecasMalucas.size());
-    }
-
-    @Test
-    public void testremovePeca(){
-        Simulador simulador = new Simulador();
-        Equipa brancas = new Equipa(1);
-        Tipo rei = new Tipo((byte) 0);
-        Position positionPeca = new Position(0,0);
-        CrazyPiece peca = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
-        peca.setPosition(positionPeca);
-        simulador.setPeca(peca);
-        simulador.removePeca(peca);
-        simulador.processaJogada(0,1,1,0);
-        assertEquals("Erro", 0, simulador.pecasMalucas.size());
-    }
+//    @Test
+//    public void testsetPeca(){
+//        Simulador simulador = new Simulador();
+//        Equipa brancas = new Equipa(1);
+//        Tipo rei = new Tipo((byte) 0);
+//        Position positionPeca = new Position(0,0);
+//        CrazyPiece peca = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
+//        peca.setPosition(positionPeca);
+//        simulador.setPeca(peca);
+//        simulador.processaJogada(0,1,1,0);
+//        assertEquals("Erro", 1, simulador.pecasMalucas.size());
+//    }
+//
+//    @Test
+//    public void testremovePeca(){
+//        Simulador simulador = new Simulador();
+//        Equipa brancas = new Equipa(1);
+//        Tipo rei = new Tipo((byte) 0);
+//        Position positionPeca = new Position(0,0);
+//        CrazyPiece peca = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
+//        peca.setPosition(positionPeca);
+//        simulador.setPeca(peca);
+//        simulador.removePeca(peca);
+//        simulador.processaJogada(0,1,1,0);
+//        assertEquals("Erro", 0, simulador.pecasMalucas.size());
+//    }
 
     @Test
     public void testiniciaJogo(){
@@ -351,11 +349,11 @@ public class TestSimulador {
         Position positionPeca1 = new Position(0,0);
         Position positionPeca2 = new Position(0,1);
         Position positionPeca3 = new Position(0,3);
-        CrazyPiece peca1 = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca1 = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca1.setPosition(positionPeca1);
-        CrazyPiece peca2 = new CrazyPiece(8, rei, brancas, "Mr. Cenas");
+        CrazyPiece peca2 = new CrazyPiece(8, rei, 1, "Mr. Cenas");
         peca2.setPosition(positionPeca2);
-        CrazyPiece peca3 = new CrazyPiece(9, rei, brancas, "This is crazy");
+        CrazyPiece peca3 = new CrazyPiece(9, rei, 1, "This is crazy");
         peca3.setPosition(positionPeca3);
         simulador.pecasMalucas.add(peca1);
         simulador.pecasMalucas.add(peca2);
@@ -375,11 +373,11 @@ public class TestSimulador {
         Position positionPeca1 = new Position(0,0);
         Position positionPeca2 = new Position(0,1);
         Position positionPeca3 = new Position(0,3);
-        CrazyPiece peca1 = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
+        CrazyPiece peca1 = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
         peca1.setPosition(positionPeca1);
-        CrazyPiece peca2 = new CrazyPiece(8, rei, brancas, "Mr. Cenas");
+        CrazyPiece peca2 = new CrazyPiece(8, rei, 1, "Mr. Cenas");
         peca2.setPosition(positionPeca2);
-        CrazyPiece peca3 = new CrazyPiece(9, rei, brancas, "This is crazy");
+        CrazyPiece peca3 = new CrazyPiece(9, rei, 1, "This is crazy");
         peca3.setPosition(positionPeca3);
         simulador.pecasMalucas.add(peca1);
         simulador.pecasMalucas.add(peca2);
@@ -397,8 +395,8 @@ public class TestSimulador {
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca1 = new Position(0,0);
         Position positionPeca2 = new Position(2,0);
-        CrazyPiece peca1 = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
-        CrazyPiece peca2 = new CrazyPiece(7, rei, pretas, "Mr. me");
+        CrazyPiece peca1 = new CrazyPiece(7, rei, 1, "Jonny Macarrony");
+        CrazyPiece peca2 = new CrazyPiece(7, rei, 0, "Mr. me");
         peca1.setPosition(positionPeca1);
         peca2.setPosition(positionPeca2);
         simulador.pecasMalucas.add(peca1);
@@ -414,8 +412,8 @@ public class TestSimulador {
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca1 = new Position(0, 0);
         Position positionPeca2 = new Position(2, 0);
-        CrazyPiece peca1 = new CrazyPiece(7, rei, pretas, "Jonny Macarrony");
-        CrazyPiece peca2 = new CrazyPiece(7, rei, pretas, "Mr. me");
+        CrazyPiece peca1 = new CrazyPiece(7, rei, 0, "Jonny Macarrony");
+        CrazyPiece peca2 = new CrazyPiece(7, rei, 0, "Mr. me");
         peca1.setPosition(positionPeca1);
         peca2.setPosition(positionPeca2);
         simulador.pecasMalucas.add(peca1);
@@ -431,8 +429,8 @@ public class TestSimulador {
         Tipo rei = new Tipo((byte) 0);
         Position positionPeca1 = new Position(0, 0);
         Position positionPeca2 = new Position(2, 0);
-        CrazyPiece peca1 = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
-        CrazyPiece peca2 = new CrazyPiece(7, rei, brancas, "Mr. me");
+        CrazyPiece peca1 = new CrazyPiece(7, rei, 1, "Jonny Macarrony");
+        CrazyPiece peca2 = new CrazyPiece(7, rei, 1, "Mr. me");
         peca1.setPosition(positionPeca1);
         peca2.setPosition(positionPeca2);
         simulador.pecasMalucas.add(peca1);
@@ -450,9 +448,9 @@ public class TestSimulador {
         Position positionPeca1 = new Position(0, 0);
         Position positionPeca2 = new Position(2, 0);
         Position positionPeca3 = new Position(1, 0);
-        CrazyPiece peca1 = new CrazyPiece(7, rei, brancas, "Jonny Macarrony");
-        CrazyPiece peca2 = new CrazyPiece(7, rei, brancas, "Mr. me");
-        CrazyPiece peca3 = new CrazyPiece(7, rei, pretas, "Yeah");
+        CrazyPiece peca1 = new CrazyPiece(7, rei, 1, "Jonny Macarrony");
+        CrazyPiece peca2 = new CrazyPiece(7, rei, 1, "Mr. me");
+        CrazyPiece peca3 = new CrazyPiece(7, rei, 0, "Yeah");
         peca1.setPosition(positionPeca1);
         peca2.setPosition(positionPeca2);
         peca2.setPosition(positionPeca3);

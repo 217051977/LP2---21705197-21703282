@@ -7,22 +7,22 @@ public class CrazyPiece {
     private Position position;
     private Tipo tipo;
     private boolean podeMudarTipo, mudouTipo = false, emJogo = false;
-    private Equipa team;
+    private int idTeam;
     private String nome;
 
 
 //  Constructor
     public CrazyPiece() {}
 
-    public CrazyPiece(int iD, Tipo tipo, Equipa team, String nome) {
+    public CrazyPiece(int iD, Tipo tipo, int idTeam, String nome) {
 
 //      set the variable of this same class as the value received
         this.iD = iD;
         this.tipo = tipo;
-        this.team = team;
+        this.idTeam = idTeam;
         this.nome = nome;
 
-        switch (team.getId()) {
+        switch (idTeam) {
 
             case 0: {
 
@@ -85,10 +85,10 @@ public class CrazyPiece {
 
     }
 
-    public Equipa getTeam() {
+    public int getIDTeam() {
 
 //      return the value of the variable "idTeam" of this same class
-        return team;
+        return idTeam;
 
     }
 
@@ -106,54 +106,9 @@ public class CrazyPiece {
     }
 
     //  set
-    public void setImagePNG(String imagePNG) {
-
-//      it tries to set image
-        try {
-
-//          if the string received doesn't have .png in the end
-            if (imagePNG.toLowerCase().charAt(imagePNG.length() - 4) != '.') {
-
-                imagePNG += ".png";
-
-//          if the 4 last letters are different from ".png"
-            } else if (imagePNG.toLowerCase().charAt(imagePNG.length() - 3) != 'p' ||
-                    imagePNG.toLowerCase().charAt(imagePNG.length() - 2) != 'n' ||
-                    imagePNG.toLowerCase().charAt(imagePNG.length() - 1) != 'g') {
-
-//              throws an arithmetic Exception with this message
-                throw new ArithmeticException("Format not valid!");
-
-            }
-
-
-
-//          set the variable of this same class as the value received
-            this.imagePNG = imagePNG;
-
-//      if there is any problem in the above code
-        } catch (ArithmeticException formatNotValid) {
-
-            System.out.println(formatNotValid.getMessage());
-
-        } catch (Exception impossibleToChangeColor) {
-
-//          print this message in screen
-            System.out.println("Impossible to remove the image");
-
-        }
-
-    }
-
     public void setPosition(Position position) {
 
         this.position = position;
-
-    }
-
-    public void setPodeMudarTipo(boolean podeMudarTipo) {
-
-        this.podeMudarTipo = podeMudarTipo;
 
     }
 
@@ -192,50 +147,6 @@ public class CrazyPiece {
     }
 
 
-//  change
-    public boolean changeType(Tipo tipo) {
-
-//      if this piece can change type AND it hasn't changed yet
-        if (podeMudarTipo && !mudouTipo && tipo.changeTipo(tipo)){
-
-//          set this class variable "mudouTipo" as true
-            this.mudouTipo = true;
-
-//          return true
-            return true;
-
-        }
-
-//      else return false
-        return false;
-
-    }
-
-    public boolean changeName(String nome) {
-
-//      it tries to chage the value of the variable "tipo"
-        try {
-
-//          set the variable of this same class as the value received
-            this.nome = nome;
-
-//          return the value of the variable "true" of this same class
-            return true;
-
-//      if there is any problem in the above code
-        } catch (Exception impossibleToChangeName) {
-
-//          print this message in screen
-            System.out.println("Impossible to change the name");
-
-//          return the value of the variable "false" of this same class
-            return false;
-
-        }
-
-    }
-
-
 //  move
     public void moveRight(int countMoves) {
 
@@ -261,9 +172,16 @@ public class CrazyPiece {
 
     }
 
+
     public void estaEmJogo() {
 
         emJogo = true;
+
+    }
+
+    public void estaForaDeJogo() {
+
+        emJogo = false;
 
     }
 
@@ -273,7 +191,7 @@ public class CrazyPiece {
 //      set a string type variable called string as the toString settings
         String string = iD +
                         " | " + tipo.getid() +
-                        " | " + team.getId() +
+                        " | " + idTeam +
                         " | " + nome +
                         " @ ";
 
