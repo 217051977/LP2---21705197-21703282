@@ -1,15 +1,17 @@
-package pt.ulusofona.lp2.crazyChess;
+package pt.ulusofona.lp2.crazyChess.CrazyPiece;
 
-public class TorreH extends CrazyPiece{
+import pt.ulusofona.lp2.crazyChess.MainsClasses.CrazyPiece;
 
-    private byte id = 4;
+public class TorreV extends CrazyPiece {
+
+    private byte id = 5;
 
     private boolean moveCima, moveBaixo, moveEsquerda, moveDireita,
             moveCimaDireita, moveCimaEsquerda, moveBaixoDireita, moveBaixoEsquerda;
 
     private int maxMovHorizontal, maxMovVertical, minMovHorizontal, minMovVertical;
 
-    TorreH() {
+    public TorreV() {
 
         this.moveBaixo = false;
         this.moveEsquerda = true;

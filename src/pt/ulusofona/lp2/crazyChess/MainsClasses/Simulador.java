@@ -1,4 +1,9 @@
-package pt.ulusofona.lp2.crazyChess;
+package pt.ulusofona.lp2.crazyChess.MainsClasses;
+
+import pt.ulusofona.lp2.crazyChess.CrazyPiece.Tipo;
+import pt.ulusofona.lp2.crazyChess.Position;
+import pt.ulusofona.lp2.crazyChess.Shift;
+import pt.ulusofona.lp2.crazyChess.Team;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,26 +15,26 @@ import java.util.Scanner;
 
 public class Simulador {
 
-    public int tamanhoTabuleiro;
-    public int numeroDePretasCapturas = 0,
-           numeroDeBrancasCapturadas = 0,
-           numeroDeTentativasBrancas = 0,
-           numeroDeTentativasPretas = 0,
-           numeroDePretasInvalidas = 0,
-           numeroDeBrancasInvalidas = 0;
-    public List<CrazyPiece> pecasMalucas = new ArrayList<>();
-    public List<String> autores = new ArrayList<>(), resultados = new ArrayList<>();
-    public List<Equipa> team = new ArrayList<>();
-    public Turno turno = new Turno();
-    public boolean primeiraCaptura = false;
+    int boardSize;
+    int numberOfBlackPiecesCaptured = 0,
+               numberOfWhitePiecesCaptured = 0,
+               numberOfValidPlaysByBlackTeam = 0,
+               numberOfValidPlaysByWhiteTeam = 0,
+               numberOfInvalidPlaysByBlackTeam = 0,
+               numberOfInvalidPlaysByWhiteTeam = 0;
+    List<CrazyPiece> crazyPieces = new ArrayList<>();
+    List<String> authors = new ArrayList<>(), scores = new ArrayList<>(), suggestedPlays = new ArrayList<>();
+    List<Team> team = new ArrayList<>();
+    Shift shift = new Shift();
+    boolean firstCapture = false;
 
-//    Construtor(s)
+//    Constructor
 
     public Simulador() {}
 
-    public Simulador(int tamanhoTabuleiro) {
+    public Simulador(int boardSize) {
 
-        this.tamanhoTabuleiro = tamanhoTabuleiro;
+        this.boardSize = ~boardSize;
 
     }
 
@@ -37,68 +42,32 @@ public class Simulador {
 //    gets
     public int getTamanhoTabuleiro() {
 
-        return tamanhoTabuleiro;
+        return boardSize;
 
     }
 
     public List<CrazyPiece> getPecasMalucas() {
 
-        return pecasMalucas;
+        return crazyPieces;
 
     }
 
     public List<String> getAutores() {
 
-        if (autores.size() == 0) {
+        if (authors.size() == 0) {
 
-            this.autores.add("Bruno Miguel Dias Leal, nº 21705197");
-            this.autores.add("João Domingos, nº 21703282");
+            this.authors.add("Bruno Miguel Dias Leal, nº 21705197");
+            this.authors.add("João Domingos, nº 21703282");
 
         }
 
-        return autores;
-
-    }
-
-    public int getNumeroDeBrancasCapturadas() {
-
-        return numeroDeBrancasCapturadas;
-
-    }
-
-    public int getNumeroDeBrancasInvalidas() {
-
-        return numeroDeBrancasInvalidas;
-
-    }
-
-    public int getNumeroDePretasCapturas() {
-
-        return numeroDePretasCapturas;
-
-    }
-
-    public int getNumeroDePretasInvalidas() {
-
-        return numeroDePretasInvalidas;
-
-    }
-
-    public int getNumeroDeTentativasBrancas() {
-
-        return numeroDeTentativasBrancas;
-
-    }
-
-    public int getNumeroDeTentativasPretas() {
-
-        return numeroDeTentativasPretas;
+        return authors;
 
     }
 
     public List<String> getResultados() {
 
-        return resultados;
+        return scores;
 
     }
 
@@ -106,7 +75,7 @@ public class Simulador {
 
         Position position = new Position(x, y);
 
-        for (CrazyPiece peca: pecasMalucas){
+        for (CrazyPiece peca: crazyPieces){
 
             if (peca.getPosition().equals(position)) {
 
@@ -122,21 +91,63 @@ public class Simulador {
 
     }
 
-    public int getIDEquipaAJogar() {
+    public int getThisShiftTeamID() {
 
-        return turno.getIdTeam();
-
-    }
-
-    public Turno getTurno() {
-
-        return turno;
+        return shift.getIdTeam();
 
     }
 
-    public boolean getPrimeiraCaptura() {
+    public List<String> getObterSugestoesJogada() {
 
-        return this.primeiraCaptura;
+        return suggestedPlays;
+
+    }
+
+    public int getNumberOfBlackPiecesCaptured() {
+
+        return numberOfBlackPiecesCaptured;
+
+    }
+
+    public int getNumberOfWhitePiecesCaptured() {
+
+        return numberOfWhitePiecesCaptured;
+
+    }
+
+    public int getNumberOfValidPlaysByBlackTeam() {
+
+        return numberOfValidPlaysByBlackTeam;
+
+    }
+
+    public int getNumberOfValidPlaysByWhiteTeam() {
+
+        return numberOfValidPlaysByWhiteTeam;
+
+    }
+
+    public int getNumberOfInvalidPlaysByBlackTeam() {
+
+        return numberOfInvalidPlaysByBlackTeam;
+
+    }
+
+    public int getNumberOfInvalidPlaysByWhiteTeam() {
+
+        return numberOfInvalidPlaysByWhiteTeam;
+
+    }
+
+    public Shift getShift() {
+
+        return shift;
+
+    }
+
+    public boolean getFirstCapture() {
+
+        return this.firstCapture;
 
     }
 
@@ -198,7 +209,7 @@ public class Simulador {
                 String linha = scan.nextLine();
                 System.out.println(linha);
                 nPiecesMaxIndex = nPieces + 2;
-                tamanhoTabuleiroMaxIndex = tamanhoTabuleiro + nPiecesMaxIndex;
+                tamanhoTabuleiroMaxIndex = boardSize + nPiecesMaxIndex;
 
                 /*
 
@@ -217,7 +228,7 @@ public class Simulador {
 
                 if (nLines == 0) {
 
-                    tamanhoTabuleiro = Integer.parseInt(linha);
+                    boardSize = Integer.parseInt(linha);
 
                 } else if (nLines == 1) {
 
@@ -232,7 +243,7 @@ public class Simulador {
                             Integer.parseInt(piecesInfo[2]),
                             piecesInfo[3]);
 
-                    pecasMalucas.add(peca);
+                    crazyPieces.add(peca);
 
                 } else if (nLines < tamanhoTabuleiroMaxIndex) {
 
@@ -242,7 +253,7 @@ public class Simulador {
 
                         if (Integer.parseInt(boardInfo[index]) != 0) {
 
-                            for (CrazyPiece peca : pecasMalucas) { //peca olaf
+                            for (CrazyPiece peca : crazyPieces) { //peca olaf
 
                                 if (peca.getId() == Integer.parseInt(boardInfo[index])) {
 
@@ -298,16 +309,16 @@ public class Simulador {
 //  comentar
     public boolean processaJogada(int xO, int yO, int xD, int yD) {
 
-        if (xD >= 0 && xD <= (tamanhoTabuleiro - 1) &&
-            yD >= 0 && yD <= (tamanhoTabuleiro - 1)) {
+        if (xD >= 0 && xD <= (boardSize - 1) &&
+            yD >= 0 && yD <= (boardSize - 1)) {
 
             Position positionOrigin = new Position(xO, yO);
 
-            for (CrazyPiece peca : pecasMalucas) {
+            for (CrazyPiece peca : crazyPieces) {
 
                 if (peca.getPosition().equals(positionOrigin)) {
 
-                    if (peca.getIDTeam() == turno.getIdTeam()) {
+                    if (peca.getIDTeam() == shift.getIdTeam()) {
 
                         int xDiference = xD - xO;
                         int yDiference = yD - yO;
@@ -338,7 +349,7 @@ public class Simulador {
 
                     }
 
-                    addResultsStatsInvalid();
+                    addScoresStatsInvalid();
 
                     break;
 
@@ -358,22 +369,22 @@ public class Simulador {
         int nreiBranco = 0;
         int nreiPreto = 0;
 
-        if (pecasMalucas.size() == 0) {
+        if (crazyPieces.size() == 0) {
 
             return true;
 
-        } else if (turno.getCountNoCapture() == 10 && primeiraCaptura) {
+        } else if (shift.getCountNoCapture() == 10 && firstCapture) {
 
-            addResoultsStatsToPrint("EMPATE");
+            addScoreStatsToPrint("EMPATE");
 
-            turno.resetCount();
-            turno.resetCountNoCapture();
+            shift.resetCount();
+            shift.resetCountNoCapture();
 
             return true;
 
         } else {
 
-            for (CrazyPiece peca : pecasMalucas) {
+            for (CrazyPiece peca : crazyPieces) {
 
                 if (peca.getEmJogo()) {
 
@@ -399,7 +410,7 @@ public class Simulador {
 
                 System.out.println("ENCERAM AS BRANCAS");
 
-                addResoultsStatsToPrint("VENCERAM AS BRANCAS");
+                addScoreStatsToPrint("VENCERAM AS BRANCAS");
 
                 return true;
 
@@ -407,13 +418,13 @@ public class Simulador {
 
                 System.out.println("ENCERAM AS PRETAS");
 
-                addResoultsStatsToPrint("VENCERAM AS PRETAS");
+                addScoreStatsToPrint("VENCERAM AS PRETAS");
 
                 return true;
 
             } else if (nreiPreto == 1 && nreiBranco == 1) {
 
-                addResoultsStatsToPrint("EMPATE");
+                addScoreStatsToPrint("EMPATE");
 
                 return true;
 
@@ -436,13 +447,13 @@ public class Simulador {
 
                 return verificaMovimentoVertical(peca, xDiference, yDiference, 'R', newPosition);
 
-            } else if (verificarMovimentoDiagonal(peca, xDiference, yDiference, newPosition)) {
+            } else if (verificaMovimentoDiagonal(peca, xDiference, yDiference, newPosition)) {
 
                 return true;
 
             }
 
-            addResultsStatsInvalid();
+            addScoresStatsInvalid();
 
             return verificaPossiveisMovimentos(peca);
 
@@ -453,13 +464,13 @@ public class Simulador {
                 return verificaMovimentoVertical(peca, xDiference, yDiference, 'L', newPosition);
 
 
-            } else if (verificarMovimentoDiagonal(peca, xDiference, yDiference, newPosition)) {
+            } else if (verificaMovimentoDiagonal(peca, xDiference, yDiference, newPosition)) {
 
                 return true;
 
             }
 
-            addResultsStatsInvalid();
+            addScoresStatsInvalid();
 
             return verificaPossiveisMovimentos(peca);
 
@@ -490,7 +501,7 @@ public class Simulador {
 
                     }
 
-                    addResultsStatsInvalid();
+                    addScoresStatsInvalid();
 
                     return verificaPossiveisMovimentos(peca);
 
@@ -509,7 +520,7 @@ public class Simulador {
 
                     }
 
-                    addResultsStatsInvalid();
+                    addScoresStatsInvalid();
 
                     return verificaPossiveisMovimentos(peca);
 
@@ -542,7 +553,7 @@ public class Simulador {
 
                     }
 
-                    addResultsStatsInvalid();
+                    addScoresStatsInvalid();
 
                     return verificaPossiveisMovimentos(peca);
 
@@ -561,7 +572,7 @@ public class Simulador {
 
                     }
 
-                    addResultsStatsInvalid();
+                    addScoresStatsInvalid();
 
                     return verificaPossiveisMovimentos(peca);
 
@@ -594,7 +605,7 @@ public class Simulador {
 
                     }
 
-                    addResultsStatsInvalid();
+                    addScoresStatsInvalid();
 
                     return verificaPossiveisMovimentos(peca);
 
@@ -613,14 +624,14 @@ public class Simulador {
 
                     }
 
-                    addResultsStatsInvalid();
+                    addScoresStatsInvalid();
 
                     return verificaPossiveisMovimentos(peca);
 
 
                 }
 
-                addResultsStatsInvalid();
+                addScoresStatsInvalid();
 
 //              return false because it can not stay in the same position
                 return false;
@@ -632,7 +643,7 @@ public class Simulador {
     }
 
 //  comentar
-    private boolean verificarMovimentoDiagonal(CrazyPiece peca, int xDiference, int yDiference, Position newPosition) {
+    private boolean verificaMovimentoDiagonal(CrazyPiece peca, int xDiference, int yDiference, Position newPosition) {
 
         if (xDiference > 0) {
 
@@ -646,7 +657,7 @@ public class Simulador {
 
                 }
 
-                addResultsStatsInvalid();
+                addScoresStatsInvalid();
 
             } else if (peca.getTipo().getMoveBaixoDireta()) {
 
@@ -658,7 +669,7 @@ public class Simulador {
 
                 }
 
-                addResultsStatsInvalid();
+                addScoresStatsInvalid();
 
             }
 
@@ -674,7 +685,7 @@ public class Simulador {
 
                 }
 
-                addResultsStatsInvalid();
+                addScoresStatsInvalid();
 
             } else if (peca.getTipo().getMoveBaixoEsquerda()) {
 
@@ -686,13 +697,13 @@ public class Simulador {
 
                 }
 
-                addResultsStatsInvalid();
+                addScoresStatsInvalid();
 
             }
 
         }
 
-        addResultsStatsInvalid();
+        addScoresStatsInvalid();
 
 //      return false because a diagonal MUST be able to move in the x axis or because i can not move in the diagonal
 //  or staying in the same position
@@ -702,31 +713,31 @@ public class Simulador {
 
     private boolean verificaPosicaoVazia(Position newPosition) {
 
-        for (CrazyPiece peca : pecasMalucas) {
+        for (CrazyPiece peca : crazyPieces) {
 
             if (peca.getPosition().equals(newPosition)) {
 
-                if (peca.getIDTeam() != turno.getIdTeam()) {
+                if (peca.getIDTeam() != shift.getIdTeam()) {
 
-                    switch (turno.getIdTeam()) {
+                    switch (shift.getIdTeam()) {
 
                         case 0: {
 
-                            addResultsStats(0,1,0,1);
+                            addScoresStats(0,1,0,1);
 
                         }break;
 
                         case 1: {
 
-                            addResultsStats(1,0,1,0);
+                            addScoresStats(1,0,1,0);
 
                         }
 
                     }
 
-                    pecasMalucas.remove(peca);
-                    primeiraCaptura = true;
-                    turno.resetCountNoCapture();
+                    crazyPieces.remove(peca);
+                    firstCapture = true;
+                    shift.resetCountNoCapture();
 
                     return true;
 
@@ -734,7 +745,7 @@ public class Simulador {
 
                     System.out.println("There's already a piece of the same team on that position!");
 
-                    addResultsStatsInvalid();
+                    addScoresStatsInvalid();
 
                     return false;
 
@@ -744,23 +755,23 @@ public class Simulador {
 
         }
 
-        switch (turno.getIdTeam()) {
+        switch (shift.getIdTeam()) {
 
             case 0: {
 
-                addResultsStats(0,0,0,1);
+                addScoresStats(0,0,0,1);
 
             }break;
 
             case 1: {
 
-                addResultsStats(0,0,1,0);
+                addScoresStats(0,0,1,0);
 
             }
 
         }
 
-        turno.addCountNoCapture();
+        shift.addCountNoCapture();
 
         return true;
 
@@ -786,28 +797,28 @@ public class Simulador {
     private void moveLeft(CrazyPiece peca, int xDiference) {
 
         peca.moveLeft((xDiference * (-1)));
-        turno.addCount();
+        shift.addCount();
 
     }
 
     private void moveRight(CrazyPiece peca, int xDiference) {
 
         peca.moveRight(xDiference);
-        turno.addCount();
+        shift.addCount();
 
     }
 
     private void moveUp(CrazyPiece peca, int yDiference) {
 
         peca.moveUp(yDiference);
-        turno.addCount();
+        shift.addCount();
 
     }
 
     private void moveDown(CrazyPiece peca, int yDiference) {
 
         peca.moveDown((yDiference * (-1)));
-        turno.addCount();
+        shift.addCount();
 
     }
 
@@ -815,7 +826,7 @@ public class Simulador {
 
         peca.moveDown((yDiference * (-1)));
         peca.moveLeft((xDiference * (-1)));
-        turno.addCount();
+        shift.addCount();
 
     }
 
@@ -823,7 +834,7 @@ public class Simulador {
 
         peca.moveUp(yDiference);
         peca.moveLeft((xDiference * (-1)));
-        turno.addCount();
+        shift.addCount();
 
     }
 
@@ -831,7 +842,7 @@ public class Simulador {
 
         peca.moveUp(yDiference);
         peca.moveRight(xDiference);
-        turno.addCount();
+        shift.addCount();
 
     }
 
@@ -839,33 +850,33 @@ public class Simulador {
 
         peca.moveDown((yDiference * (-1)));
         peca.moveRight(xDiference);
-        turno.addCount();
+        shift.addCount();
 
     }
 
-    private void addResultsStats(int numeroDePretasCapturas, int numeroDeBrancasCapturadas, int numeroDeTentativasBrancas,
-                                 int numeroDeTentativasPretas) {
+    private void addScoresStats(int numberOfBlackPiecesCaptured, int numberOfWhitePiecesCaptured, int numberOfValidPlaysByWhiteTeam,
+                                 int numberOfValidPlaysByBlackTeam) {
 
-        this.numeroDePretasCapturas += numeroDePretasCapturas;
-        this.numeroDeBrancasCapturadas += numeroDeBrancasCapturadas;
-        this.numeroDeTentativasBrancas += numeroDeTentativasBrancas;
-        this.numeroDeTentativasPretas += numeroDeTentativasPretas;
+        this.numberOfBlackPiecesCaptured += numberOfBlackPiecesCaptured;
+        this.numberOfWhitePiecesCaptured += numberOfWhitePiecesCaptured;
+        this.numberOfValidPlaysByWhiteTeam += numberOfValidPlaysByWhiteTeam;
+        this.numberOfValidPlaysByBlackTeam += numberOfValidPlaysByBlackTeam;
 
     }
 
-    private void addResultsStatsInvalid() {
+    private void addScoresStatsInvalid() {
 
-        switch (turno.getIdTeam()) {
+        switch (shift.getIdTeam()) {
 
             case 0: {
 
-                numeroDePretasInvalidas++;
+                numberOfInvalidPlaysByBlackTeam++;
 
             }break;
 
             case 1: {
 
-                numeroDeBrancasInvalidas++;
+                numberOfInvalidPlaysByWhiteTeam++;
 
             }
 
@@ -873,19 +884,19 @@ public class Simulador {
 
     }
 
-    private void addResoultsStatsToPrint(String s) {
+    private void addScoreStatsToPrint(String s) {
 
-        resultados.add("JOGO DE CRAZY CHESS");
-        resultados.add("Resultado: " + s);
-        resultados.add("---");
-        resultados.add("Equipa das Pretas");
-        resultados.add(String.valueOf(numeroDeBrancasCapturadas));
-        resultados.add(String.valueOf(numeroDeTentativasPretas));
-        resultados.add(String.valueOf(numeroDePretasInvalidas));
-        resultados.add("Equipa das Brancas");
-        resultados.add(String.valueOf(numeroDePretasCapturas));
-        resultados.add(String.valueOf(numeroDeTentativasBrancas));
-        resultados.add(String.valueOf(numeroDeBrancasInvalidas));
+        scores.add("JOGO DE CRAZY CHESS");
+        scores.add("Resultado: " + s);
+        scores.add("---");
+        scores.add("Team das Pretas");
+        scores.add(String.valueOf(numberOfWhitePiecesCaptured));
+        scores.add(String.valueOf(numberOfValidPlaysByBlackTeam));
+        scores.add(String.valueOf(numberOfInvalidPlaysByBlackTeam));
+        scores.add("Team das Brancas");
+        scores.add(String.valueOf(numberOfBlackPiecesCaptured));
+        scores.add(String.valueOf(numberOfValidPlaysByWhiteTeam));
+        scores.add(String.valueOf(numberOfInvalidPlaysByWhiteTeam));
 
     }
 

@@ -1,10 +1,9 @@
-//sdfghjkl
 
 package pt.ulusofona.lp2.crazyChess;
 
 import java.awt.*;
 
-public class Equipa {
+public class Team {
 //
 //  variables
 //  can be 1 - white - or 0 - black (starts first)-
@@ -13,9 +12,9 @@ public class Equipa {
 
 
 //  constructor
-    Equipa() {}
+    public Team() {}
 
-    Equipa(int id) {
+    public Team(int id) {
 
 //      set the variable of this same class as the value received
         this.id = id;

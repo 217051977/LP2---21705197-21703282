@@ -1,6 +1,8 @@
-package pt.ulusofona.lp2.crazyChess;
+package pt.ulusofona.lp2.crazyChess.CrazyPiece;
 
-public class Rei extends CrazyPiece{
+import pt.ulusofona.lp2.crazyChess.MainsClasses.CrazyPiece;
+
+public class Rei extends CrazyPiece {
 
     private byte id = 0;
 
@@ -9,7 +11,7 @@ public class Rei extends CrazyPiece{
 
     private int maxMovHorizontal, maxMovVertical, minMovHorizontal, minMovVertical;
 
-    Rei() {
+    public Rei() {
 
         this.moveBaixo = true;
         this.moveEsquerda = true;

@@ -1,6 +1,8 @@
-package pt.ulusofona.lp2.crazyChess;
+package pt.ulusofona.lp2.crazyChess.CrazyPiece;
 
-public class Joker extends CrazyPiece{
+import pt.ulusofona.lp2.crazyChess.MainsClasses.CrazyPiece;
+
+public class Joker extends CrazyPiece {
 
     private byte id = 7;
     private byte pieceId = 1;
@@ -10,7 +12,7 @@ public class Joker extends CrazyPiece{
 
     private int maxMovHorizontal, maxMovVertical, minMovHorizontal, minMovVertical;
 
-    Joker() {}
+    public Joker() {}
 
     public void changePieceType() {
 

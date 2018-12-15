@@ -1,6 +1,8 @@
-package pt.ulusofona.lp2.crazyChess;
+package pt.ulusofona.lp2.crazyChess.CrazyPiece;
 
-public class PoneiMagico extends CrazyPiece{
+import pt.ulusofona.lp2.crazyChess.MainsClasses.CrazyPiece;
+
+public class PoneiMagico extends CrazyPiece {
 
     private byte id = 2;
 
@@ -9,7 +11,7 @@ public class PoneiMagico extends CrazyPiece{
 
     private int maxMovHorizontal, maxMovVertical, minMovHorizontal, minMovVertical;
 
-    PoneiMagico() {
+    public PoneiMagico() {
 
         this.moveBaixo = true;
         this.moveEsquerda = true;

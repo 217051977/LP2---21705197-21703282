@@ -1,49 +1,49 @@
 
 package pt.ulusofona.lp2.crazyChess;
 
-class Position {
+public class Position {
 
 //  variables
     private Integer xAtual, yAtual, xAnterior, yAnterior;
 
 
 //  constructor
-    Position() {}
+    public Position() {}
 
-    Position(int xAnterior, int yAnterior) {
+    public Position(int xAtual, int yAtual) {
 
 //      set the variable of this same class as the value received
-        this.xAnterior = xAnterior;
-        xAtual = xAnterior;
-        this.yAnterior = yAnterior;
-        yAtual = yAnterior;
+        this.xAtual = xAtual;
+        xAnterior = xAtual;
+        this.yAtual = yAtual;
+        yAnterior = yAtual;
 
     }
 
 
 //  gets
-    Integer getxAtual() {
+    public Integer getxAtual() {
 
 //      return the value of the variable "xAtual" of this same class
         return xAtual;
 
     }
 
-    Integer getyAtual() {
+    public Integer getyAtual() {
 
 //      return the value of the variable "yAtual" of this same class
         return yAtual;
 
     }
 
-    Integer getXAnterior() {
+    public Integer getXAnterior() {
 
 //      return the value of the variable "xAnterior" of this same class
         return xAnterior;
 
     }
 
-    Integer getYAnterior() {
+    public Integer getYAnterior() {
 
 //      return the value of the variable "yAnterior" of this same class
         return yAnterior;
@@ -52,25 +52,25 @@ class Position {
 
 
 //  change
-    void changeXPositionRight(int x){
+    public void changeXPositionRight(int x){
 
         this.xAtual += x;
 
     }
 
-    void changeXPositionLeft(int x){
+    public void changeXPositionLeft(int x){
 
         this.xAtual -= x;
 
     }
 
-    void changeYPositionUp(int y){
+    public void changeYPositionUp(int y){
 
         this.yAtual += y;
 
     }
 
-    void changeYPositionDown(int y){
+    public void changeYPositionDown(int y){
 
         this.yAtual -= y;
 
@@ -78,14 +78,14 @@ class Position {
 
 
 //  reset
-    void undoPositionMoviment() {
+    public void undoPositionMoviment() {
 
         xAnterior = xAtual;
         yAnterior = yAtual;
 
     }
 
-    boolean equals(Position position) {
+    public boolean equals(Position position) {
 
         return position.getxAtual().equals(xAtual) &&
                 position.getyAtual().equals(yAtual);
@@ -94,7 +94,7 @@ class Position {
 
 
 //  erase
-    boolean erasePosition() {
+    public boolean erasePosition() {
 
 //      it tries to chage the value of the variable "tipo"
         try {

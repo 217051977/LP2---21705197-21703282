@@ -1,15 +1,17 @@
-package pt.ulusofona.lp2.crazyChess;
+package pt.ulusofona.lp2.crazyChess.CrazyPiece;
 
-public class PadreDaVila extends CrazyPiece{
+import pt.ulusofona.lp2.crazyChess.MainsClasses.CrazyPiece;
 
-    private byte id = 3;
+public class Lebre extends CrazyPiece {
+
+    private byte id = 6;
 
     private boolean moveCima, moveBaixo, moveEsquerda, moveDireita,
             moveCimaDireita, moveCimaEsquerda, moveBaixoDireita, moveBaixoEsquerda;
 
     private int maxMovHorizontal, maxMovVertical, minMovHorizontal, minMovVertical;
 
-    PadreDaVila() {
+    public Lebre() {
 
         this.moveBaixo = false;
         this.moveEsquerda = false;
@@ -19,14 +21,13 @@ public class PadreDaVila extends CrazyPiece{
         this.moveCimaEsquerda = true;
         this.moveBaixoDireita = true;
         this.moveBaixoEsquerda = true;
-        this.maxMovHorizontal = 3;
-        this.maxMovVertical = 3;
+        this.maxMovHorizontal = 1;
+        this.maxMovVertical = 1;
         this.minMovHorizontal = 1;
         this.minMovVertical = 1;
 
     }
 
-//  so pode mover se no caminho (nao no local) nao houver pecas adeversarias.
-//  nao pode estar a menos de 2 casa da rainha adversaria.
+//  so pode mover nos turnos pares.
 
 }

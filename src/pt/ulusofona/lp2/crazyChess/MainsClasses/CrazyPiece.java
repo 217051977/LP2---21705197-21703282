@@ -1,4 +1,7 @@
-package pt.ulusofona.lp2.crazyChess;
+package pt.ulusofona.lp2.crazyChess.MainsClasses;
+
+import pt.ulusofona.lp2.crazyChess.CrazyPiece.Tipo;
+import pt.ulusofona.lp2.crazyChess.Position;
 
 public class CrazyPiece {
 
@@ -24,12 +27,12 @@ public class CrazyPiece {
 
         switch (idTeam) {
 
-            case 0: {
+            case 10: {
 
                 imagePNG = "crazy_emoji_black.png";
 
             }break;
-            case 1: {
+            case 20: {
 
                 imagePNG = "crazy_emoji_white.png";
 

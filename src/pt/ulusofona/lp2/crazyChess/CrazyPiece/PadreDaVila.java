@@ -1,32 +1,34 @@
-package pt.ulusofona.lp2.crazyChess;
+package pt.ulusofona.lp2.crazyChess.CrazyPiece;
 
-public class Rainha extends CrazyPiece{
+import pt.ulusofona.lp2.crazyChess.MainsClasses.CrazyPiece;
 
-    private byte id = 1;
+public class PadreDaVila extends CrazyPiece {
+
+    private byte id = 3;
 
     private boolean moveCima, moveBaixo, moveEsquerda, moveDireita,
             moveCimaDireita, moveCimaEsquerda, moveBaixoDireita, moveBaixoEsquerda;
 
     private int maxMovHorizontal, maxMovVertical, minMovHorizontal, minMovVertical;
 
-    Rainha() {
+    public PadreDaVila() {
 
-        this.moveBaixo = true;
-        this.moveEsquerda = true;
-        this.moveDireita = true;
-        this.moveCima = true;
+        this.moveBaixo = false;
+        this.moveEsquerda = false;
+        this.moveDireita = false;
+        this.moveCima = false;
         this.moveCimaDireita = true;
         this.moveCimaEsquerda = true;
         this.moveBaixoDireita = true;
         this.moveBaixoEsquerda = true;
-        this.maxMovHorizontal = 5;
-        this.maxMovVertical = 5;
+        this.maxMovHorizontal = 3;
+        this.maxMovVertical = 3;
         this.minMovHorizontal = 1;
         this.minMovVertical = 1;
 
     }
 
 //  so pode mover se no caminho (nao no local) nao houver pecas adeversarias.
-//  nao pode comer outra rainha.
+//  nao pode estar a menos de 2 casa da rainha adversaria.
 
 }

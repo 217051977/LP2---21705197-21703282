@@ -1,7 +1,7 @@
 
-package pt.ulusofona.lp2.crazyChess;
+package pt.ulusofona.lp2.crazyChess.CrazyPiece;
 
-class Tipo {
+public class Tipo {
 
     private byte id;
 
@@ -12,9 +12,9 @@ class Tipo {
 
 
 //  constructor
-    Tipo() {}
+    public Tipo() {}
 
-    Tipo(byte id) {
+    public Tipo(byte id) {
 
 //      set the variable of this same class as the value received
         this.id = id;
@@ -117,87 +117,86 @@ class Tipo {
 
 
 //  gets
-    byte getid() {
+    public byte getid() {
 
 //      return the value of the variable "tipo" of this same class
         return id;
-
     }
 
-    boolean getMoveCima() {
+    public boolean getMoveCima() {
 
         return moveCima;
 
     }
 
-    boolean getMoveBaixo() {
+    public boolean getMoveBaixo() {
 
         return moveBaixo;
 
     }
 
-    boolean getMoveEsquerda() {
+    public boolean getMoveEsquerda() {
 
         return moveEsquerda;
 
     }
 
-    boolean getMoveDireita() {
+    public boolean getMoveDireita() {
 
         return moveDireita;
 
     }
 
-    boolean getMoveBaixoDireta() {
+    public boolean getMoveBaixoDireta() {
 
         return moveBaixoDireita;
 
     }
 
-    boolean getMoveBaixoEsquerda() {
+    public boolean getMoveBaixoEsquerda() {
 
         return moveBaixoEsquerda;
 
     }
 
-    boolean getMoveCimaDireita() {
+    public boolean getMoveCimaDireita() {
 
         return moveCimaDireita;
 
     }
 
-    boolean getMoveCimaEsquerda() {
+    public boolean getMoveCimaEsquerda() {
 
         return moveCimaEsquerda;
 
     }
 
-    int getMaxMovHorizontal() {
+    public int getMaxMovHorizontal() {
 
         return maxMovHorizontal;
 
     }
 
-    int getMaxMovVertical() {
+    public int getMaxMovVertical() {
 
         return maxMovVertical;
 
     }
 
-    int getMinMovHorizontal() {
+    public int getMinMovHorizontal() {
 
         return minMovHorizontal;
 
     }
 
-    int getMinMovVertical() {
+    public int getMinMovVertical() {
 
         return minMovVertical;
 
     }
 
-    //  change
-    boolean changeTipo(Tipo tipo) {
+//  change
+    public boolean changeTipo(Tipo tipo) {
 
 //      it tries to chage the value of the variable "tipo"
         try {
