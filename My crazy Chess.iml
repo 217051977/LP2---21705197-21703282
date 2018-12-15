@@ -7,8 +7,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="LP2GUIViewer1819-v001" level="project" />
-    <orderEntry type="library" name="LP2GUIViewer1819-v002" level="project" />
     <orderEntry type="module-library">
       <library name="JUnit4">
         <CLASSES>
