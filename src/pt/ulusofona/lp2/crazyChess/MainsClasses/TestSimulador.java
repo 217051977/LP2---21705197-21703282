@@ -115,7 +115,7 @@ public class TestSimulador {
         Simulador simulador = new Simulador(4);
         createCrazyPiece(simulador, 1, 0, 0, 20, "White");
         simulador.processaJogada(0,0,0,2);
-        assertEquals("You can't move the enemy pieces!", 1, simulador.getNumberOfInvalidPlaysByWhiteTeam());
+        assertEquals("You can't move the enemy pieces!", 1, simulador.getNumberOfInvalidPlaysByBlackTeam());
     }
 
     @Test
@@ -123,7 +123,7 @@ public class TestSimulador {
         Simulador simulador = new Simulador(4);
         createCrazyPiece(simulador, 1, 0, 1, 10, "Black");
         simulador.processaJogada(0,1,0,1);
-        assertEquals("You can't move the to the same position!", 1, simulador.getNumberOfInvalidPlaysByWhiteTeam());
+        assertEquals("You can't move the to the same position!", 1, simulador.getNumberOfInvalidPlaysByBlackTeam());
     }
 
     @Test
@@ -131,7 +131,7 @@ public class TestSimulador {
         Simulador simulador = new Simulador(4);
         createCrazyPiece(simulador, 1, 0, 2, 10, "Black");
         simulador.processaJogada(0,1,0,0);
-        assertEquals("You can't move an not existent piece!", 1, simulador.getNumberOfInvalidPlaysByWhiteTeam());
+        assertEquals("You can't move an not existent piece!", 1, simulador.getNumberOfInvalidPlaysByBlackTeam());
     }
 
     @Test
@@ -139,7 +139,7 @@ public class TestSimulador {
         Simulador simulador = new Simulador(4);
         createCrazyPiece(simulador, 1, 0, 4, 10, "Black");
         simulador.processaJogada(0,4,0,0);
-        assertEquals("You can't move more than what the piece allow you to!", 1, simulador.getNumberOfInvalidPlaysByWhiteTeam());
+        assertEquals("You can't move more than what the piece allow you to!", 1, simulador.getNumberOfInvalidPlaysByBlackTeam());
     }
 
     @Test
@@ -166,7 +166,7 @@ public class TestSimulador {
         Simulador simulador = new Simulador(4);
         simulador.shift.addCount();
         createCrazyPiece(simulador, 1, 0, 2, 20, "White");
-        simulador.processaJogada(0,2,0,0);
+        simulador.processaJogada(0,2,0,3);
         assertEquals("Shouldn't be considered as a valid play!", 1, simulador.getNumberOfValidPlaysByWhiteTeam());
     }
 
@@ -184,7 +184,7 @@ public class TestSimulador {
         Simulador simulador = new Simulador(4);
         createCrazyPiece(simulador, 1, 0, 1, 10, "Black");
         simulador.processaJogada(0,1,0,0);
-        assertEquals("Shouldn't be considered as a valid play!", 1, simulador.getNumberOfValidPlaysByWhiteTeam());
+        assertEquals("Shouldn't be considered as a valid play!", 1, simulador.getNumberOfValidPlaysByBlackTeam());
     }
 
 //  Score
@@ -202,7 +202,7 @@ public class TestSimulador {
     public void testGetIDPiece() {
         Simulador simulador = new Simulador();
         createCrazyPiece(simulador, 1, 0, 0, 10, "Black");
-        assertEquals("Should be \"10\"!", 10, simulador.getIDPeca(0, 0));
+        assertEquals("Should be \"10\"!", 1, simulador.getIDPeca(0, 0));
     }
 
 //  This Shift Team Id
@@ -217,7 +217,7 @@ public class TestSimulador {
     public void testGetShift() {
         Simulador simulador = new Simulador();
         Shift shift = new Shift();
-        assertEquals("Should be:\n Team ID: 10\nCount without captures: 0\nShift counter: 0", shift, simulador.getShift());
+        assertEquals("Should be:\n Team ID: 10\nCount without captures: 0\nShift counter: 0", shift.toString(), simulador.getShift().toString());
     }
 
 //  First Capture
@@ -226,8 +226,8 @@ public class TestSimulador {
     public void testGetFirstCapture_True_AsWhite() {
         Simulador simulador = new Simulador(4);
         simulador.shift.addCount();
-        createCrazyPiece(simulador, 1, 0, 0, 20, "White");
-        createCrazyPiece(simulador, 2, 1, 1, 10, "Black");
+        createCrazyPiece(simulador, 1, 1, 1, 20, "White");
+        createCrazyPiece(simulador, 2, 0, 0, 10, "Black");
         simulador.processaJogada(1,1,0,0);
         assertTrue("First Capture should be true!", simulador.getFirstCapture());
     }
@@ -246,8 +246,8 @@ public class TestSimulador {
     @Test
     public void testGetFirstCapture_True_AsBlack() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 0, 20, "White");
-        createCrazyPiece(simulador, 2, 1, 1, 10, "Black");
+        createCrazyPiece(simulador, 1, 1, 1, 20, "White");
+        createCrazyPiece(simulador, 2, 0, 0, 10, "Black");
         simulador.processaJogada(0,0,1,1);
         assertTrue("First Capture should be true!", simulador.getFirstCapture());
     }
@@ -290,107 +290,100 @@ public class TestSimulador {
 
 //  Start Game
     @Test
-    public void testStartGame_MissingFile() {
-        Simulador simulador = new Simulador();
-        File file = new File("");
-        assertFalse("File missing", simulador.iniciaJogo(file));
-    }
-
-    @Test
     public void testStartGame_Empty() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_EMPTY");
+        File file = new File("FILE_TEST_EMPTY.txt");
         assertFalse("There's no info in it!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Missing_BoardSize() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_MISSING_BOARD_SIZE");
+        File file = new File("FILE_TEST_MISSING_BOARD_SIZE.txt");
         assertFalse("Board size or numbers of pieces are missing!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Lower_BoardSize() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_LOWER_BOARD_SIZE");
+        File file = new File("FILE_TEST_LOWER_BOARD_SIZE.txt");
         assertFalse("Board Size is lower than the layout or is too much info on the layout it self!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Higher_BoardSize() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_HIGHER_BOARD_SIZE");
+        File file = new File("FILE_TEST_HIGHER_BOARD_SIZE.txt");
         assertFalse("Board Size is higher than the layout or is missing info on the layout it self!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Missing_NumberOfPieces() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_MISSING_NUMBER_OF_PIECES");
+        File file = new File("FILE_TEST_MISSING_NUMBER_OF_PIECES.txt");
         assertFalse("Board size or numbers of pieces are missing!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Lower_NumberOfPieces() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_LOWER_NUMBER_OF_PIECES");
+        File file = new File("FILE_TEST_LOWER_NUMBER_OF_PIECES.txt");
         assertFalse("Board Size is lower than the layout or is too much info on the layout it self!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Higher_NumberOfPieces() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_HIGHER_NUMBER_OF_PIECES");
+        File file = new File("FILE_TEST_HIGHER_NUMBER_OF_PIECES.txt");
         assertFalse("Board Size is higher than the layout or is missing info on the layout it self!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Missing_Pieces_LineAndColumn() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_MISSING_PIECES_LINE_AND_COLUMN");
+        File file = new File("FILE_TEST_MISSING_PIECES_LINE_AND_COLUMN.txt");
         assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Missing_Pieces_Line() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_MISSING_PIECES_LINE");
+        File file = new File("FILE_TEST_MISSING_PIECES_LINE.txt");
         assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Missing_Pieces_Column() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_MISSING_PIECES_COLUMN");
+        File file = new File("FILE_TEST_MISSING_PIECES_COLUMN.txt");
         assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Missing_Board_LineAndColumn() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_MISSING_BOARD_LINE_AND_COLUMN");
+        File file = new File("FILE_TEST_MISSING_BOARD_LINE_AND_COLUMN.txt");
         assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Missing_Board_Line() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_MISSING_BOARD_LINE");
+        File file = new File("FILE_TEST_MISSING_BOARD_LINE.txt");
         assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Missing_Board_Column() {
         Simulador simulador = new Simulador();
-        File file = new File("FILE_TEST_MISSING_BOARD_COLUMN");
+        File file = new File("FILE_TEST_MISSING_BOARD_COLUMN.txt");
         assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
     }
 
     @Test
     public void testStartGame_Correct() {
         Simulador simulador = new Simulador();
-        File file = new File("RUN_FILE");
+        File file = new File("RUN_FILE.txt");
         assertTrue("Should work!", simulador.iniciaJogo(file));
     }
 
@@ -476,18 +469,18 @@ public class TestSimulador {
     @Test
     public void testGameOver_TwoWhiteKingsAndOneBlackKing() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 13, 0, 0, 20, "White");
-        createCrazyPiece(simulador, 14, 1, 0, 10, "Black");
-        createCrazyPiece(simulador, 15, 2, 0, 20, "White");
+        createCrazyPiecePresentInGame(simulador, 13, 0, 20, "White");
+        createCrazyPiecePresentInGame(simulador, 14, 1, 10, "Black");
+        createCrazyPiecePresentInGame(simulador, 15, 2, 20, "White");
         assertFalse("With two white kings and one black king the game keeps rolling", simulador.jogoTerminado());
     }
 
     @Test
     public void testGameOver_OneWhiteKingAndTwoBlackKings() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 13, 0, 0, 10, "Black");
-        createCrazyPiece(simulador, 14, 1, 0, 20, "White");
-        createCrazyPiece(simulador, 15, 2, 0, 10, "Black");
+        createCrazyPiecePresentInGame(simulador, 13, 0, 10, "Black");
+        createCrazyPiecePresentInGame(simulador, 14, 1, 20, "White");
+        createCrazyPiecePresentInGame(simulador, 15, 2, 10, "Black");
         assertFalse("With one white king and two black kings the game keeps rolling!", simulador.jogoTerminado());
     }
 
@@ -499,6 +492,17 @@ public class TestSimulador {
         Tipo rei = new Tipo((byte) 0);
         Position piecePosition = new Position(x,y);
         CrazyPiece piece = new CrazyPiece(PieceId, rei, idTeam, name);
+        piece.setPosition(piecePosition);
+        simulador.crazyPieces.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame(Simulador simulador, int PieceId, int x, int idTeam, String name) {
+
+        Tipo rei = new Tipo((byte) 0);
+        Position piecePosition = new Position(x, 0);
+        CrazyPiece piece = new CrazyPiece(PieceId, rei, idTeam, name);
+        piece.estaEmJogo();
         piece.setPosition(piecePosition);
         simulador.crazyPieces.add(piece);
 

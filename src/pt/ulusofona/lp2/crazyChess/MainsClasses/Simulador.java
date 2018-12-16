@@ -1,5 +1,6 @@
 package pt.ulusofona.lp2.crazyChess.MainsClasses;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import pt.ulusofona.lp2.crazyChess.CrazyPiece.Tipo;
 import pt.ulusofona.lp2.crazyChess.Position;
 import pt.ulusofona.lp2.crazyChess.Shift;
@@ -34,7 +35,7 @@ public class Simulador {
 
     public Simulador(int boardSize) {
 
-        this.boardSize = ~boardSize;
+        this.boardSize = boardSize;
 
     }
 
@@ -196,9 +197,15 @@ public class Simulador {
 
             Scanner scan = new Scanner(ficheiroInicial);
 
+            if (!scan.hasNextLine()) {
+
+                return false;
+
+            }
+
             int nPieces = 0,
                     nPiecesMaxIndex,
-                    tamanhoTabuleiroMaxIndex,
+                    boardSizeMaxIndex = 0,
                     nLines = 0,
                     yPosition = 0;
             String[] piecesInfo;
@@ -209,34 +216,67 @@ public class Simulador {
                 String linha = scan.nextLine();
                 System.out.println(linha);
                 nPiecesMaxIndex = nPieces + 2;
-                tamanhoTabuleiroMaxIndex = boardSize + nPiecesMaxIndex;
+                boardSizeMaxIndex = boardSize + nPiecesMaxIndex;
 
                 /*
 
-                quatro partes;
+                tenho de ver se n pecas != npecasmax
+                tenho de ver se n npecasmax e != maxtabuleiro
 
-                1 - dimensoes do tabuleiro => int
-                2 - quantidade peças existentes no tabuleiro
-                3 - descreve as pecas existentes no tabuleiro
-                4 - conteudo inicial do tabuleiro ( posicao das pecas)
+                 */
 
-
-                */
-
-
-                // check if the number of pieces is lower than the tamnhoTabuleiro^2
+//                quatro partes;
+//
+//                1 - dimensoes do tabuleiro => int
+//                2 - quantidade peças existentes no tabuleiro
+//                3 - descreve as pecas existentes no tabuleiro
+//                4 - conteudo inicial do tabuleiro ( posicao das pecas)
 
                 if (nLines == 0) {
 
-                    boardSize = Integer.parseInt(linha);
+                    try {
+
+                        boardSize = Integer.parseInt(linha);
+
+                    }catch (ArithmeticException notAnInteger) {
+
+                        return false;
+
+                    }
 
                 } else if (nLines == 1) {
 
-                    nPieces = Integer.parseInt(linha);
+                    try {
+
+                        nPieces = Integer.parseInt(linha);
+
+                    }catch (ArithmeticException notAnInteger) {
+
+                        return false;
+
+                    }
 
                 } else if (nLines < nPiecesMaxIndex) {
 
                     piecesInfo = linha.split(":");
+
+                    if (piecesInfo.length != 4) {
+
+                        return false;
+
+                    }
+
+                    try {
+
+                        Integer.parseInt(piecesInfo[3]);
+                        return false;
+
+                    } catch (Exception e) {
+
+                        Ignore isAPiece;
+
+                    }
+
                     Tipo tipo = new Tipo(Byte.parseByte(piecesInfo[1])); //check if there's only 0 type
                     CrazyPiece peca = new CrazyPiece(Integer.parseInt(piecesInfo[0]),
                             tipo,
@@ -245,9 +285,15 @@ public class Simulador {
 
                     crazyPieces.add(peca);
 
-                } else if (nLines < tamanhoTabuleiroMaxIndex) {
+                } else if (nLines < boardSizeMaxIndex) {
 
                     boardInfo = linha.split(":");
+
+                    if (boardInfo.length != boardSize) {
+
+                        return false;
+
+                    }
 
                     for (int index = 0; index < boardInfo.length; index++) {
 
@@ -261,6 +307,7 @@ public class Simulador {
                                     peca.setPosition(position);
                                     peca.estaEmJogo();
                                     System.out.println(peca);
+                                    break;
 
                                 }
 
@@ -283,7 +330,7 @@ public class Simulador {
 
             }
 
-            return true;
+            return nLines == boardSizeMaxIndex;
 
         } catch (FileNotFoundException e) {
 
@@ -349,8 +396,6 @@ public class Simulador {
 
                     }
 
-                    addScoresStatsInvalid();
-
                     break;
 
                 }
@@ -358,6 +403,8 @@ public class Simulador {
             }
 
         }
+
+        addScoresStatsInvalid();
 
         return false;
 
@@ -390,11 +437,11 @@ public class Simulador {
 
                     if (peca.getTipo().getid() == 0) {
 
-                        if (peca.getIDTeam() == 0) {
+                        if (peca.getIDTeam() == 10) {
 
                             nreiPreto++;
 
-                        } else if (peca.getIDTeam() == 1) {
+                        } else if (peca.getIDTeam() == 20) {
 
                             nreiBranco++;
 
@@ -721,13 +768,13 @@ public class Simulador {
 
                     switch (shift.getIdTeam()) {
 
-                        case 0: {
+                        case 10: {
 
                             addScoresStats(0,1,0,1);
 
                         }break;
 
-                        case 1: {
+                        case 20: {
 
                             addScoresStats(1,0,1,0);
 
@@ -757,13 +804,13 @@ public class Simulador {
 
         switch (shift.getIdTeam()) {
 
-            case 0: {
+            case 10: {
 
                 addScoresStats(0,0,0,1);
 
             }break;
 
-            case 1: {
+            case 20: {
 
                 addScoresStats(0,0,1,0);
 
@@ -868,13 +915,13 @@ public class Simulador {
 
         switch (shift.getIdTeam()) {
 
-            case 0: {
+            case 10: {
 
                 numberOfInvalidPlaysByBlackTeam++;
 
             }break;
 
-            case 1: {
+            case 20: {
 
                 numberOfInvalidPlaysByWhiteTeam++;
 
