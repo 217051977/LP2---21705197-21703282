@@ -7,7 +7,7 @@ class ReiBranco extends Rei {
         super.id = id;
         super.idTeam = idTeam;
         super.name = name;
-        super.imagePNG = "icons8-king-50-white.png";
+        super.imagePNG = "Marvel/King/Ant_Man.png";
 
     }
 

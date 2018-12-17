@@ -89,7 +89,7 @@ public class Simulador {
 
     }
 
-    public int getThisShiftTeamID() {
+    public int getIDEquipaAJogar() {
 
         return shift.getIdTeam();
 
@@ -411,7 +411,19 @@ public class Simulador {
 
                     } else if (Integer.parseInt(piecesInfo[1]) == 7) {
 
-                        piece = new Joker();
+                        if (Integer.parseInt(piecesInfo[2]) == 10) {
+
+                            piece = new JokerPreto(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+
+                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
+
+                            piece = new JokerBranco(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+
+                        } else {
+
+                            throw new NumberFormatException();
+
+                        }
 //
 //                    } else if (Integer.parseInt(piecesInfo[1]) == 8) {
 //

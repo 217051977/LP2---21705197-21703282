@@ -7,7 +7,7 @@ class RainhaPreta extends Rainha {
         super.id = id;
         super.idTeam = idTeam;
         super.name = name;
-        super.imagePNG = "rainha_black.png";
+        super.imagePNG = "DC/Queen/Bumble_Bee.png";
 
     }
 

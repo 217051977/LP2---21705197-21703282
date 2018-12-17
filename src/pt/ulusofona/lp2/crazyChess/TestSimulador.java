@@ -213,7 +213,7 @@ public class TestSimulador {
     @Test
     public void testGetThisShiftTeamID() {
         Simulador simulador = new Simulador();
-        assertEquals("Should be \"10\"!", 10, simulador.getThisShiftTeamID());
+        assertEquals("Should be \"10\"!", 10, simulador.getIDEquipaAJogar());
     }
 
 //  Shift

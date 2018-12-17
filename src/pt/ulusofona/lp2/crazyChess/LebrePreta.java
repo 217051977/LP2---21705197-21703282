@@ -7,7 +7,7 @@ class LebrePreta extends Lebre {
         super.id = id;
         super.idTeam = idTeam;
         super.name = name;
-        super.imagePNG = "lebre_black.png";
+        super.imagePNG = "DC/Bunny/Flash.png";
 
     }
 
