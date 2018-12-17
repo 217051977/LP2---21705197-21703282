@@ -1,4 +1,4 @@
-package pt.ulusofona.lp2.crazyChess.MainsClasses;
+package pt.ulusofona.lp2.crazyChess;
 
 import java.io.File;
 import java.io.FileWriter;

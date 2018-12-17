@@ -1,5 +1,5 @@
 
-package pt.ulusofona.lp2.crazyChess.CrazyPiece;
+package pt.ulusofona.lp2.crazyChess;
 
 public class Tipo {
 

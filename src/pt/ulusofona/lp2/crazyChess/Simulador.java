@@ -1,10 +1,7 @@
-package pt.ulusofona.lp2.crazyChess.MainsClasses;
+package pt.ulusofona.lp2.crazyChess;
 
 import jdk.nashorn.internal.ir.annotations.Ignore;
-import pt.ulusofona.lp2.crazyChess.CrazyPiece.Tipo;
-import pt.ulusofona.lp2.crazyChess.Position;
-import pt.ulusofona.lp2.crazyChess.Shift;
-import pt.ulusofona.lp2.crazyChess.Team;
+import pt.ulusofona.lp2.crazyChess.CrazyPiece.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -76,11 +73,11 @@ public class Simulador {
 
         Position position = new Position(x, y);
 
-        for (CrazyPiece peca: crazyPieces){
+        for (CrazyPiece piece: crazyPieces){
 
-            if (peca.getPosition().equals(position)) {
+            if (piece.getPosition().equals(position)) {
 
-                return peca.getId();
+                return piece.getId();
 
             }
 
@@ -154,11 +151,11 @@ public class Simulador {
 
 
 //  sets
-//    public boolean setPeca(CrazyPiece peca) {
+//    public boolean setPeca(CrazyPiece piece) {
 //
 //        try {
 //
-//            this.pecasMalucas.add(peca);
+//            this.piecesMalucas.add(piece);
 //
 //
 //            return true;
@@ -173,11 +170,11 @@ public class Simulador {
 //
 //    }
 //
-//    public boolean removePeca(CrazyPiece peca) {
+//    public boolean removePeca(CrazyPiece piece) {
 //
 //        try {
 //
-//            this.pecasMalucas.remove(peca);
+//            this.piecesMalucas.remove(piece);
 //
 //            return true;
 //
@@ -199,7 +196,7 @@ public class Simulador {
 
             if (!scan.hasNextLine()) {
 
-                return false;
+                throw new NullPointerException();
 
             }
 
@@ -220,8 +217,8 @@ public class Simulador {
 
                 /*
 
-                tenho de ver se n pecas != npecasmax
-                tenho de ver se n npecasmax e != maxtabuleiro
+                tenho de ver se n pieces != npiecesmax
+                tenho de ver se n npiecesmax e != maxtabuleiro
 
                  */
 
@@ -229,8 +226,8 @@ public class Simulador {
 //
 //                1 - dimensoes do tabuleiro => int
 //                2 - quantidade peças existentes no tabuleiro
-//                3 - descreve as pecas existentes no tabuleiro
-//                4 - conteudo inicial do tabuleiro ( posicao das pecas)
+//                3 - descreve as pieces existentes no tabuleiro
+//                4 - conteudo inicial do tabuleiro ( posicao das pieces)
 
                 if (nLines == 0) {
 
@@ -262,28 +259,171 @@ public class Simulador {
 
                     if (piecesInfo.length != 4) {
 
-                        return false;
+                        throw new NullPointerException();
 
                     }
 
-                    try {
+                    for (int i = 0; i < 4; i++) {
 
-                        Integer.parseInt(piecesInfo[3]);
-                        return false;
+                        if (i == 3) {
 
-                    } catch (Exception e) {
+                            try {
 
-                        Ignore isAPiece;
+                                Integer.parseInt(piecesInfo[i]);
+                                return false;
+
+                            } catch (Exception e) {
+
+                                Ignore isAPiece;
+
+                            }
+
+                        }else {
+
+                            try {
+
+                                Integer.parseInt(piecesInfo[i]);
+
+                            } catch (Exception e) {
+
+                                return false;
+
+                            }
+
+                        }
 
                     }
 
-                    Tipo tipo = new Tipo(Byte.parseByte(piecesInfo[1])); //check if there's only 0 type
-                    CrazyPiece peca = new CrazyPiece(Integer.parseInt(piecesInfo[0]),
-                            tipo,
-                            Integer.parseInt(piecesInfo[2]),
-                            piecesInfo[3]);
+                    CrazyPiece piece;
 
-                    crazyPieces.add(peca);
+
+                    if (Integer.parseInt(piecesInfo[1]) == 0) {
+
+                        if (Integer.parseInt(piecesInfo[2]) == 10) {
+
+                            piece = new ReiPreto(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+
+                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
+
+                            piece = new ReiBranco(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+
+                        } else {
+
+                            throw new NumberFormatException();
+
+                        }
+
+                    } else if (Integer.parseInt(piecesInfo[1]) == 1) {
+
+                        if (Integer.parseInt(piecesInfo[2]) == 10) {
+
+                            piece = new RainhaPreta(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+
+                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
+
+                            piece = new RainhaBranca(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+
+                        } else {
+
+                            throw new NumberFormatException();
+
+                        }
+
+                    } else if (Integer.parseInt(piecesInfo[1]) == 2) {
+
+                        if (Integer.parseInt(piecesInfo[2]) == 10) {
+
+                            piece = new PoneiMagicoPreto(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+
+                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
+
+                            piece = new PoneiMagicoBranco(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+
+                        } else {
+
+                            throw new NumberFormatException();
+
+                        }
+
+                    } else if (Integer.parseInt(piecesInfo[1]) == 3) {
+
+                        if (Integer.parseInt(piecesInfo[2]) == 10) {
+
+                            piece = new PadreDaVilaPreto(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+
+                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
+
+                            piece = new PadreDaVilaBranco(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+
+                        } else {
+
+                            throw new NumberFormatException();
+
+                        }
+
+                    } else if (Integer.parseInt(piecesInfo[1]) == 4) {
+
+                        if (Integer.parseInt(piecesInfo[2]) == 10) {
+
+                            piece = new TorreHPreta(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+
+                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
+
+                            piece = new TorreHBranca(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+
+                        } else {
+
+                            throw new NumberFormatException();
+
+                        }
+
+                    } else if (Integer.parseInt(piecesInfo[1]) == 5) {
+
+                        if (Integer.parseInt(piecesInfo[2]) == 10) {
+
+                            piece = new TorreVPreta(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+
+                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
+
+                            piece = new TorreVBranca(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+
+                        } else {
+
+                            throw new NumberFormatException();
+
+                        }
+
+                    } else if (Integer.parseInt(piecesInfo[1]) == 6) {
+
+                        if (Integer.parseInt(piecesInfo[2]) == 10) {
+
+                            piece = new LebrePreta(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+
+                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
+
+                            piece = new LebreBranca(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+
+                        } else {
+
+                            throw new NumberFormatException();
+
+                        }
+
+                    } else if (Integer.parseInt(piecesInfo[1]) == 7) {
+
+                        piece = new Joker();
+//
+//                    } else if (Integer.parseInt(piecesInfo[1]) == 8) {
+//
+//                        piece = new Rei();
+//
+                    } else {
+
+                        throw new NumberFormatException();
+
+                    }
+
+                    crazyPieces.add(piece);
 
                 } else if (nLines < boardSizeMaxIndex) {
 
@@ -291,7 +431,7 @@ public class Simulador {
 
                     if (boardInfo.length != boardSize) {
 
-                        return false;
+                        throw new NullPointerException();
 
                     }
 
@@ -299,14 +439,14 @@ public class Simulador {
 
                         if (Integer.parseInt(boardInfo[index]) != 0) {
 
-                            for (CrazyPiece peca : crazyPieces) { //peca olaf
+                            for (CrazyPiece piece : crazyPieces) {
 
-                                if (peca.getId() == Integer.parseInt(boardInfo[index])) {
+                                if (piece.getId() == Integer.parseInt(boardInfo[index])) {
 
                                     Position position = new Position(index, yPosition);
-                                    peca.setPosition(position);
-                                    peca.estaEmJogo();
-                                    System.out.println(peca);
+                                    piece.setPosition(position);
+                                    piece.isInGame();
+                                    System.out.println(piece);
                                     break;
 
                                 }
@@ -349,6 +489,7 @@ public class Simulador {
             System.out.println("There's information missing in the file!");
 
             return false;
+
         }
 
     }
@@ -361,11 +502,11 @@ public class Simulador {
 
             Position positionOrigin = new Position(xO, yO);
 
-            for (CrazyPiece peca : crazyPieces) {
+            for (CrazyPiece piece : crazyPieces) {
 
-                if (peca.getPosition().equals(positionOrigin)) {
+                if (piece.getPosition().equals(positionOrigin)) {
 
-                    if (peca.getIDTeam() == shift.getIdTeam()) {
+                    if (piece.getIDTeam() == shift.getIdTeam()) {
 
                         int xDiference = xD - xO;
                         int yDiference = yD - yO;
@@ -383,14 +524,14 @@ public class Simulador {
 
                         }
 
-                        if (peca.getTipo().getMinMovHorizontal() <= xDiferenceABS &&
-                                peca.getTipo().getMaxMovHorizontal() >= xDiferenceABS &&
-                                peca.getTipo().getMinMovVertical() <= yDiferenceABS &&
-                                peca.getTipo().getMaxMovVertical() >= yDiferenceABS) {
+                        if (piece.getMinMovHorizontal() <= xDiferenceABS &&
+                                piece.getMaxMovHorizontal() >= xDiferenceABS &&
+                                piece.getMinMovVertical() <= yDiferenceABS &&
+                                piece.getMaxMovVertical() >= yDiferenceABS) {
 
                             Position newPosition = new Position(xD, yD);
 
-                            return verificaMovimentoHorizontal(peca, xDiference, yDiference, newPosition);
+                            return verificaMovimentoHorizontal(piece, xDiference, yDiference, newPosition);
 
                         }
 
@@ -431,17 +572,17 @@ public class Simulador {
 
         } else {
 
-            for (CrazyPiece peca : crazyPieces) {
+            for (CrazyPiece piece : crazyPieces) {
 
-                if (peca.getEmJogo()) {
+                if (piece.getType() == 0) {
 
-                    if (peca.getTipo().getid() == 0) {
+                    if (piece.getInGame()) {
 
-                        if (peca.getIDTeam() == 10) {
+                        if (piece.getIDTeam() == 10) {
 
                             nreiPreto++;
 
-                        } else if (peca.getIDTeam() == 20) {
+                        } else if (piece.getIDTeam() == 20) {
 
                             nreiBranco++;
 
@@ -455,7 +596,7 @@ public class Simulador {
 
             if (nreiPreto == 0) {
 
-                System.out.println("ENCERAM AS BRANCAS");
+                System.out.println("VENCERAM AS BRANCAS");
 
                 addScoreStatsToPrint("VENCERAM AS BRANCAS");
 
@@ -463,7 +604,7 @@ public class Simulador {
 
             } else if (nreiBranco == 0) {
 
-                System.out.println("ENCERAM AS PRETAS");
+                System.out.println("VENCERAM AS PRETAS");
 
                 addScoreStatsToPrint("VENCERAM AS PRETAS");
 
@@ -486,15 +627,15 @@ public class Simulador {
     }
 
 //  private functions
-    private boolean verificaMovimentoHorizontal(CrazyPiece peca, int xDiference, int yDiference, Position newPosition) {
+    private boolean verificaMovimentoHorizontal(CrazyPiece piece, int xDiference, int yDiference, Position newPosition) {
 
         if (xDiference > 0) {
 
-            if (peca.getTipo().getMoveDireita()) {
+            if (piece.getMoveDireita()) {
 
-                return verificaMovimentoVertical(peca, xDiference, yDiference, 'R', newPosition);
+                return verificaMovimentoVertical(piece, xDiference, yDiference, 'R', newPosition);
 
-            } else if (verificaMovimentoDiagonal(peca, xDiference, yDiference, newPosition)) {
+            } else if (verificaMovimentoDiagonal(piece, xDiference, yDiference, newPosition)) {
 
                 return true;
 
@@ -502,16 +643,16 @@ public class Simulador {
 
             addScoresStatsInvalid();
 
-            return verificaPossiveisMovimentos(peca);
+            return verificaPossiveisMovimentos(piece);
 
         } else if (xDiference < 0) {
 
-            if (peca.getTipo().getMoveEsquerda()) {
+            if (piece.getMoveEsquerda()) {
 
-                return verificaMovimentoVertical(peca, xDiference, yDiference, 'L', newPosition);
+                return verificaMovimentoVertical(piece, xDiference, yDiference, 'L', newPosition);
 
 
-            } else if (verificaMovimentoDiagonal(peca, xDiference, yDiference, newPosition)) {
+            } else if (verificaMovimentoDiagonal(piece, xDiference, yDiference, newPosition)) {
 
                 return true;
 
@@ -519,15 +660,15 @@ public class Simulador {
 
             addScoresStatsInvalid();
 
-            return verificaPossiveisMovimentos(peca);
+            return verificaPossiveisMovimentos(piece);
 
         }
 
-        return verificaMovimentoVertical(peca, xDiference, yDiference, 'N', newPosition);
+        return verificaMovimentoVertical(piece, xDiference, yDiference, 'N', newPosition);
 
     }
 
-    private boolean verificaMovimentoVertical(CrazyPiece peca, int xDiference, int yDiference, char leftOrRight,
+    private boolean verificaMovimentoVertical(CrazyPiece piece, int xDiference, int yDiference, char leftOrRight,
                                                 Position newPosition) {
 
         switch (leftOrRight) {
@@ -536,11 +677,11 @@ public class Simulador {
 
                 if (yDiference > 0) {
 
-                    if (peca.getTipo().getMoveCima()) {
+                    if (piece.getMoveCima()) {
 
                         if (verificaPosicaoVazia(newPosition)) {
 
-                            moveUpRight(peca, xDiference, yDiference);
+                            moveUpRight(piece, xDiference, yDiference);
 
                             return true;
 
@@ -550,15 +691,15 @@ public class Simulador {
 
                     addScoresStatsInvalid();
 
-                    return verificaPossiveisMovimentos(peca);
+                    return verificaPossiveisMovimentos(piece);
 
                 } else if (yDiference < 0) {
 
-                    if (peca.getTipo().getMoveBaixo()) {
+                    if (piece.getMoveBaixo()) {
 
                         if (verificaPosicaoVazia(newPosition)) {
 
-                            moveDownRight(peca, xDiference, yDiference);
+                            moveDownRight(piece, xDiference, yDiference);
 
                             return true;
 
@@ -569,14 +710,14 @@ public class Simulador {
 
                     addScoresStatsInvalid();
 
-                    return verificaPossiveisMovimentos(peca);
+                    return verificaPossiveisMovimentos(piece);
 
 
                 }
 
                 if (verificaPosicaoVazia(newPosition)) {
 
-                    moveRight(peca, xDiference);
+                    moveRight(piece, xDiference);
 
                     return true;
 
@@ -588,11 +729,11 @@ public class Simulador {
 
                 if (yDiference > 0) {
 
-                    if (peca.getTipo().getMoveCima()) {
+                    if (piece.getMoveCima()) {
 
                         if (verificaPosicaoVazia(newPosition)) {
 
-                            moveUpLeft(peca, xDiference, yDiference);
+                            moveUpLeft(piece, xDiference, yDiference);
 
                             return true;
 
@@ -602,15 +743,15 @@ public class Simulador {
 
                     addScoresStatsInvalid();
 
-                    return verificaPossiveisMovimentos(peca);
+                    return verificaPossiveisMovimentos(piece);
 
                 } else if (yDiference < 0) {
 
-                    if (peca.getTipo().getMoveBaixo()) {
+                    if (piece.getMoveBaixo()) {
 
                         if (verificaPosicaoVazia(newPosition)) {
 
-                            moveDownLeft(peca, xDiference, yDiference);
+                            moveDownLeft(piece, xDiference, yDiference);
 
                             return true;
 
@@ -621,14 +762,14 @@ public class Simulador {
 
                     addScoresStatsInvalid();
 
-                    return verificaPossiveisMovimentos(peca);
+                    return verificaPossiveisMovimentos(piece);
 
 
                 }
 
                 if (verificaPosicaoVazia(newPosition)) {
 
-                    moveLeft(peca, xDiference);
+                    moveLeft(piece, xDiference);
 
                     return true;
 
@@ -640,11 +781,11 @@ public class Simulador {
 
                 if (yDiference > 0) {
 
-                    if (peca.getTipo().getMoveCima()) {
+                    if (piece.getMoveCima()) {
 
                         if (verificaPosicaoVazia(newPosition)) {
 
-                            moveUp(peca, yDiference);
+                            moveUp(piece, yDiference);
 
                             return true;
 
@@ -654,15 +795,15 @@ public class Simulador {
 
                     addScoresStatsInvalid();
 
-                    return verificaPossiveisMovimentos(peca);
+                    return verificaPossiveisMovimentos(piece);
 
                 } else if (yDiference < 0) {
 
-                    if (peca.getTipo().getMoveBaixo()) {
+                    if (piece.getMoveBaixo()) {
 
                         if (verificaPosicaoVazia(newPosition)) {
 
-                            moveDown(peca, yDiference);
+                            moveDown(piece, yDiference);
 
                             return true;
 
@@ -673,7 +814,7 @@ public class Simulador {
 
                     addScoresStatsInvalid();
 
-                    return verificaPossiveisMovimentos(peca);
+                    return verificaPossiveisMovimentos(piece);
 
 
                 }
@@ -690,15 +831,15 @@ public class Simulador {
     }
 
 //  comentar
-    private boolean verificaMovimentoDiagonal(CrazyPiece peca, int xDiference, int yDiference, Position newPosition) {
+    private boolean verificaMovimentoDiagonal(CrazyPiece piece, int xDiference, int yDiference, Position newPosition) {
 
         if (xDiference > 0) {
 
-            if (peca.getTipo().getMoveCimaDireita()) {
+            if (piece.getMoveCimaDireita()) {
 
                 if (verificaPosicaoVazia(newPosition)) {
 
-                    moveUpRight(peca, xDiference, yDiference);
+                    moveUpRight(piece, xDiference, yDiference);
 
                     return true;
 
@@ -706,11 +847,11 @@ public class Simulador {
 
                 addScoresStatsInvalid();
 
-            } else if (peca.getTipo().getMoveBaixoDireta()) {
+            } else if (piece.getMoveBaixoDireta()) {
 
                 if (verificaPosicaoVazia(newPosition)) {
 
-                    moveDownRight(peca, xDiference, yDiference);
+                    moveDownRight(piece, xDiference, yDiference);
 
                     return true;
 
@@ -722,11 +863,11 @@ public class Simulador {
 
         } else if (xDiference < 0) {
 
-            if (peca.getTipo().getMoveCimaEsquerda()) {
+            if (piece.getMoveCimaEsquerda()) {
 
                 if (verificaPosicaoVazia(newPosition)) {
 
-                    moveUpLeft(peca, xDiference, yDiference);
+                    moveUpLeft(piece, xDiference, yDiference);
 
                     return true;
 
@@ -734,11 +875,11 @@ public class Simulador {
 
                 addScoresStatsInvalid();
 
-            } else if (peca.getTipo().getMoveBaixoEsquerda()) {
+            } else if (piece.getMoveBaixoEsquerda()) {
 
                 if (verificaPosicaoVazia(newPosition)) {
 
-                    moveDownLeft(peca, xDiference, yDiference);
+                    moveDownLeft(piece, xDiference, yDiference);
 
                     return true;
 
@@ -760,11 +901,11 @@ public class Simulador {
 
     private boolean verificaPosicaoVazia(Position newPosition) {
 
-        for (CrazyPiece peca : crazyPieces) {
+        for (CrazyPiece piece : crazyPieces) {
 
-            if (peca.getPosition().equals(newPosition)) {
+            if (piece.getPosition().equals(newPosition)) {
 
-                if (peca.getIDTeam() != shift.getIdTeam()) {
+                if (piece.getIDTeam() != shift.getIdTeam()) {
 
                     switch (shift.getIdTeam()) {
 
@@ -782,7 +923,7 @@ public class Simulador {
 
                     }
 
-                    crazyPieces.remove(peca);
+                    crazyPieces.remove(piece);
                     firstCapture = true;
                     shift.resetCountNoCapture();
 
@@ -825,78 +966,78 @@ public class Simulador {
     }
 
 //  comentar
-    private boolean verificaPossiveisMovimentos(CrazyPiece peca) {
+    private boolean verificaPossiveisMovimentos(CrazyPiece piece) {
 
         System.out.println("This piece can be moved in this ways: " +
-                "\nLeft: " + peca.getTipo().getMoveEsquerda() +
-                "\nRight: " + peca.getTipo().getMoveDireita() +
-                "\nUp: " + peca.getTipo().getMoveCima() +
-                "\nDown: " + peca.getTipo().getMoveBaixo() +
-                "\nDown and Left: " + peca.getTipo().getMoveBaixoEsquerda() +
-                "\nDown and Right: " + peca.getTipo().getMoveBaixoDireta() +
-                "\nUp and Left: " + peca.getTipo().getMoveCimaEsquerda() +
-                "\nUp and Right: " + peca.getTipo().getMoveCimaDireita());
+                "\nLeft: " + piece.getMoveEsquerda() +
+                "\nRight: " + piece.getMoveDireita() +
+                "\nUp: " + piece.getMoveCima() +
+                "\nDown: " + piece.getMoveBaixo() +
+                "\nDown and Left: " + piece.getMoveBaixoEsquerda() +
+                "\nDown and Right: " + piece.getMoveBaixoDireta() +
+                "\nUp and Left: " + piece.getMoveCimaEsquerda() +
+                "\nUp and Right: " + piece.getMoveCimaDireita());
 
         return false;
 
     }
 
-    private void moveLeft(CrazyPiece peca, int xDiference) {
+    private void moveLeft(CrazyPiece piece, int xDiference) {
 
-        peca.moveLeft((xDiference * (-1)));
+        piece.moveLeft((xDiference * (-1)));
         shift.addCount();
 
     }
 
-    private void moveRight(CrazyPiece peca, int xDiference) {
+    private void moveRight(CrazyPiece piece, int xDiference) {
 
-        peca.moveRight(xDiference);
+        piece.moveRight(xDiference);
         shift.addCount();
 
     }
 
-    private void moveUp(CrazyPiece peca, int yDiference) {
+    private void moveUp(CrazyPiece piece, int yDiference) {
 
-        peca.moveUp(yDiference);
+        piece.moveUp(yDiference);
         shift.addCount();
 
     }
 
-    private void moveDown(CrazyPiece peca, int yDiference) {
+    private void moveDown(CrazyPiece piece, int yDiference) {
 
-        peca.moveDown((yDiference * (-1)));
+        piece.moveDown((yDiference * (-1)));
         shift.addCount();
 
     }
 
-    private void moveDownLeft(CrazyPiece peca, int xDiference, int yDiference) {
+    private void moveDownLeft(CrazyPiece piece, int xDiference, int yDiference) {
 
-        peca.moveDown((yDiference * (-1)));
-        peca.moveLeft((xDiference * (-1)));
+        piece.moveDown((yDiference * (-1)));
+        piece.moveLeft((xDiference * (-1)));
         shift.addCount();
 
     }
 
-    private void moveUpLeft(CrazyPiece peca, int xDiference, int yDiference) {
+    private void moveUpLeft(CrazyPiece piece, int xDiference, int yDiference) {
 
-        peca.moveUp(yDiference);
-        peca.moveLeft((xDiference * (-1)));
+        piece.moveUp(yDiference);
+        piece.moveLeft((xDiference * (-1)));
         shift.addCount();
 
     }
 
-    private void moveUpRight(CrazyPiece peca, int xDiference, int yDiference) {
+    private void moveUpRight(CrazyPiece piece, int xDiference, int yDiference) {
 
-        peca.moveUp(yDiference);
-        peca.moveRight(xDiference);
+        piece.moveUp(yDiference);
+        piece.moveRight(xDiference);
         shift.addCount();
 
     }
 
-    private void moveDownRight(CrazyPiece peca, int xDiference, int yDiference) {
+    private void moveDownRight(CrazyPiece piece, int xDiference, int yDiference) {
 
-        peca.moveDown((yDiference * (-1)));
-        peca.moveRight(xDiference);
+        piece.moveDown((yDiference * (-1)));
+        piece.moveRight(xDiference);
         shift.addCount();
 
     }

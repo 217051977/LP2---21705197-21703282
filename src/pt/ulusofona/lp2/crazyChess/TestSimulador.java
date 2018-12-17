@@ -1,9 +1,6 @@
-package pt.ulusofona.lp2.crazyChess.MainsClasses;
+package pt.ulusofona.lp2.crazyChess;
 
 import org.junit.Test;
-import pt.ulusofona.lp2.crazyChess.CrazyPiece.Tipo;
-import pt.ulusofona.lp2.crazyChess.Position;
-import pt.ulusofona.lp2.crazyChess.Shift;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -199,10 +196,17 @@ public class TestSimulador {
 
 //  ID Piece
     @Test
-    public void testGetIDPiece() {
+    public void testGetIDPiece_Exists() {
         Simulador simulador = new Simulador();
         createCrazyPiece(simulador, 1, 0, 0, 10, "Black");
-        assertEquals("Should be \"10\"!", 1, simulador.getIDPeca(0, 0));
+        assertEquals("Should be \"1\"!", 1, simulador.getIDPeca(0, 0));
+    }
+
+    @Test
+    public void testGetIDPiece_DoesntExists() {
+        Simulador simulador = new Simulador();
+        createCrazyPiece(simulador, 1, 0, 0, 10, "Black");
+        assertEquals("Should be \"0\"!", 0, simulador.getIDPeca(0, 1));
     }
 
 //  This Shift Team Id
@@ -443,6 +447,25 @@ public class TestSimulador {
     }
 
     @Test
+    public void testGameOver_10ShiftsWithoutAnyCapture_And_NoFirstCapture() {
+        Simulador simulador = new Simulador(4);
+        simulador.shift.countNoCapture = 10;
+        createCrazyPiece(simulador, 3, 0, 0, 20, "White");
+        createCrazyPiece(simulador, 4, 0, 0, 10, "Black");
+        assertTrue("One white king and one black king is a draw!", simulador.jogoTerminado());
+    }
+
+    @Test
+    public void testGameOver_10ShiftsWithoutAnyCapture_And_FirstCapture() {
+        Simulador simulador = new Simulador(4);
+        simulador.shift.countNoCapture = 10;
+        simulador.firstCapture = true;
+        createCrazyPiece(simulador, 5, 0, 0, 20, "White");
+        createCrazyPiece(simulador, 6, 0, 0, 10, "Black");
+        assertTrue("One white king and one black king is a draw!", simulador.jogoTerminado());
+    }
+
+    @Test
     public void testGameOver_OneWhiteKingAndOneBlackKing() {
         Simulador simulador = new Simulador(4);
         createCrazyPiece(simulador, 7, 0, 0, 20, "White");
@@ -489,9 +512,8 @@ public class TestSimulador {
 
     private void createCrazyPiece (Simulador simulador, int PieceId, int x, int y, int idTeam, String name) {
 
-        Tipo rei = new Tipo((byte) 0);
         Position piecePosition = new Position(x,y);
-        CrazyPiece piece = new CrazyPiece(PieceId, rei, idTeam, name);
+        CrazyPiece piece = new ReiBranco(PieceId, idTeam, name);
         piece.setPosition(piecePosition);
         simulador.crazyPieces.add(piece);
 
@@ -499,10 +521,9 @@ public class TestSimulador {
 
     private void createCrazyPiecePresentInGame(Simulador simulador, int PieceId, int x, int idTeam, String name) {
 
-        Tipo rei = new Tipo((byte) 0);
         Position piecePosition = new Position(x, 0);
-        CrazyPiece piece = new CrazyPiece(PieceId, rei, idTeam, name);
-        piece.estaEmJogo();
+        CrazyPiece piece = new ReiBranco(PieceId, idTeam, name);
+        piece.isInGame();
         piece.setPosition(piecePosition);
         simulador.crazyPieces.add(piece);
 
