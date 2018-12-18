@@ -10,6 +10,7 @@ public class CrazyPiece {
             inGame = false;
     protected int maxMovHorizontal = 1, maxMovVertical = 1, minMovHorizontal = 0, minMovVertical = 0,
             id, type, idTeam, valorRelativo;
+    protected byte pieceId;
 
 
 //  Constructor
@@ -176,6 +177,10 @@ public class CrazyPiece {
 
         return moveCimaEsquerda;
 
+    }
+
+    public byte getPieceId(){
+        return pieceId;
     }
 
 

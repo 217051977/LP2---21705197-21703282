@@ -13,21 +13,21 @@ import java.util.Scanner;
 
 public class Simulador {
 
-    int boardSize;
-    int numberOfBlackPiecesCaptured = 0,
+    private int boardSize;
+    private int numberOfBlackPiecesCaptured = 0,
                numberOfWhitePiecesCaptured = 0,
                numberOfValidPlaysByBlackTeam = 0,
                numberOfValidPlaysByWhiteTeam = 0,
                numberOfInvalidPlaysByBlackTeam = 0,
                numberOfInvalidPlaysByWhiteTeam = 0;
     List<CrazyPiece> crazyPieces = new ArrayList<>();
-    List<String> authors = new ArrayList<>(), scores = new ArrayList<>(), suggestedPlays = new ArrayList<>();
+    private List<String> authors = new ArrayList<>(), suggestedPlay = new ArrayList<>();
+    List<String> scores = new ArrayList<>();
     List<Team> team = new ArrayList<>();
     Shift shift = new Shift();
     boolean firstCapture = false;
 
 //    Constructor
-
     public Simulador() {}
 
     public Simulador(int boardSize) {
@@ -95,12 +95,6 @@ public class Simulador {
 
     }
 
-    public List<String> getObterSugestoesJogada() {
-
-        return suggestedPlays;
-
-    }
-
     public int getNumberOfBlackPiecesCaptured() {
 
         return numberOfBlackPiecesCaptured;
@@ -146,6 +140,76 @@ public class Simulador {
     public boolean getFirstCapture() {
 
         return this.firstCapture;
+
+    }
+
+    public List<String> obterSugestoesJogada(int xO, int yO) {
+
+//      clear the list
+        suggestedPlay.removeAll(suggestedPlay);
+
+//      Create a new position with the destination
+        Position origin = new Position(xO, yO);
+
+//      For each piece on crazyPieces variable
+        for (CrazyPiece piece : crazyPieces) {
+
+//          Check if the this piece is in the position created
+            if (piece.getPosition().equals(origin)) {
+
+//              Check if this piece belongs to the team that is playing
+                if (piece.getIDTeam() == shift.getIdTeam()) {
+
+//                  For each position that this piece can move horizontally
+                    for (int movHorizontal = piece.getMinMovHorizontal(); movHorizontal <= piece.getMaxMovHorizontal(); movHorizontal++) {
+
+//                      For each position that this piece can move Vertically
+                        for (int movVertical = piece.getMinMovVertical(); movVertical <= piece.getMaxMovVertical(); movVertical++) {
+
+
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+//      Check if the list is empty
+        if (suggestedPlay.isEmpty()) {
+
+//          Add to the list
+            suggestedPlay.add("Pedido inválido");
+
+        }
+
+//      return the list
+        return suggestedPlay;
+
+    }
+
+//  Undo Play
+    public void anularJogadaAnterior() {
+
+
+
+    }
+
+//  Save Game
+    public boolean gravarJogo(File ficheiroDestino) {
+
+//        try {
+//
+//        }catch (FileNotFoundException e) {
+//
+//            return false;
+//
+//        }
+
+        return true;
 
     }
 
@@ -520,30 +584,30 @@ public class Simulador {
 
                     if (piece.getIDTeam() == shift.getIdTeam()) {
 
-                        int xDiference = xD - xO;
-                        int yDiference = yD - yO;
-                        int xDiferenceABS = xDiference;
-                        int yDiferenceABS = yDiference;
+                        int xDifference = xD - xO;
+                        int yDifference = yD - yO;
+                        int xDifferenceABS = xDifference;
+                        int yDifferenceABS = yDifference;
 
-                        if (xDiference < 0) {
+                        if (xDifference < 0) {
 
-                            xDiferenceABS = ((xDiference * (-1)));
-
-                        }
-                        if (yDiference < 0) {
-
-                            yDiferenceABS = ((yDiference * (-1)));
+                            xDifferenceABS = ((xDifference * (-1)));
 
                         }
+                        if (yDifference < 0) {
 
-                        if (piece.getMinMovHorizontal() <= xDiferenceABS &&
-                                piece.getMaxMovHorizontal() >= xDiferenceABS &&
-                                piece.getMinMovVertical() <= yDiferenceABS &&
-                                piece.getMaxMovVertical() >= yDiferenceABS) {
+                            yDifferenceABS = ((yDifference * (-1)));
 
-                            Position newPosition = new Position(xD, yD);
+                        }
 
-                            return verificaMovimentoHorizontal(piece, xDiference, yDiference, newPosition);
+                        if (piece.getMinMovHorizontal() <= xDifferenceABS &&
+                                piece.getMaxMovHorizontal() >= xDifferenceABS &&
+                                piece.getMinMovVertical() <= yDifferenceABS &&
+                                piece.getMaxMovVertical() >= yDifferenceABS) {
+
+                            Position destiny = new Position(xD, yD);
+
+                            return verificaMovimentoHorizontal(piece, xDifference, yDifference, destiny);
 
                         }
 
@@ -639,15 +703,15 @@ public class Simulador {
     }
 
 //  private functions
-    private boolean verificaMovimentoHorizontal(CrazyPiece piece, int xDiference, int yDiference, Position newPosition) {
+    private boolean verificaMovimentoHorizontal(CrazyPiece piece, int xDifference, int yDifference, Position destiny) {
 
-        if (xDiference > 0) {
+        if (xDifference > 0) {
 
             if (piece.getMoveDireita()) {
 
-                return verificaMovimentoVertical(piece, xDiference, yDiference, 'R', newPosition);
+                return verificaMovimentoVertical(piece, xDifference, yDifference, 'R', destiny);
 
-            } else if (verificaMovimentoDiagonal(piece, xDiference, yDiference, newPosition)) {
+            } else if (verificaMovimentoDiagonal(piece, xDifference, yDifference, destiny)) {
 
                 return true;
 
@@ -657,14 +721,14 @@ public class Simulador {
 
             return verificaPossiveisMovimentos(piece);
 
-        } else if (xDiference < 0) {
+        } else if (xDifference < 0) {
 
             if (piece.getMoveEsquerda()) {
 
-                return verificaMovimentoVertical(piece, xDiference, yDiference, 'L', newPosition);
+                return verificaMovimentoVertical(piece, xDifference, yDifference, 'L', destiny);
 
 
-            } else if (verificaMovimentoDiagonal(piece, xDiference, yDiference, newPosition)) {
+            } else if (verificaMovimentoDiagonal(piece, xDifference, yDifference, destiny)) {
 
                 return true;
 
@@ -676,24 +740,24 @@ public class Simulador {
 
         }
 
-        return verificaMovimentoVertical(piece, xDiference, yDiference, 'N', newPosition);
+        return verificaMovimentoVertical(piece, xDifference, yDifference, 'N', destiny);
 
     }
 
-    private boolean verificaMovimentoVertical(CrazyPiece piece, int xDiference, int yDiference, char leftOrRight,
-                                                Position newPosition) {
+    private boolean verificaMovimentoVertical(CrazyPiece piece, int xDifference, int yDifference, char leftOrRight,
+                                                Position destiny) {
 
         switch (leftOrRight) {
 
             case 'R': {
 
-                if (yDiference > 0) {
+                if (yDifference > 0) {
 
                     if (piece.getMoveCima()) {
 
-                        if (verificaPosicaoVazia(newPosition)) {
+                        if (verificaPosicaoVazia(destiny)) {
 
-                            moveUpRight(piece, xDiference, yDiference);
+                            moveUpRight(piece, xDifference, yDifference);
 
                             return true;
 
@@ -705,13 +769,13 @@ public class Simulador {
 
                     return verificaPossiveisMovimentos(piece);
 
-                } else if (yDiference < 0) {
+                } else if (yDifference < 0) {
 
                     if (piece.getMoveBaixo()) {
 
-                        if (verificaPosicaoVazia(newPosition)) {
+                        if (verificaPosicaoVazia(destiny)) {
 
-                            moveDownRight(piece, xDiference, yDiference);
+                            moveDownRight(piece, xDifference, yDifference);
 
                             return true;
 
@@ -727,9 +791,9 @@ public class Simulador {
 
                 }
 
-                if (verificaPosicaoVazia(newPosition)) {
+                if (verificaPosicaoVazia(destiny)) {
 
-                    moveRight(piece, xDiference);
+                    moveRight(piece, xDifference);
 
                     return true;
 
@@ -739,13 +803,13 @@ public class Simulador {
 
             case 'L': {
 
-                if (yDiference > 0) {
+                if (yDifference > 0) {
 
                     if (piece.getMoveCima()) {
 
-                        if (verificaPosicaoVazia(newPosition)) {
+                        if (verificaPosicaoVazia(destiny)) {
 
-                            moveUpLeft(piece, xDiference, yDiference);
+                            moveUpLeft(piece, xDifference, yDifference);
 
                             return true;
 
@@ -757,13 +821,13 @@ public class Simulador {
 
                     return verificaPossiveisMovimentos(piece);
 
-                } else if (yDiference < 0) {
+                } else if (yDifference < 0) {
 
                     if (piece.getMoveBaixo()) {
 
-                        if (verificaPosicaoVazia(newPosition)) {
+                        if (verificaPosicaoVazia(destiny)) {
 
-                            moveDownLeft(piece, xDiference, yDiference);
+                            moveDownLeft(piece, xDifference, yDifference);
 
                             return true;
 
@@ -779,9 +843,9 @@ public class Simulador {
 
                 }
 
-                if (verificaPosicaoVazia(newPosition)) {
+                if (verificaPosicaoVazia(destiny)) {
 
-                    moveLeft(piece, xDiference);
+                    moveLeft(piece, xDifference);
 
                     return true;
 
@@ -791,13 +855,13 @@ public class Simulador {
 
             default: {
 
-                if (yDiference > 0) {
+                if (yDifference > 0) {
 
                     if (piece.getMoveCima()) {
 
-                        if (verificaPosicaoVazia(newPosition)) {
+                        if (verificaPosicaoVazia(destiny)) {
 
-                            moveUp(piece, yDiference);
+                            moveUp(piece, yDifference);
 
                             return true;
 
@@ -809,13 +873,13 @@ public class Simulador {
 
                     return verificaPossiveisMovimentos(piece);
 
-                } else if (yDiference < 0) {
+                } else if (yDifference < 0) {
 
                     if (piece.getMoveBaixo()) {
 
-                        if (verificaPosicaoVazia(newPosition)) {
+                        if (verificaPosicaoVazia(destiny)) {
 
-                            moveDown(piece, yDiference);
+                            moveDown(piece, yDifference);
 
                             return true;
 
@@ -843,63 +907,310 @@ public class Simulador {
     }
 
 //  comentar
-    private boolean verificaMovimentoDiagonal(CrazyPiece piece, int xDiference, int yDiference, Position newPosition) {
+    private boolean verificaMovimentoDiagonal(CrazyPiece piece, int xDifference, int yDifference, Position destiny) {
 
-        if (xDiference > 0) {
+//      If xDifference is bigger than 0
+        if (xDifference > 0) {
 
-            if (piece.getMoveCimaDireita()) {
+//          Search for the type of piece equal to
+            switch (piece.getType()) {
 
-                if (verificaPosicaoVazia(newPosition)) {
+                case 0 : {
 
-                    moveUpRight(piece, xDiference, yDiference);
+//                  Check if the position is empty
+                    if (verificaPosicaoVazia(destiny)) {
 
-                    return true;
+//                      If yDifference is bigger than 0
+                        if (yDifference > 0) {
+
+//                          Move up and right
+                            moveUpRight(piece, xDifference, yDifference);
+
+                        } else {
+
+//                          Move up and left
+                            moveUpLeft(piece, xDifference, yDifference);
+
+                        }
+
+                    }
 
                 }
+                break;
 
-                addScoresStatsInvalid();
+                case 1 : {
 
-            } else if (piece.getMoveBaixoDireta()) {
+//                  check if there is a piece in the way
+                    if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), 'R')) {
 
-                if (verificaPosicaoVazia(newPosition)) {
+//                      Move the queen
+                        queenMovement(piece, xDifference, yDifference, destiny, false);
 
-                    moveDownRight(piece, xDiference, yDiference);
-
-                    return true;
+                    }
 
                 }
+                break;
 
-                addScoresStatsInvalid();
+                case 2 : {
+
+//                  If there are no kings in the way
+                    if (checkClearPath_magicPony(piece, xDifference, yDifference, piece.getPosition().getxAtual(), piece.getPosition().getyAtual())) {
+
+//                      Move the queen
+                        queenMovement(piece, xDifference, yDifference, destiny, true);
+
+                    }
+
+                }
+                break;
+
+                case 3 : {
+
+//                  check if there is a piece in the way
+                    if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), 'R')) {
+
+//                      Move the queen
+                        queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                    }
+
+                }
+                break;
+
+                case 6 : {
+
+//                  If we are playing in an odd shift
+                    if (shift.getIdTeam() %2 != 0) {
+
+//                      Move the bunny
+                        queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                    }
+
+                }
+                break;
+
+                case 7 : {
+
+                    switch (piece.getPieceId()) {
+
+                        case 1 : {
+
+//                  check if there is a piece in the way
+                            if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
+                                    piece.getPosition().getyAtual(), 'R')) {
+
+//                      Move the queen
+                                queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                            }
+
+                        }
+                        break;
+
+                        case 2 : {
+
+//                          If there are no kings in the way
+                            if (checkClearPath_magicPony(piece, xDifference, yDifference, piece.getPosition().getxAtual(), piece.getPosition().getyAtual())) {
+
+//                              Move the queen
+                                queenMovement(piece, xDifference, yDifference, destiny, true);
+
+                            }
+
+                        }
+                        break;
+
+                        case 3 : {
+
+//                          check if there is a piece in the way
+                            if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
+                                    piece.getPosition().getyAtual(), 'R')) {
+
+//                              Move the queen
+                                queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                            }
+
+                        }
+                        break;
+
+                        default : {
+
+//                          If we are playing in an odd shift
+                            if (shift.getIdTeam() %2 != 0) {
+
+//                              Move the bunny
+                                queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+                break;
+
+                default : {
+
+                    addScoresStatsInvalid();
+
+                    return false;
+
+                }
 
             }
 
-        } else if (xDiference < 0) {
+            return true;
 
-            if (piece.getMoveCimaEsquerda()) {
+        }
 
-                if (verificaPosicaoVazia(newPosition)) {
+//      If xDifference is lower than 0
+        else if (xDifference < 0) {
 
-                    moveUpLeft(piece, xDiference, yDiference);
+//          Search for the type of piece equal to
+            switch (piece.getType()) {
 
-                    return true;
+                case 0 : {
 
-                }
-
-                addScoresStatsInvalid();
-
-            } else if (piece.getMoveBaixoEsquerda()) {
-
-                if (verificaPosicaoVazia(newPosition)) {
-
-                    moveDownLeft(piece, xDiference, yDiference);
-
-                    return true;
+//                  Move the queen
+                    queenMovement(piece, xDifference, yDifference, destiny, false);
 
                 }
+                break;
 
-                addScoresStatsInvalid();
+                case 1 : {
+
+//                  check if there is a piece in the way
+                    if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), 'R')) {
+
+//                      Move the queen
+                        queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                    }
+
+                }
+                break;
+
+                case 2 : {
+
+//                  If there are no kings in the way
+                    if (checkClearPath_magicPony(piece, xDifference, yDifference,
+                            piece.getPosition().getxAtual(), piece.getPosition().getyAtual())) {
+
+//                      Move the queen
+                        queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                    }
+
+                }
+                break;
+
+                case 3 : {
+
+//                  check if there is a piece in the way
+                    if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), 'R')) {
+
+//                      Move the queen
+                        queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                    }
+
+                }
+                break;
+
+                case 6 : {
+
+//                  If we are playing in an odd shift
+                    if (shift.getIdTeam() %2 != 0) {
+
+//                      Move the bunny
+                        queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                    }
+
+                }
+                break;
+
+                case 7 : {
+
+                    switch (piece.getPieceId()) {
+
+                        case 1 : {
+
+//                          check if there is a piece in the way
+                            if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
+                                    piece.getPosition().getyAtual(), 'R')) {
+
+//                              Move the queen
+                                queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                            }
+
+                        }
+                        break;
+
+                        case 2 : {
+
+//                          If there are no kings in the way
+                            if (checkClearPath_magicPony(piece, xDifference, yDifference,
+                                    piece.getPosition().getxAtual(), piece.getPosition().getyAtual())) {
+
+//                              Move the queen
+                                queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                            }
+
+                        }
+                        break;
+
+                        case 3 : {
+
+//                          check if there is a piece in the way
+                            if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
+                                    piece.getPosition().getyAtual(), 'R')) {
+
+//                              Move the queen
+                                queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                            }
+
+                        }
+                        break;
+
+                        default : {
+
+//                          If we are playing in an odd shift
+                            if (shift.getIdTeam() %2 != 0) {
+
+//                              Move the queen
+                                queenMovement(piece, xDifference, yDifference, destiny, false);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+                break;
+
+                default : {
+
+                    addScoresStatsInvalid();
+
+                    return false;
+
+                }
 
             }
+
+            return true;
 
         }
 
@@ -977,6 +1288,326 @@ public class Simulador {
 
     }
 
+    private void queenMovement(CrazyPiece piece, int xDifference, int yDifference, Position destiny, boolean up) {
+
+        if (up) {
+
+//          Check if the position is empty
+            if (verificaPosicaoVazia(destiny)) {
+
+//              If yDifference is bigger than 0
+                if (yDifference > 0) {
+
+//                  Move up and right
+                    moveUpRight(piece, xDifference, yDifference);
+
+                } else {
+
+//                  Move up and left
+                    moveUpLeft(piece, xDifference, yDifference);
+
+                }
+
+            }
+
+        } else {
+
+//          Check if the position is empty
+            if (verificaPosicaoVazia(destiny)) {
+
+//              If yDifference is bigger than 0
+                if (yDifference > 0) {
+
+//                  Move down and right
+                    moveDownRight(piece, xDifference, yDifference);
+
+                } else {
+
+//                  Move down and left
+                    moveDownLeft(piece, xDifference, yDifference);
+
+                }
+
+            }
+
+        }
+
+    }
+
+    private boolean checkClearPath(int xDifference, int yDifference, int xActual, int yActual, char up) {
+
+        int finalPosition;
+
+        if (up == 'D') {
+
+            finalPosition = xActual + xDifference;
+
+            if (xDifference < 0) {
+
+                for (int y = yActual - 1, x = xActual - 1; x < finalPosition; y--, x--) {
+
+                    if (searchForAPiece(x, y)) {
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+            else if (xDifference > 0){
+
+                for (int y = yActual - 1, x = xActual + 1; x < finalPosition; y--, x++) {
+
+                    if (searchForAPiece(x, y)) {
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+            else {
+
+                finalPosition = yActual + yDifference;
+
+                for (int y = yActual - 1; y < finalPosition; y--) {
+
+                    if (searchForAPiece(xActual, y)) {
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+
+
+        }
+        else if (up == 'R'){
+
+            finalPosition = xActual + xDifference;
+
+            if (xDifference < 0) {
+
+                for (int y = yActual + 1, x = xActual - 1; x < finalPosition; y++, x--) {
+
+                    if (searchForAPiece(x, y)) {
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+            else if (xDifference > 0){
+
+                for (int y = yActual + 1, x = xActual + 1; x < xDifference; y++, x++) {
+
+                    if (searchForAPiece(x, y)) {
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+            else {
+
+                finalPosition = yActual + yDifference;
+
+                for (int y = yActual + 1; y < finalPosition; y++) {
+
+                    if (searchForAPiece(xActual, y)) {
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+
+        }
+        else {
+
+            finalPosition = xActual + xDifference;
+
+            if (xDifference < 0) {
+
+                for (int x = xActual - 1; x < finalPosition; x--) {
+
+                    if (searchForAPiece(x, yActual)) {
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+            else if (xDifference > 0){
+
+                for (int x = xActual + 1; x < xDifference; x++) {
+
+                    if (searchForAPiece(x, yActual)) {
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+            else {
+
+                return false;
+
+            }
+
+        }
+
+        return true;
+
+    }
+
+    private boolean checkClearPath_magicPony(CrazyPiece piece, int xDifference, int yDifference, int xActual, int yActual) {
+
+        int xFinal = xActual + xDifference;
+        int yFinal = yActual + yDifference;
+
+//      Create foundAKing flag
+        boolean foundAKing = false;
+
+//      First it will check if is any king in the X axis
+        for (int movHorizontal = xActual + 1; movHorizontal <= xFinal; movHorizontal++) {
+
+//          Set foundAKing as the searchForAKing return
+            foundAKing = searchForAKing(movHorizontal, yActual);
+
+//          If there was a king in the way
+            if (foundAKing) {
+
+//              Leave the cycle
+                break;
+
+            }
+
+        }
+
+//      If there wasn't any king in the way
+        if (!foundAKing) {
+
+//          Set foundAKing as the searchForAKing return
+            foundAKing = searchForAKing(xFinal, yActual + 1);
+
+        }
+        else {
+
+//          Reset foundAKing
+            foundAKing = false;
+
+//          First it will check if is any king in the X axis
+            for (int movVertical = yActual + 1; movVertical <= xFinal; movVertical++) {
+
+//              Set foundAKing as the searchForAKing return
+                foundAKing = searchForAKing(xActual, movVertical);
+
+//              If there was a king in the way
+                if (foundAKing) {
+
+//                  Leave the cycle
+                    break;
+
+                }
+
+            }
+
+//          If there wasn't any king in the way
+            if (!foundAKing) {
+
+                return !searchForAKing(xActual + 1, yFinal);
+
+            }
+
+        }
+
+        return true;
+
+    }
+
+    private boolean searchForAKing(int x, int y) {
+
+//      set thisPosition for x and y
+        Position thisPosition = new Position(x, y);
+
+//      Search for a piece in thisPosition
+        for (CrazyPiece thisPiece : crazyPieces) {
+
+//          If thisPiece is in thisPosition
+            if (thisPiece.getPosition().equals(thisPosition)) {
+
+//              Return true  if thisPiece is a king else return false
+                return thisPiece.getType() == 0;
+
+            }
+
+        }
+
+//      Return false
+        return false;
+
+    }
+
+    private boolean searchForAQueen(int x, int y) {
+
+//      set thisPosition for x and y
+        Position thisPosition = new Position(x, y);
+
+//      Search for a piece in thisPosition
+        for (CrazyPiece thisPiece : crazyPieces) {
+
+//          If thisPiece is in thisPosition
+            if (thisPiece.getPosition().equals(thisPosition)) {
+
+//              Return true  if thisPiece is a king else return false
+                return thisPiece.getType() == 1;
+
+            }
+
+        }
+
+//      Return false
+        return false;
+
+    }
+
+    private boolean searchForAPiece(int x, int y) {
+
+//      Set thisPosition for moveLeftRight and movUpDown
+        Position thisPosition = new Position(x, y);
+
+//      Search for a piece in thisPosition
+        for (CrazyPiece thisPiece : crazyPieces) {
+
+//          If thisPiece is in thisPosition
+            if (thisPiece.getPosition().equals(thisPosition)) {
+
+//              Return true if thisPiece is a king else return false
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
 //  comentar
     private boolean verificaPossiveisMovimentos(CrazyPiece piece) {
 
@@ -994,62 +1625,62 @@ public class Simulador {
 
     }
 
-    private void moveLeft(CrazyPiece piece, int xDiference) {
+    private void moveLeft(CrazyPiece piece, int xDifference) {
 
-        piece.moveLeft((xDiference * (-1)));
+        piece.moveLeft((xDifference * (-1)));
         shift.addCount();
 
     }
 
-    private void moveRight(CrazyPiece piece, int xDiference) {
+    private void moveRight(CrazyPiece piece, int xDifference) {
 
-        piece.moveRight(xDiference);
+        piece.moveRight(xDifference);
         shift.addCount();
 
     }
 
-    private void moveUp(CrazyPiece piece, int yDiference) {
+    private void moveUp(CrazyPiece piece, int yDifference) {
 
-        piece.moveUp(yDiference);
+        piece.moveUp(yDifference);
         shift.addCount();
 
     }
 
-    private void moveDown(CrazyPiece piece, int yDiference) {
+    private void moveDown(CrazyPiece piece, int yDifference) {
 
-        piece.moveDown((yDiference * (-1)));
+        piece.moveDown((yDifference * (-1)));
         shift.addCount();
 
     }
 
-    private void moveDownLeft(CrazyPiece piece, int xDiference, int yDiference) {
+    private void moveDownLeft(CrazyPiece piece, int xDifference, int yDifference) {
 
-        piece.moveDown((yDiference * (-1)));
-        piece.moveLeft((xDiference * (-1)));
+        piece.moveDown((yDifference * (-1)));
+        piece.moveLeft((xDifference * (-1)));
         shift.addCount();
 
     }
 
-    private void moveUpLeft(CrazyPiece piece, int xDiference, int yDiference) {
+    private void moveUpLeft(CrazyPiece piece, int xDifference, int yDifference) {
 
-        piece.moveUp(yDiference);
-        piece.moveLeft((xDiference * (-1)));
+        piece.moveUp(yDifference);
+        piece.moveLeft((xDifference * (-1)));
         shift.addCount();
 
     }
 
-    private void moveUpRight(CrazyPiece piece, int xDiference, int yDiference) {
+    private void moveUpRight(CrazyPiece piece, int xDifference, int yDifference) {
 
-        piece.moveUp(yDiference);
-        piece.moveRight(xDiference);
+        piece.moveUp(yDifference);
+        piece.moveRight(xDifference);
         shift.addCount();
 
     }
 
-    private void moveDownRight(CrazyPiece piece, int xDiference, int yDiference) {
+    private void moveDownRight(CrazyPiece piece, int xDifference, int yDifference) {
 
-        piece.moveDown((yDiference * (-1)));
-        piece.moveRight(xDiference);
+        piece.moveDown((yDifference * (-1)));
+        piece.moveRight(xDifference);
         shift.addCount();
 
     }
