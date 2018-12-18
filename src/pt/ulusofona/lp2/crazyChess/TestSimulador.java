@@ -12,6 +12,14 @@ import static org.junit.Assert.assertFalse;
 
 public class TestSimulador {
 
+//  Main
+    @Test
+    public void testMain() {
+        Main main = new Main();
+        Main main1 = new Main();
+        assertTrue("The both Main class must NOT be equal!", !main1.equals(main));
+    }
+
 //  Board Size
     @Test
     public void testGetTamanhoTabuleiro() {
