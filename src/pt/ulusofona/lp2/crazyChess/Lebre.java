@@ -5,10 +5,8 @@ public class Lebre extends CrazyPiece {
     Lebre() {
 
 //      set the movement of the Lebre type piece
-        super.moveBaixo = false;
-        super.moveEsquerda = false;
-        super.moveDireita = false;
-        super.moveCima = false;
+        super.moveVertical = false;
+        super.moveHorizontal = false;
 
 //      set how much it has to move
         super.minMovHorizontal = 1;
@@ -25,10 +23,8 @@ public class Lebre extends CrazyPiece {
     public Lebre(int id, String name) {
 
 //      set the movement of the Lebre type piece
-        super.moveBaixo = false;
-        super.moveEsquerda = false;
-        super.moveDireita = false;
-        super.moveCima = false;
+        super.moveVertical = false;
+        super.moveHorizontal = false;
 
 //      set how much it has to move
         super.minMovHorizontal = 1;

@@ -7,12 +7,8 @@ public class TorreH extends CrazyPiece {
     TorreH() {
 
 //      set the movement of the H Tower type piece
-        super.moveBaixo = false;
-        super.moveCima = false;
-        super.moveCimaDireita = false;
-        super.moveCimaEsquerda = false;
-        super.moveBaixoDireita = false;
-        super.moveBaixoEsquerda = false;
+        super.moveVertical = false;
+        super.moveDiagonal = false;
 
 //      set how much it can move
         super.maxMovHorizontal = Integer.MAX_VALUE;
@@ -32,12 +28,8 @@ public class TorreH extends CrazyPiece {
     public TorreH(int id, String name) {
 
 //      set the movement of the H Tower type piece
-        super.moveBaixo = false;
-        super.moveCima = false;
-        super.moveCimaDireita = false;
-        super.moveCimaEsquerda = false;
-        super.moveBaixoDireita = false;
-        super.moveBaixoEsquerda = false;
+        super.moveVertical = false;
+        super.moveDiagonal = false;
 
 //      set how much it can move
         super.maxMovHorizontal = 1;

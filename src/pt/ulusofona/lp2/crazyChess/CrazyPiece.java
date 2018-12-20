@@ -4,8 +4,7 @@ public class CrazyPiece {
 
     protected String imagePNG, name;
     private Position position;
-    protected boolean moveCima = true, moveBaixo = true, moveEsquerda = true, moveDireita = true,
-            moveCimaDireita = true, moveCimaEsquerda = true, moveBaixoDireita = true, moveBaixoEsquerda = true,
+    protected boolean moveVertical = true, moveHorizontal = true, moveDiagonal = true,
             canChangeType = false, hasChangedType = false,
             inGame = false;
     protected int maxMovHorizontal = 1, maxMovVertical = 1, minMovHorizontal = 0, minMovVertical = 0,
@@ -131,56 +130,56 @@ public class CrazyPiece {
 
     }
 
-    public boolean getMoveCima() {
+    public boolean getMovVertical() {
 
-        return moveCima;
-
-    }
-
-    public boolean getMoveBaixo() {
-
-        return moveBaixo;
+        return moveVertical;
 
     }
 
-    public boolean getMoveEsquerda() {
+    public boolean getMoveHorizontal() {
 
-        return moveEsquerda;
-
-    }
-
-    public boolean getMoveDireita() {
-
-        return moveDireita;
+        return moveHorizontal;
 
     }
 
-    public boolean getMoveBaixoDireta() {
+    public boolean getMoveDiagonal() {
 
-        return moveBaixoDireita;
-
-    }
-
-    public boolean getMoveBaixoEsquerda() {
-
-        return moveBaixoEsquerda;
-
-    }
-
-    public boolean getMoveCimaDireita() {
-
-        return moveCimaDireita;
-
-    }
-
-    public boolean getMoveCimaEsquerda() {
-
-        return moveCimaEsquerda;
+        return moveDiagonal;
 
     }
 
     public byte getPieceId(){
+
         return pieceId;
+
+    }
+
+    public void changePieceType() {
+
+        if (pieceId == 6) {
+
+            pieceId = 1;
+
+        } else {
+
+            pieceId++;
+
+        }
+
+    }
+
+    public void undoPieceType() {
+
+        if (pieceId != 1) {
+
+            pieceId--;
+
+        } else {
+
+            pieceId = 6;
+
+        }
+
     }
 
 

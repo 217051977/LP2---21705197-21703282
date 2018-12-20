@@ -7,10 +7,8 @@ public class PadreDaVila extends CrazyPiece {
     PadreDaVila() {
 
 //      set the movement of the Padre da vila type piece
-        super.moveBaixo = false;
-        super.moveEsquerda = false;
-        super.moveDireita = false;
-        super.moveCima = false;
+        super.moveVertical = false;
+        super.moveHorizontal = false;
 
 //      set how much it can move
         super.maxMovHorizontal = 3;
@@ -31,10 +29,8 @@ public class PadreDaVila extends CrazyPiece {
     public PadreDaVila(int id, String name) {
 
 //      set the movement of the Padre da vila type piece
-        super.moveBaixo = false;
-        super.moveEsquerda = false;
-        super.moveDireita = false;
-        super.moveCima = false;
+        super.moveVertical = false;
+        super.moveHorizontal = false;
 
 //      set how much it can move
         super.maxMovHorizontal = 3;

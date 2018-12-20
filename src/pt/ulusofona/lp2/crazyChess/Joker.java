@@ -54,6 +54,7 @@ public class Joker extends CrazyPiece {
 
     }
 
+    @Override
     public void changePieceType() {
 
         if (pieceId == 6) {
@@ -68,6 +69,7 @@ public class Joker extends CrazyPiece {
 
     }
 
+    @Override
     public void undoPieceType() {
 
         if (pieceId != 1) {

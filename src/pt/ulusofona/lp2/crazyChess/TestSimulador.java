@@ -34,7 +34,7 @@ public class TestSimulador {
         createCrazyPiece(simulador, 1, 0, 3, 20, "White");
         createCrazyPiece(simulador, 2, 0, 0, 10, "Black");
 
-        assertEquals("Those pieces wasn't the right ones!", simulador.crazyPieces, simulador.getPecasMalucas());
+        assertEquals("Those pieces wasn't the right ones!", simulador.crazyPiecesInGame, simulador.getPecasMalucas());
     }
 
 //  Authors
@@ -523,7 +523,7 @@ public class TestSimulador {
         Position piecePosition = new Position(x,y);
         CrazyPiece piece = new ReiBranco(PieceId, idTeam, name);
         piece.setPosition(piecePosition);
-        simulador.crazyPieces.add(piece);
+        simulador.crazyPiecesInGame.add(piece);
 
     }
 
@@ -533,7 +533,7 @@ public class TestSimulador {
         CrazyPiece piece = new ReiBranco(PieceId, idTeam, name);
         piece.isInGame();
         piece.setPosition(piecePosition);
-        simulador.crazyPieces.add(piece);
+        simulador.crazyPiecesInGame.add(piece);
 
     }
 

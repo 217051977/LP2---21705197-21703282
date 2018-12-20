@@ -5,12 +5,8 @@ public class TorreV extends CrazyPiece {
     TorreV() {
 
 //      set the movement of the V Tower type piece
-        super.moveEsquerda = false;
-        super.moveDireita = false;
-        super.moveCimaDireita = false;
-        super.moveCimaEsquerda = false;
-        super.moveBaixoDireita = false;
-        super.moveBaixoEsquerda = false;
+        super.moveHorizontal = false;
+        super.moveDiagonal = false;
 
 //      set how much it can move
         super.maxMovHorizontal = 0;
@@ -34,13 +30,8 @@ public class TorreV extends CrazyPiece {
     public TorreV(int id, String name) {
 
 //      set the movement of the V Tower type piece
-        super.moveEsquerda = false;
-        super.moveDireita = false;
-        super.moveCimaDireita = false;
-        super.moveCimaEsquerda = false;
-        super.moveBaixoDireita = false;
-        super.moveBaixoEsquerda = false;
-
+        super.moveHorizontal = false;
+        super.moveDiagonal = false;
 //      set how much it can move
         super.maxMovHorizontal = 0;
         super.maxMovVertical = 0;
