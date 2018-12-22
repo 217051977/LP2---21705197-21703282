@@ -51,8 +51,8 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfWhitePiecesCaptured() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 1, 20, "White");
-        createCrazyPiece(simulador, 2, 0, 0, 10, "Black");
+        createCrazyPiecePresentInGame(simulador, 1, 0, 1, 20, "White");
+        createCrazyPiecePresentInGame(simulador, 2, 0, 0, 10, "Black");
         simulador.processaJogada(0,0,0,1);
         assertEquals("Should exist 1 white piece captured!", 1, simulador.getNumberOfWhitePiecesCaptured());
     }
@@ -500,22 +500,239 @@ public class TestSimulador {
     @Test
     public void testGameOver_TwoWhiteKingsAndOneBlackKing() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiecePresentInGame(simulador, 13, 0, 20, "White");
-        createCrazyPiecePresentInGame(simulador, 14, 1, 10, "Black");
-        createCrazyPiecePresentInGame(simulador, 15, 2, 20, "White");
+        createCrazyPiecePresentInGame(simulador, 13, 0, 0, 20, "White");
+        createCrazyPiecePresentInGame(simulador, 14, 1, 0, 10, "Black");
+        createCrazyPiecePresentInGame(simulador, 15, 2, 0, 20, "White");
         assertFalse("With two white kings and one black king the game keeps rolling", simulador.jogoTerminado());
     }
 
     @Test
     public void testGameOver_OneWhiteKingAndTwoBlackKings() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiecePresentInGame(simulador, 13, 0, 10, "Black");
-        createCrazyPiecePresentInGame(simulador, 14, 1, 20, "White");
-        createCrazyPiecePresentInGame(simulador, 15, 2, 10, "Black");
+        createCrazyPiecePresentInGame(simulador, 13, 0, 0, 10, "Black");
+        createCrazyPiecePresentInGame(simulador, 14, 1, 0, 20, "White");
+        createCrazyPiecePresentInGame(simulador, 15, 2, 0, 10, "Black");
         assertFalse("With one white king and two black kings the game keeps rolling!", simulador.jogoTerminado());
     }
 
     //movHorizontal
+
+    @Test
+    public void testGetSuggestedPlay() {
+        Simulador simulador = new Simulador(5);
+        createCrazyPiecePresentInGame(simulador, 1, 2, 2, 10, "black");
+        List<String> result = new ArrayList<>();
+        result.add("\"" + 1 + "," + 1 + "\"");
+        result.add("\"" + 1 + "," + 2 + "\"");
+        result.add("\"" + 1 + "," + 3 + "\"");
+        result.add("\"" + 2 + "," + 1 + "\"");
+        result.add("\"" + 2 + "," + 3 + "\"");
+        result.add("\"" + 3 + "," + 1 + "\"");
+        result.add("\"" + 3 + "," + 2 + "\"");
+        result.add("\"" + 3 + "," + 3 + "\"");
+        assertEquals("Not the the right suggestions!", result, simulador.obterSugestoesJogada(2, 2));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_2X() {
+        Simulador simulador = new Simulador(5);
+        createCrazyPiecePresentInGame(simulador, 1, 2, 2, 10, "black");
+        List<String> result_2x = new ArrayList<>();
+        result_2x.add("\"" + 1 + "," + 1 + "\"");
+        result_2x.add("\"" + 1 + "," + 2 + "\"");
+        result_2x.add("\"" + 1 + "," + 3 + "\"");
+        result_2x.add("\"" + 2 + "," + 1 + "\"");
+        result_2x.add("\"" + 2 + "," + 3 + "\"");
+        result_2x.add("\"" + 3 + "," + 1 + "\"");
+        result_2x.add("\"" + 3 + "," + 2 + "\"");
+        result_2x.add("\"" + 3 + "," + 3 + "\"");
+        simulador.obterSugestoesJogada(2,2);
+        assertEquals("Not the the right suggestions!", result_2x, simulador.obterSugestoesJogada(2, 2));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Queen() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Queen(simulador, 1, 5, 5, 10, "black");
+        List<String> result_queen = new ArrayList<>();
+        result_queen.add("\"" + 0 + "," + 0 + "\"");
+        result_queen.add("\"" + 0 + "," + 5 + "\"");
+        result_queen.add("\"" + 0 + "," + 10 + "\"");
+        result_queen.add("\"" + 1 + "," + 1 + "\"");
+        result_queen.add("\"" + 1 + "," + 5 + "\"");
+        result_queen.add("\"" + 1 + "," + 9 + "\"");
+        result_queen.add("\"" + 2 + "," + 2 + "\"");
+        result_queen.add("\"" + 2 + "," + 5 + "\"");
+        result_queen.add("\"" + 2 + "," + 8 + "\"");
+        result_queen.add("\"" + 3 + "," + 3 + "\"");
+        result_queen.add("\"" + 3 + "," + 5 + "\"");
+        result_queen.add("\"" + 3 + "," + 7 + "\"");
+        result_queen.add("\"" + 4 + "," + 4 + "\"");
+        result_queen.add("\"" + 4 + "," + 5 + "\"");
+        result_queen.add("\"" + 4 + "," + 6 + "\"");
+        result_queen.add("\"" + 5 + "," + 0 + "\"");
+        result_queen.add("\"" + 5 + "," + 1 + "\"");
+        result_queen.add("\"" + 5 + "," + 2 + "\"");
+        result_queen.add("\"" + 5 + "," + 3 + "\"");
+        result_queen.add("\"" + 5 + "," + 4 + "\"");
+        result_queen.add("\"" + 5 + "," + 6 + "\"");
+        result_queen.add("\"" + 5 + "," + 7 + "\"");
+        result_queen.add("\"" + 5 + "," + 8 + "\"");
+        result_queen.add("\"" + 5 + "," + 9 + "\"");
+        result_queen.add("\"" + 5 + "," + 10 + "\"");
+        result_queen.add("\"" + 6 + "," + 4 + "\"");
+        result_queen.add("\"" + 6 + "," + 5 + "\"");
+        result_queen.add("\"" + 6 + "," + 6 + "\"");
+        result_queen.add("\"" + 7 + "," + 3 + "\"");
+        result_queen.add("\"" + 7 + "," + 5 + "\"");
+        result_queen.add("\"" + 7 + "," + 7 + "\"");
+        result_queen.add("\"" + 8 + "," + 2 + "\"");
+        result_queen.add("\"" + 8 + "," + 5 + "\"");
+        result_queen.add("\"" + 8 + "," + 8 + "\"");
+        result_queen.add("\"" + 9 + "," + 1 + "\"");
+        result_queen.add("\"" + 9 + "," + 5 + "\"");
+        result_queen.add("\"" + 9 + "," + 9 + "\"");
+        result_queen.add("\"" + 10 + "," + 0 + "\"");
+        result_queen.add("\"" + 10 + "," + 5 + "\"");
+        result_queen.add("\"" + 10 + "," + 10 + "\"");
+        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Queen_NotCentered() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Queen(simulador, 1, 3, 5, 10, "black");
+        List<String> result_queen = new ArrayList<>();
+        result_queen.add("\"" + 0 + "," + 2 + "\"");
+        result_queen.add("\"" + 0 + "," + 5 + "\"");
+        result_queen.add("\"" + 0 + "," + 8 + "\"");
+        result_queen.add("\"" + 1 + "," + 3 + "\"");
+        result_queen.add("\"" + 1 + "," + 5 + "\"");
+        result_queen.add("\"" + 1 + "," + 7 + "\"");
+        result_queen.add("\"" + 2 + "," + 4 + "\"");
+        result_queen.add("\"" + 2 + "," + 5 + "\"");
+        result_queen.add("\"" + 2 + "," + 6 + "\"");
+        result_queen.add("\"" + 3 + "," + 0 + "\"");
+        result_queen.add("\"" + 3 + "," + 1 + "\"");
+        result_queen.add("\"" + 3 + "," + 2 + "\"");
+        result_queen.add("\"" + 3 + "," + 3 + "\"");
+        result_queen.add("\"" + 3 + "," + 4 + "\"");
+        result_queen.add("\"" + 3 + "," + 6 + "\"");
+        result_queen.add("\"" + 3 + "," + 7 + "\"");
+        result_queen.add("\"" + 3 + "," + 8 + "\"");
+        result_queen.add("\"" + 3 + "," + 9 + "\"");
+        result_queen.add("\"" + 3 + "," + 10 + "\"");
+        result_queen.add("\"" + 4 + "," + 4 + "\"");
+        result_queen.add("\"" + 4 + "," + 5 + "\"");
+        result_queen.add("\"" + 4 + "," + 6 + "\"");
+        result_queen.add("\"" + 5 + "," + 3 + "\"");
+        result_queen.add("\"" + 5 + "," + 5 + "\"");
+        result_queen.add("\"" + 5 + "," + 7 + "\"");
+        result_queen.add("\"" + 6 + "," + 2 + "\"");
+        result_queen.add("\"" + 6 + "," + 5 + "\"");
+        result_queen.add("\"" + 6 + "," + 8 + "\"");
+        result_queen.add("\"" + 7 + "," + 1 + "\"");
+        result_queen.add("\"" + 7 + "," + 5 + "\"");
+        result_queen.add("\"" + 7 + "," + 9 + "\"");
+        result_queen.add("\"" + 8 + "," + 0 + "\"");
+        result_queen.add("\"" + 8 + "," + 5 + "\"");
+        result_queen.add("\"" + 8 + "," + 10 + "\"");
+        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(3, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_2X_Queen() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Queen(simulador, 1, 5, 5, 10, "black");
+        List<String> result_queen_2x = new ArrayList<>();
+        result_queen_2x.add("\"" + 0 + "," + 0 + "\"");
+        result_queen_2x.add("\"" + 0 + "," + 5 + "\"");
+        result_queen_2x.add("\"" + 0 + "," + 10 + "\"");
+        result_queen_2x.add("\"" + 1 + "," + 1 + "\"");
+        result_queen_2x.add("\"" + 1 + "," + 5 + "\"");
+        result_queen_2x.add("\"" + 1 + "," + 9 + "\"");
+        result_queen_2x.add("\"" + 2 + "," + 2 + "\"");
+        result_queen_2x.add("\"" + 2 + "," + 5 + "\"");
+        result_queen_2x.add("\"" + 2 + "," + 8 + "\"");
+        result_queen_2x.add("\"" + 3 + "," + 3 + "\"");
+        result_queen_2x.add("\"" + 3 + "," + 5 + "\"");
+        result_queen_2x.add("\"" + 3 + "," + 7 + "\"");
+        result_queen_2x.add("\"" + 4 + "," + 4 + "\"");
+        result_queen_2x.add("\"" + 4 + "," + 5 + "\"");
+        result_queen_2x.add("\"" + 4 + "," + 6 + "\"");
+        result_queen_2x.add("\"" + 5 + "," + 0 + "\"");
+        result_queen_2x.add("\"" + 5 + "," + 1 + "\"");
+        result_queen_2x.add("\"" + 5 + "," + 2 + "\"");
+        result_queen_2x.add("\"" + 5 + "," + 3 + "\"");
+        result_queen_2x.add("\"" + 5 + "," + 4 + "\"");
+        result_queen_2x.add("\"" + 5 + "," + 6 + "\"");
+        result_queen_2x.add("\"" + 5 + "," + 7 + "\"");
+        result_queen_2x.add("\"" + 5 + "," + 8 + "\"");
+        result_queen_2x.add("\"" + 5 + "," + 9 + "\"");
+        result_queen_2x.add("\"" + 5 + "," + 10 + "\"");
+        result_queen_2x.add("\"" + 6 + "," + 4 + "\"");
+        result_queen_2x.add("\"" + 6 + "," + 5 + "\"");
+        result_queen_2x.add("\"" + 6 + "," + 6 + "\"");
+        result_queen_2x.add("\"" + 7 + "," + 3 + "\"");
+        result_queen_2x.add("\"" + 7 + "," + 5 + "\"");
+        result_queen_2x.add("\"" + 7 + "," + 7 + "\"");
+        result_queen_2x.add("\"" + 8 + "," + 2 + "\"");
+        result_queen_2x.add("\"" + 8 + "," + 5 + "\"");
+        result_queen_2x.add("\"" + 8 + "," + 8 + "\"");
+        result_queen_2x.add("\"" + 9 + "," + 1 + "\"");
+        result_queen_2x.add("\"" + 9 + "," + 5 + "\"");
+        result_queen_2x.add("\"" + 9 + "," + 9 + "\"");
+        result_queen_2x.add("\"" + 10 + "," + 0 + "\"");
+        result_queen_2x.add("\"" + 10 + "," + 5 + "\"");
+        result_queen_2x.add("\"" + 10 + "," + 10 + "\"");
+        simulador.obterSugestoesJogada(5,5);
+        assertEquals("Not the the right suggestions!", result_queen_2x, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Pony() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Pony(simulador, 1, 5, 5, 10, "black");
+        List<String> result_pony = new ArrayList<>();
+        result_pony.add("\"" + 3 + "," + 3 + "\"");
+        result_pony.add("\"" + 3 + "," + 7 + "\"");
+        result_pony.add("\"" + 7 + "," + 3 + "\"");
+        result_pony.add("\"" + 7 + "," + 7 + "\"");
+        assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Pony_NotCentered() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Pony(simulador, 1, 5, 3, 10, "black");
+        List<String> result_pony = new ArrayList<>();
+        result_pony.add("\"" + 3 + "," + 1 + "\"");
+        result_pony.add("\"" + 3 + "," + 5 + "\"");
+        result_pony.add("\"" + 7 + "," + 1 + "\"");
+        result_pony.add("\"" + 7 + "," + 5 + "\"");
+        assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 3));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_2X_Pony() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Pony(simulador, 1, 5, 5, 10, "black");
+        List<String> result_pony_2x = new ArrayList<>();
+        result_pony_2x.add("\"" + 3 + "," + 3 + "\"");
+        result_pony_2x.add("\"" + 3 + "," + 7 + "\"");
+        result_pony_2x.add("\"" + 7 + "," + 3 + "\"");
+        result_pony_2x.add("\"" + 7 + "," + 7 + "\"");
+        simulador.obterSugestoesJogada(5,5);
+        assertEquals("Not the the right suggestions!", result_pony_2x, simulador.obterSugestoesJogada(5, 5));
+
+    }
 
 
     private void createCrazyPiece (Simulador simulador, int PieceId, int x, int y, int idTeam, String name) {
@@ -527,10 +744,30 @@ public class TestSimulador {
 
     }
 
-    private void createCrazyPiecePresentInGame(Simulador simulador, int PieceId, int x, int idTeam, String name) {
+    private void createCrazyPiecePresentInGame(Simulador simulador, int PieceId, int x, int y, int idTeam, String name) {
 
-        Position piecePosition = new Position(x, 0);
+        Position piecePosition = new Position(x, y);
         CrazyPiece piece = new ReiBranco(PieceId, idTeam, name);
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_Queen(Simulador simulador, int PieceId, int x, int y, int idTeam, String name) {
+
+        Position piecePosition = new Position(x, y);
+        CrazyPiece piece = new RainhaBranca(PieceId, idTeam, name);
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_Pony(Simulador simulador, int PieceId, int x, int y, int idTeam, String name) {
+
+        Position piecePosition = new Position(x, y);
+        CrazyPiece piece = new PoneiMagicoBranco(PieceId, idTeam, name);
         piece.isInGame();
         piece.setPosition(piecePosition);
         simulador.crazyPiecesInGame.add(piece);

@@ -143,6 +143,24 @@ public class Simulador {
 
     }
 
+    private int setAuxiliary(int auxiliary, int defRelationToCenterBoard) {
+
+        int verticalAuxiliary;
+
+        if (defRelationToCenterBoard < 0) {
+
+            verticalAuxiliary = auxiliary - defRelationToCenterBoard;
+
+        } else {
+
+            verticalAuxiliary = auxiliary + defRelationToCenterBoard;
+
+        }
+
+        return verticalAuxiliary;
+
+    }//***************************************
+
     public List<String> obterSugestoesJogada(int xO, int yO) {
 
         int leftMaxMov;
@@ -153,6 +171,10 @@ public class Simulador {
         int rightMinMov;
         int upMinMov;
         int downMinMov;
+        int horizontalRelationToCenterBoard = (xO - (boardSize - 1)/2);
+        int verticalRelationToCenterBoard = (yO - (boardSize - 1)/2);
+        int verticalAuxiliary;
+        int horizontalAuxiliary;
 
 //      clear the list
         suggestedPlay.removeAll(suggestedPlay);
@@ -161,50 +183,192 @@ public class Simulador {
         Position origin = new Position(xO, yO);
 
 //      For each piece on crazyPiecesInGame variable
-        for (CrazyPiece piece : crazyPiecesInGame) {
-
-            leftMaxMov = xO - piece.getMaxMovHorizontal();
-            leftMinMov = leftMaxMov - piece.getMinMovHorizontal();
-            rightMaxMov = xO + piece.getMaxMovHorizontal();
-            rightMinMov = rightMaxMov - piece.getMinMovHorizontal();
-            upMaxMov = yO - piece.getMaxMovVertical();
-            upMinMov = upMaxMov - piece.getMaxMovVertical();
-            downMaxMov = yO + piece.getMaxMovVertical();
-            downMinMov = downMaxMov - piece.getMaxMovVertical();
+        for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
 //          Check if the this piece is in the position created
-            if (piece.getPosition().equals(origin)) {
+            if (thisPiece.getPosition().equals(origin)) {
 
 //              Check if this piece belongs to the team that is playing
-                if (piece.getIDTeam() == shift.getIdTeam()) {
+                if (thisPiece.getIDTeam() == shift.getIdTeam()) {
 
-                    if ((piece.getMoveCima())
+                    leftMaxMov = xO - thisPiece.getMaxMovHorizontal();
+//                    switch (thisPiece.getType()) {
+//
+//                        case 0: {
+//
+//                            leftMaxMov = xO - 1;
+//                            rightMaxMov = xO + 1;
+//                            leftMinMov = rightMinMov = xO;
+//                            upMaxMov = yO - 1;
+//                            downMaxMov = yO + 1;
+//                            upMinMov = downMinMov = yO;
+//
+//
+//                        }
+//                        break;
+//
+//                        case 1: {
+//
+//                            leftMaxMov = xO - 5;
+//                            rightMaxMov = xO + 5;
+//                            leftMinMov = rightMinMov = xO;
+//                            upMaxMov = yO - 5;
+//                            downMaxMov = yO + 5;
+//                            upMinMov = downMinMov = yO;
+//
+//                        }
+//
+//                        case 2: {
+//
+//                            leftMaxMov = xO - 2;
+//                            rightMaxMov = xO + 2;
+//                            leftMinMov = xO;
+//                            rightMinMov =
+//                            upMaxMov = yO - 5;
+//                            downMaxMov = yO + 5;
+//                            upMinMov = downMinMov = yO;
+//
+//                        }
+//
+//                    }
+                    leftMinMov = xO - thisPiece.getMinMovHorizontal();
+                    rightMaxMov = xO + thisPiece.getMaxMovHorizontal();
+                    rightMinMov = xO + thisPiece.getMinMovHorizontal();
+                    upMaxMov = yO - thisPiece.getMaxMovVertical();
+                    upMinMov = yO - thisPiece.getMinMovVertical();
+                    downMaxMov = yO + thisPiece.getMaxMovVertical();
+                    downMinMov = yO + thisPiece.getMinMovVertical();
 
-//                  For each position that this piece can move horizontally
-                    for (int movHorizontal = leftMaxMov; movHorizontal <= rightMaxMov; movHorizontal++) {
 
-                        if (movHorizontal >= 0 && movHorizontal < boardSize -1) {
 
-                            if (movHorizontal < leftMinMov && movHorizontal > rightMinMov) {
+//                    horizontal, vertical e diagonal
 
-//                              For each position that this piece can move Vertically
-                                for (int movVertical = upMaxMov; movVertical <= downMaxMov; movVertical++) {
+                    for (int horizontal = leftMaxMov; horizontal <= rightMaxMov; horizontal++) {
 
-                                    if (movVertical > upMinMov && movVertical < downMinMov) {
+                        if (horizontal >= 0 && horizontal < boardSize) {
 
-                                        continue;
+                            for (int vertical = upMaxMov; vertical <= downMaxMov; vertical++) {
+
+                                if (vertical >= 0 && vertical < boardSize) {
+
+                                    verticalAuxiliary = setAuxiliary(vertical, verticalRelationToCenterBoard);
+
+                                    horizontalAuxiliary = setAuxiliary(horizontal, horizontalRelationToCenterBoard);
+
+                                    if (thisPiece.getMovVertical()) {
+
+                                        if (vertical != yO && horizontal == xO) {
+
+                                            suggestedPlay.add("\"" + xO + "," + vertical + "\"");
+
+                                        }
 
                                     }
 
-                                    if (movHorizontal < boardSize - 1 && movVertical < boardSize - 1) {
+                                    if (thisPiece.getMoveHorizontal()) {
 
-                                        if (movHorizontal >)
+                                        if (horizontal != xO && vertical == yO) {
+
+                                            suggestedPlay.add("\"" + horizontal + "," + yO + "\"");
+
+                                        }
 
                                     }
 
-                                    if (processaJogada(xO, yO, movHorizontal, movVertical)) {
+                                    if (thisPiece.getMoveDiagonal()) {
 
-                                        suggestedPlay.add("\"" + movHorizontal + ", " + movVertical + "\"");
+                                        if (horizontal != xO && vertical != yO) {
+
+                                            if (horizontalRelationToCenterBoard == 0 && verticalRelationToCenterBoard == 0) {
+
+                                                if (vertical - horizontal == 0 || vertical + horizontal == boardSize - 1) {
+
+                                                    suggestedPlay.add("\"" + horizontal + "," + vertical + "\"");
+
+                                                }
+
+                                            } else {
+
+                                                if (verticalAuxiliary - horizontalAuxiliary == 0 ||
+                                                        verticalAuxiliary + horizontalAuxiliary == boardSize - 1) {
+
+                                                    suggestedPlay.add("\"" + horizontal + "," + vertical + "\"");
+
+                                                }
+
+                                            }
+
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                    for (int horizontal = leftMinMov + 1; horizontal < rightMinMov; horizontal++) {
+
+                        if (horizontal >= 0 && horizontal < boardSize) {
+
+                            for (int vertical = upMinMov + 1; vertical < downMinMov; vertical++) {
+
+                                verticalAuxiliary = Math.abs(vertical - verticalRelationToCenterBoard);
+                                horizontalAuxiliary = Math.abs(horizontal - horizontalRelationToCenterBoard);
+
+                                if (vertical >= 0 && vertical < boardSize) {
+
+                                    verticalAuxiliary = setAuxiliary(vertical, verticalRelationToCenterBoard);
+
+                                    horizontalAuxiliary = setAuxiliary(horizontal, horizontalRelationToCenterBoard);
+
+                                    if (thisPiece.getMovVertical()) {
+
+                                        if (vertical != yO && horizontal == xO) {
+
+                                            suggestedPlay.remove("\"" + xO + "," + vertical + "\"");
+
+                                        }
+
+                                    }
+
+                                    if (thisPiece.getMoveHorizontal()) {
+
+                                        if (horizontal != xO && vertical == yO) {
+
+                                            suggestedPlay.remove("\"" + horizontal + "," + yO + "\"");
+
+                                        }
+
+                                    }
+
+                                    if (thisPiece.getMoveDiagonal()) {
+
+                                        if (horizontal != xO && vertical != yO) {
+
+                                            if (horizontalRelationToCenterBoard == 0 && verticalRelationToCenterBoard == 0) {
+
+                                                if (vertical - horizontal == 0 || vertical + horizontal == boardSize - 1) {
+
+                                                    suggestedPlay.remove("\"" + horizontal + "," + vertical + "\"");
+
+                                                }
+
+                                            } else {
+
+                                                if (verticalAuxiliary - horizontalAuxiliary == 0 ||
+                                                        verticalAuxiliary + horizontalAuxiliary == boardSize - 1) {
+
+                                                    suggestedPlay.remove("\"" + horizontal + "," + vertical + "\"");
+
+                                                }
+
+                                            }
+
+                                        }
 
                                     }
 
@@ -232,7 +396,7 @@ public class Simulador {
 //      return the list
         return suggestedPlay;
 
-    }
+    }//****************************************************
 
 //  Undo Play
     public void anularJogadaAnterior() {
@@ -255,45 +419,6 @@ public class Simulador {
         return true;
 
     }
-
-
-//  sets
-//    public boolean setPeca(CrazyPiece piece) {
-//
-//        try {
-//
-//            this.piecesMalucas.add(piece);
-//
-//
-//            return true;
-//
-//        } catch (Exception impossibleToAddANexPiece) {
-//
-//            System.out.println("Impossible to add a new piece");
-//
-//            return false;
-//
-//        }
-//
-//    }
-//
-//    public boolean removePeca(CrazyPiece piece) {
-//
-//        try {
-//
-//            this.piecesMalucas.remove(piece);
-//
-//            return true;
-//
-//        } catch (Exception impossibleToAddANexPiece) {
-//
-//            System.out.println("Impossible to add a new piece");
-//
-//            return false;
-//
-//        }
-//
-//    }
 
     public boolean iniciaJogo(File ficheiroInicial) {
 
@@ -613,49 +738,78 @@ public class Simulador {
 
     }
 
-//  comentar
+//  Processes the play
     public boolean processaJogada(int xO, int yO, int xD, int yD) {
 
+//      Check if the move is between the board rang
         if (xD >= 0 && xD <= (boardSize - 1) &&
             yD >= 0 && yD <= (boardSize - 1)) {
 
+//          Creates the positionOrigin as the origin position
             Position positionOrigin = new Position(xO, yO);
 
+//          For every piece in the list of pieces in the game
             for (CrazyPiece piece : crazyPiecesInGame) {
 
+//              If the position of this piece is in the positionOrigin
                 if (piece.getPosition().equals(positionOrigin)) {
 
+//                  Check if it belongs to the playing team
                     if (piece.getIDTeam() == shift.getIdTeam()) {
 
+//                      Set the difference as the destiny coordinate minus the origin coordinate
                         int xDifference = xD - xO;
                         int yDifference = yD - yO;
+
+//                      Set the module of the difference as them self
                         int xDifferenceABS = xDifference;
                         int yDifferenceABS = yDifference;
 
+//                      If the difference of the X axis is lower of 0
                         if (xDifference < 0) {
 
-                            xDifferenceABS = ((xDifference * (-1)));
+//                          Set it's module as symmetric
+                            xDifferenceABS *= (-1);
 
                         }
+//                      If the difference of the Y axis is lower of 0
                         if (yDifference < 0) {
 
-                            yDifferenceABS = ((yDifference * (-1)));
+//                          Set it's module as symmetric
+                            yDifferenceABS *= (-1);
 
                         }
 
+//                      Check if the it can move that amount of houses
                         if (piece.getMinMovHorizontal() <= xDifferenceABS &&
                                 piece.getMaxMovHorizontal() >= xDifferenceABS &&
                                 piece.getMinMovVertical() <= yDifferenceABS &&
                                 piece.getMaxMovVertical() >= yDifferenceABS) {
 
+//                          Create a destiny Position
                             Position destiny = new Position(xD, yD);
 
-                            return checkMovement(piece, xDifference, yDifference, destiny);
+                            if (checkEmptyPosition(piece, destiny)) {
+
+                                if (checkMovement(piece, xDifference, yDifference, destiny)) {
+
+                                    setScores(piece, destiny);
+
+//                                  Change shift and team
+                                    shift.addCount();
+
+//                                  Returns true
+                                    return true;
+
+                                }
+
+                            }
 
                         }
 
                     }
 
+//                  If the piece doesn't belong to the playing team leaves the cycle
                     break;
 
                 }
@@ -664,11 +818,13 @@ public class Simulador {
 
         }
 
+//      Add an invalid attempt to the playing team
         addScoresStatsInvalid();
 
+//      Returns false
         return false;
 
-    }
+    }//***********************************************
 
 //  falta a pontuacao
     public boolean jogoTerminado() {
@@ -748,39 +904,45 @@ public class Simulador {
 //  private functions
     private boolean checkMovement(CrazyPiece piece, int xDifference, int yDifference, Position destiny) {
 
-        if (checkEmptyPosition(piece, destiny)) {
+//      If the piece moves in the diagonal
+        if (xDifference != 0 && yDifference != 0) {
 
+//          Check if it can move like that
             if (piece.getMoveDiagonal()) {
 
-                return moveDiagonally(piece, xDifference, yDifference, destiny);
+                if (moveDiagonally(piece, xDifference, yDifference, destiny)) {
 
-            } else if (piece.getMoveHorizontal()) {
-
-                if (piece.getMovVertical()) {
-
-                    if (xDifference > 0) {
-
-                        return verificaMovimentoVertical(piece, xDifference, yDifference, 'R', destiny);
-
-                    } else if (xDifference < 0) {
-
-                        return verificaMovimentoVertical(piece, xDifference, yDifference, 'L', destiny);
-
-                    }
-
-                    return verificaMovimentoVertical(piece, xDifference, yDifference, 'N', destiny);
+                    return true;
 
                 }
 
-            } else if (piece.getMovVertical()) {
+            }
 
-                if (xDifference > 0) {
+//      If the piece moves in the vertical
+        } else if (xDifference != 0) {
 
-                    return verificaMovimentoVertical(piece, xDifference, yDifference, 'R', destiny);
+//          Check if it can move like that
+            if (piece.getMoveHorizontal()) {
 
-                } else if (xDifference < 0) {
+//              Check if it can go tho that position
+                if (moveHorizontally(piece, xDifference)) {
 
-                    return verificaMovimentoVertical(piece, xDifference, yDifference, 'L', destiny);
+                    return true;
+
+                }
+
+            }
+
+//      If the piece moves in the horizontal
+        } else if (yDifference != 0) {
+
+//          Check if it can move like that
+            if (piece.getMovVertical()) {
+
+//              Check if it can go tho that position
+                if (moveVertically(piece, xDifference, yDifference)) {
+
+                    return true;
 
                 }
 
@@ -788,171 +950,288 @@ public class Simulador {
 
         }
 
-        addScoresStatsInvalid();
+//      Print in the console the directions that the piece can be moved
+        System.out.println("This piece can be moved in this ways: " +
+                "\nHorizontal: " + piece.getMoveHorizontal() +
+                "\nVertical: " + piece.getMovVertical() +
+                "\nDiagonal: " + piece.getMoveDiagonal());
 
-        return verificaPossiveisMovimentos(piece);
+//      Returns false
+        return false;
 
     }
 
-    private boolean verificaMovimentoVertical(CrazyPiece piece, int xDifference, int yDifference, char leftOrRight,
-                                                Position destiny) {
+    private boolean moveHorizontally(CrazyPiece piece, int xDifference) {
 
-        switch (leftOrRight) {
+        if (xDifference > 0) {
 
-            case 'R': {
+            switch (piece.getType()) {
 
-                if (yDifference > 0) {
+                case 0 : {
 
-                    if (piece.getMoveCima()) {
-
-                        if (verificaPosicaoVazia(piece, destiny)) {
-
-                            moveUpRight(piece, xDifference, yDifference);
-
-                            return true;
-
-                        }
-
-                    }
-
-                    addScoresStatsInvalid();
-
-                    return verificaPossiveisMovimentos(piece);
-
-                } else if (yDifference < 0) {
-
-                    if (piece.getMoveBaixo()) {
-
-                        if (verificaPosicaoVazia(piece, destiny)) {
-
-                            moveDownRight(piece, xDifference, yDifference);
-
-                            return true;
-
-                        }
-
-
-                    }
-
-                    addScoresStatsInvalid();
-
-                    return verificaPossiveisMovimentos(piece);
-
-
-                }
-
-                if (verificaPosicaoVazia(piece, destiny)) {
-
+//                  Move up and right
                     moveRight(piece, xDifference);
 
+//                  Return true
                     return true;
+
+                }
+
+                case 1 : {
+
+                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), false)) {
+
+//                      Move up and right
+                        moveRight(piece, xDifference);
+
+//                      Return true
+                        return true;
+
+                    }
+
+                }
+                break;
+
+                case 5 : {
+
+                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), false)) {
+
+//                      Move up and right
+                        moveRight(piece, xDifference);
+
+//                      Return true
+                        return true;
+
+                    }
+
+                }
+                break;
+
+                case 7 : {
+
+//                      Check if there is a piece in the way
+                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), false)) {
+
+//                          Move up and right
+                        moveRight(piece, xDifference);
+
+//                      Return true
+                        return true;
+
+                    }
 
                 }
 
             }
 
-            case 'L': {
+        } else if (xDifference < 0) {
 
-                if (yDifference > 0) {
+            switch (piece.getType()) {
 
-                    if (piece.getMoveCima()) {
+                case 0 : {
 
-                        if (verificaPosicaoVazia(piece, destiny)) {
-
-                            moveUpLeft(piece, xDifference, yDifference);
-
-                            return true;
-
-                        }
-
-                    }
-
-                    addScoresStatsInvalid();
-
-                    return verificaPossiveisMovimentos(piece);
-
-                } else if (yDifference < 0) {
-
-                    if (piece.getMoveBaixo()) {
-
-                        if (verificaPosicaoVazia(piece, destiny)) {
-
-                            moveDownLeft(piece, xDifference, yDifference);
-
-                            return true;
-
-                        }
-
-
-                    }
-
-                    addScoresStatsInvalid();
-
-                    return verificaPossiveisMovimentos(piece);
-
-
-                }
-
-                if (verificaPosicaoVazia(piece, destiny)) {
-
+//                  Move up and right
                     moveLeft(piece, xDifference);
 
+//                  Return true
                     return true;
 
                 }
 
-            }
+                case 1 : {
 
-            default: {
+                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), false)) {
 
-                if (yDifference > 0) {
+//                      Move up and right
+                        moveLeft(piece, xDifference);
 
-                    if (piece.getMoveCima()) {
-
-                        if (verificaPosicaoVazia(piece, destiny)) {
-
-                            moveUp(piece, yDifference);
-
-                            return true;
-
-                        }
+//                      Return true
+                        return true;
 
                     }
-
-                    addScoresStatsInvalid();
-
-                    return verificaPossiveisMovimentos(piece);
-
-                } else if (yDifference < 0) {
-
-                    if (piece.getMoveBaixo()) {
-
-                        if (verificaPosicaoVazia(piece, destiny)) {
-
-                            moveDown(piece, yDifference);
-
-                            return true;
-
-                        }
-
-
-                    }
-
-                    addScoresStatsInvalid();
-
-                    return verificaPossiveisMovimentos(piece);
-
 
                 }
+                break;
 
-                addScoresStatsInvalid();
+                case 5 : {
 
-//              return false because it can not stay in the same position
-                return false;
+                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), false)) {
+
+//                      Move up and right
+                        moveLeft(piece, xDifference);
+
+//                      Return true
+                        return true;
+
+                    }
+
+                }
+                break;
+
+                case 7 : {
+
+//                      Check if there is a piece in the way
+                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), false)) {
+
+//                      Move up and right
+                        moveLeft(piece, xDifference);
+
+//                      Return true
+                        return true;
+
+                    }
+
+                }
 
             }
 
         }
+
+//      Return false
+        return false;
+
+    }
+
+    private boolean moveVertically(CrazyPiece piece, int xDifference, int yDifference) {
+
+        if (yDifference > 0) {
+
+            switch (piece.getType()) {
+
+                case 0 : {
+
+//                      Move up and right
+                    moveUp(piece, yDifference);
+
+//                  Return true
+                    return true;
+
+                }
+
+                case 1 : {
+
+                    if (checkClearPath_Horizontal_Or_Vertical(yDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), true)) {
+
+//                      Move up and right
+                        moveUp(piece, yDifference);
+
+//                      Return true
+                        return true;
+
+                    }
+
+                }
+                break;
+
+                case 5 : {
+
+                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), true)) {
+
+//                      Move up and right
+                        moveUp(piece, yDifference);
+
+//                      Return true
+                        return true;
+
+                    }
+
+                }
+                break;
+
+                case 7 : {
+
+//                      Check if there is a piece in the way
+                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), true)) {
+
+//                      Move up and right
+                        moveUp(piece, yDifference);
+
+//                      Return true
+                        return true;
+
+                    }
+
+                }
+
+            }
+
+        } else if (yDifference < 0) {
+
+            switch (piece.getType()) {
+
+                case 0 : {
+
+//                      Move up and right
+                    moveDown(piece, yDifference);
+
+//                  Return true
+                    return true;
+
+                }
+
+                case 1 : {
+
+                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), true)) {
+
+//                      Move up and right
+                        moveDown(piece, yDifference);
+
+//                  Return true
+                        return true;
+
+                    }
+
+                }
+                break;
+
+                case 5 : {
+
+                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), true)) {
+
+//                      Move up and right
+                        moveDown(piece, yDifference);
+
+//                  Return true
+                        return true;
+
+                    }
+
+                }
+                break;
+
+                case 7 : {
+
+//                      Check if there is a piece in the way
+                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxAtual(),
+                            piece.getPosition().getyAtual(), true)) {
+
+//                      Move up and right
+                        moveDown(piece, yDifference);
+
+//                  Return true
+                        return true;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+//      Return true
+        return false;
 
     }
 
@@ -971,17 +1250,22 @@ public class Simulador {
 //                      Move up and right
                         moveUpRight(piece, xDifference, yDifference);
 
+//                      Return true
+                        return true;
+
                     }
-                    break;
 
                     case 1 : {
 
 //                      Check if there is a piece in the way
-                        if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                piece.getPosition().getyAtual(), 'R')) {
+                        if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                piece.getPosition().getyAtual(), true)) {
 
 //                          Move up and right
                             moveUpRight(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -991,11 +1275,14 @@ public class Simulador {
                     case 2 : {
 
 //                      If there are no kings in the way
-                        if (checkClearPath_magicPony(piece, xDifference, yDifference,
+                        if (checkClearPath_magicPony(xDifference, yDifference,
                                 piece.getPosition().getxAtual(), piece.getPosition().getyAtual())) {
 
 //                          Move up and right
                             moveUpRight(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1005,11 +1292,14 @@ public class Simulador {
                     case 3 : {
 
 //                      check if there is a piece in the way
-                        if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                piece.getPosition().getyAtual(), 'R') && priestMovement(destiny)) {
+                        if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                piece.getPosition().getyAtual(), true) && priestMovement(destiny)) {
 
 //                          Move up and right
                             moveUpRight(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1018,11 +1308,15 @@ public class Simulador {
 
                     case 6 : {
 
+
 //                      If we are playing in an odd shift
                         if (shift.getIdTeam() %2 != 0) {
 
 //                          Move up and right
                             moveUpRight(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1035,12 +1329,16 @@ public class Simulador {
 
                             case 1 : {
 
+
 //                              check if there is a piece in the way
-                                if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                        piece.getPosition().getyAtual(), 'R')) {
+                                if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                        piece.getPosition().getyAtual(), true)) {
 
 //                                  Move up and right
                                     moveUpRight(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
@@ -1049,12 +1347,16 @@ public class Simulador {
 
                             case 2 : {
 
-//                      If there are no kings in the way
-                                if (checkClearPath_magicPony(piece, xDifference, yDifference,
+
+//                              If there are no kings in the way
+                                if (checkClearPath_magicPony(xDifference, yDifference,
                                         piece.getPosition().getxAtual(), piece.getPosition().getyAtual())) {
 
-//                          Move up and right
+//                                  Move up and right
                                     moveUpRight(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
@@ -1063,12 +1365,16 @@ public class Simulador {
 
                             case 3 : {
 
+
 //                              check if there is a piece in the way
-                                if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                        piece.getPosition().getyAtual(), 'R') && priestMovement(destiny)) {
+                                if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                        piece.getPosition().getyAtual(), true) && priestMovement(destiny)) {
 
 //                                  Move up and right
                                     moveUpRight(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
@@ -1077,26 +1383,21 @@ public class Simulador {
 
                             default : {
 
+
 //                              If we are playing in an odd shift
                                 if (shift.getIdTeam() %2 != 0) {
 
 //                                  Move up and right
                                     moveUpRight(piece, xDifference, yDifference);
 
+//                                  Return true
+                                    return true;
+
                                 }
 
                             }
 
                         }
-
-                    }
-                    break;
-
-                    default : {
-
-                        addScoresStatsInvalid();
-
-                        return false;
 
                     }
 
@@ -1106,22 +1407,30 @@ public class Simulador {
 
                 switch (piece.getType()) {
 
+
                     case 0 : {
+
 
 //                      Move up and right
                         moveUpLeft(piece, xDifference, yDifference);
 
+//                      Return true
+                        return true;
+
                     }
-                    break;
 
                     case 1 : {
 
+
 //                      Check if there is a piece in the way
-                        if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                piece.getPosition().getyAtual(), 'R')) {
+                        if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                piece.getPosition().getyAtual(), true)) {
 
 //                          Move up and right
                             moveUpLeft(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1130,12 +1439,16 @@ public class Simulador {
 
                     case 2 : {
 
+
 //                      If there are no kings in the way
-                        if (checkClearPath_magicPony(piece, xDifference, yDifference,
+                        if (checkClearPath_magicPony(xDifference, yDifference,
                                 piece.getPosition().getxAtual(), piece.getPosition().getyAtual())) {
 
 //                          Move up and right
                             moveUpLeft(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1144,12 +1457,16 @@ public class Simulador {
 
                     case 3 : {
 
+
 //                      check if there is a piece in the way
-                        if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                piece.getPosition().getyAtual(), 'R') && priestMovement(destiny)) {
+                        if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                piece.getPosition().getyAtual(), true) && priestMovement(destiny)) {
 
 //                          Move up and right
                             moveUpLeft(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1158,11 +1475,15 @@ public class Simulador {
 
                     case 6 : {
 
+
 //                      If we are playing in an odd shift
                         if (shift.getIdTeam() %2 != 0) {
 
 //                          Move up and right
                             moveUpLeft(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1173,14 +1494,19 @@ public class Simulador {
 
                         switch (piece.getPieceId()) {
 
+
                             case 1 : {
 
+
 //                              check if there is a piece in the way
-                                if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                        piece.getPosition().getyAtual(), 'R')) {
+                                if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                        piece.getPosition().getyAtual(), true)) {
 
 //                                  Move up and right
                                     moveUpLeft(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
@@ -1189,12 +1515,16 @@ public class Simulador {
 
                             case 2 : {
 
+
 //                              If there are no kings in the way
-                                if (checkClearPath_magicPony(piece, xDifference, yDifference,
+                                if (checkClearPath_magicPony(xDifference, yDifference,
                                         piece.getPosition().getxAtual(), piece.getPosition().getyAtual())) {
 
 //                                  Move up and right
                                     moveUpLeft(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
@@ -1203,12 +1533,16 @@ public class Simulador {
 
                             case 3 : {
 
+
 //                              check if there is a piece in the way
-                                if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                        piece.getPosition().getyAtual(), 'R') && priestMovement(destiny)) {
+                                if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                        piece.getPosition().getyAtual(), true) && priestMovement(destiny)) {
 
 //                                  Move up and right
                                     moveUpLeft(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
@@ -1217,26 +1551,21 @@ public class Simulador {
 
                             default : {
 
+
 //                              If we are playing in an odd shift
                                 if (shift.getIdTeam() %2 != 0) {
 
 //                                  Move up and right
                                     moveUpLeft(piece, xDifference, yDifference);
 
+//                                  Return true
+                                    return true;
+
                                 }
 
                             }
 
                         }
-
-                    }
-                    break;
-
-                    default : {
-
-                        addScoresStatsInvalid();
-
-                        return false;
 
                     }
 
@@ -1256,19 +1585,25 @@ public class Simulador {
                     case 0 : {
 
 //                      Move up and right
-                        moveUpRight(piece, xDifference, yDifference);
+                        moveDownRight(piece, xDifference, yDifference);
+
+//                      Return true
+                        return true;
 
                     }
-                    break;
 
                     case 1 : {
 
+
 //                      Check if there is a piece in the way
-                        if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                piece.getPosition().getyAtual(), 'R')) {
+                        if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                piece.getPosition().getyAtual(), false)) {
 
 //                          Move up and right
-                            moveUpRight(piece, xDifference, yDifference);
+                            moveDownRight(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1277,12 +1612,16 @@ public class Simulador {
 
                     case 2 : {
 
+
 //                      If there are no kings in the way
-                        if (checkClearPath_magicPony(piece, xDifference, yDifference,
+                        if (checkClearPath_magicPony(xDifference, yDifference,
                                 piece.getPosition().getxAtual(), piece.getPosition().getyAtual())) {
 
 //                          Move up and right
-                            moveUpRight(piece, xDifference, yDifference);
+                            moveDownRight(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1291,12 +1630,16 @@ public class Simulador {
 
                     case 3 : {
 
+
 //                      check if there is a piece in the way
-                        if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                piece.getPosition().getyAtual(), 'R') && priestMovement(destiny)) {
+                        if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                piece.getPosition().getyAtual(), false) && priestMovement(destiny)) {
 
 //                          Move up and right
-                            moveUpRight(piece, xDifference, yDifference);
+                            moveDownRight(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1305,11 +1648,15 @@ public class Simulador {
 
                     case 6 : {
 
+
 //                      If we are playing in an odd shift
                         if (shift.getIdTeam() %2 != 0) {
 
 //                          Move up and right
-                            moveUpRight(piece, xDifference, yDifference);
+                            moveDownRight(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1318,16 +1665,21 @@ public class Simulador {
 
                     case 7 : {
 
+
                         switch (piece.getPieceId()) {
 
                             case 1 : {
 
+
 //                              check if there is a piece in the way
-                                if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                        piece.getPosition().getyAtual(), 'R')) {
+                                if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                        piece.getPosition().getyAtual(), false)) {
 
 //                                  Move up and right
-                                    moveUpRight(piece, xDifference, yDifference);
+                                    moveDownRight(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
@@ -1336,12 +1688,16 @@ public class Simulador {
 
                             case 2 : {
 
-//                      If there are no kings in the way
-                                if (checkClearPath_magicPony(piece, xDifference, yDifference,
+
+//                              If there are no kings in the way
+                                if (checkClearPath_magicPony(xDifference, yDifference,
                                         piece.getPosition().getxAtual(), piece.getPosition().getyAtual())) {
 
-//                          Move up and right
-                                    moveUpRight(piece, xDifference, yDifference);
+//                                  Move up and right
+                                    moveDownRight(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
@@ -1350,12 +1706,16 @@ public class Simulador {
 
                             case 3 : {
 
+
 //                              check if there is a piece in the way
-                                if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                        piece.getPosition().getyAtual(), 'R') && priestMovement(destiny)) {
+                                if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                        piece.getPosition().getyAtual(), false) && priestMovement(destiny)) {
 
 //                                  Move up and right
-                                    moveUpRight(piece, xDifference, yDifference);
+                                    moveDownRight(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
@@ -1364,26 +1724,21 @@ public class Simulador {
 
                             default : {
 
+
 //                              If we are playing in an odd shift
                                 if (shift.getIdTeam() %2 != 0) {
 
 //                                  Move up and right
-                                    moveUpRight(piece, xDifference, yDifference);
+                                    moveDownRight(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
                             }
 
                         }
-
-                    }
-                    break;
-
-                    default : {
-
-                        addScoresStatsInvalid();
-
-                        return false;
 
                     }
 
@@ -1393,22 +1748,30 @@ public class Simulador {
 
                 switch (piece.getType()) {
 
+
                     case 0 : {
 
+
 //                      Move up and right
-                        moveUpLeft(piece, xDifference, yDifference);
+                        moveDownLeft(piece, xDifference, yDifference);
+
+//                      Return true
+                        return true;
 
                     }
-                    break;
 
                     case 1 : {
 
+
 //                      Check if there is a piece in the way
-                        if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                piece.getPosition().getyAtual(), 'R')) {
+                        if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                piece.getPosition().getyAtual(), false)) {
 
 //                          Move up and right
-                            moveUpLeft(piece, xDifference, yDifference);
+                            moveDownLeft(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1417,12 +1780,16 @@ public class Simulador {
 
                     case 2 : {
 
+
 //                      If there are no kings in the way
-                        if (checkClearPath_magicPony(piece, xDifference, yDifference,
+                        if (checkClearPath_magicPony(xDifference, yDifference,
                                 piece.getPosition().getxAtual(), piece.getPosition().getyAtual())) {
 
 //                          Move up and right
-                            moveUpLeft(piece, xDifference, yDifference);
+                            moveDownLeft(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1431,12 +1798,16 @@ public class Simulador {
 
                     case 3 : {
 
+
 //                      check if there is a piece in the way
-                        if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                piece.getPosition().getyAtual(), 'R') && priestMovement(destiny)) {
+                        if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                piece.getPosition().getyAtual(), false) && priestMovement(destiny)) {
 
 //                          Move up and right
-                            moveUpLeft(piece, xDifference, yDifference);
+                            moveDownLeft(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1445,11 +1816,15 @@ public class Simulador {
 
                     case 6 : {
 
+
 //                      If we are playing in an odd shift
                         if (shift.getIdTeam() %2 != 0) {
 
 //                          Move up and right
-                            moveUpLeft(piece, xDifference, yDifference);
+                            moveDownLeft(piece, xDifference, yDifference);
+
+//                          Return true
+                            return true;
 
                         }
 
@@ -1458,16 +1833,22 @@ public class Simulador {
 
                     case 7 : {
 
+
                         switch (piece.getPieceId()) {
+
 
                             case 1 : {
 
+
 //                              check if there is a piece in the way
-                                if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                        piece.getPosition().getyAtual(), 'R')) {
+                                if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                        piece.getPosition().getyAtual(), false)) {
 
 //                                  Move up and right
-                                    moveUpLeft(piece, xDifference, yDifference);
+                                    moveDownLeft(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
@@ -1476,12 +1857,16 @@ public class Simulador {
 
                             case 2 : {
 
+
 //                              If there are no kings in the way
-                                if (checkClearPath_magicPony(piece, xDifference, yDifference,
+                                if (checkClearPath_magicPony(xDifference, yDifference,
                                         piece.getPosition().getxAtual(), piece.getPosition().getyAtual())) {
 
 //                                  Move up and right
-                                    moveUpLeft(piece, xDifference, yDifference);
+                                    moveDownLeft(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
@@ -1490,12 +1875,16 @@ public class Simulador {
 
                             case 3 : {
 
+
 //                              check if there is a piece in the way
-                                if (checkClearPath(xDifference, yDifference, piece.getPosition().getxAtual(),
-                                        piece.getPosition().getyAtual(), 'R') && priestMovement(destiny)) {
+                                if (checkClearPath_Diagonal(xDifference, piece.getPosition().getxAtual(),
+                                        piece.getPosition().getyAtual(), false) && priestMovement(destiny)) {
 
 //                                  Move up and right
-                                    moveUpLeft(piece, xDifference, yDifference);
+                                    moveDownLeft(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
@@ -1504,26 +1893,21 @@ public class Simulador {
 
                             default : {
 
+
 //                              If we are playing in an odd shift
                                 if (shift.getIdTeam() %2 != 0) {
 
 //                                  Move up and right
-                                    moveUpLeft(piece, xDifference, yDifference);
+                                    moveDownLeft(piece, xDifference, yDifference);
+
+//                                  Return true
+                                    return true;
 
                                 }
 
                             }
 
                         }
-
-                    }
-                    break;
-
-                    default : {
-
-                        addScoresStatsInvalid();
-
-                        return false;
 
                     }
 
@@ -1533,10 +1917,7 @@ public class Simulador {
 
         }
 
-        addScoresStatsInvalid();
-
-//      return false because a diagonal MUST be able to move in the x axis or because i can not move in the diagonal
-//  or staying in the same position
+//      Return true
         return false;
 
     }
@@ -1549,13 +1930,15 @@ public class Simulador {
 
                 piece.changePieceType();
 
+                break;
+
             }
 
         }
 
     }
 
-    private void setScores(CrazyPiece piece) {
+    private void setScores_Capture(CrazyPiece piece) {
 
 //      If the team that is playing is:
         switch (shift.getIdTeam()) {
@@ -1589,56 +1972,85 @@ public class Simulador {
 //      Change any joker pieceType in the game
         changeJokerType();
 
-    }
+    }//************************************************************
 
-    private boolean checkEmptyPosition(CrazyPiece thisPiece, Position newPosition) {
+    private void setScores(CrazyPiece piece, Position destiny) {
 
-//      Gets the type of the piece that is moving
-        int pieceType = thisPiece.getType();
+        boolean haveScore = false;
 
-//      If the type of the piece is:
-        //              Search in every piece in the game
-        //              Search in every piece in the game
-        if (pieceType == 1) {
-            for (CrazyPiece piece : crazyPiecesInGame) {
+        for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
-//                  If that same piece is in the newPosition
-                if (piece.getPosition().equals(newPosition)) {
+            if (thisPiece.getPosition().equals(destiny)) {
 
-//                      Check if the piece is form the enemy team
-                    if (piece.getIDTeam() != shift.getIdTeam()) {
+//              Call setScores_Capture
+                setScores_Capture(piece);
 
-//                          If this piece is not a queen
-                        if (piece.getType() != 1) {
+                haveScore = true;
 
-//                              Call setScores
-                            setScores(piece);
+            }
 
-//                              Returns true
+        }
+
+        if (!haveScore) {
+
+            switch (shift.getIdTeam()) {
+
+                case 10: {
+
+                    addScoresStats(0, 0, 0, 1);
+
+                }
+                break;
+
+                case 20: {
+
+                    addScoresStats(0, 0, 1, 0);
+
+                }
+
+            }
+
+            shift.addCountNoCapture();
+
+        }
+
+    }//**************************************************
+
+//                       Safe
+    private boolean checkEmptyPosition(CrazyPiece piece, Position destiny) {
+
+//      If the type of the piece is queen
+        if (piece.getType() == 1) {
+
+//          Search in every piece in the game
+            for (CrazyPiece thisPiece : crazyPiecesInGame) {
+
+//              If that same piece is in the newPosition
+                if (thisPiece.getPosition().equals(destiny)) {
+
+//                  Check if the piece is form the enemy team
+                    if (thisPiece.getIDTeam() != shift.getIdTeam()) {
+
+//                      If this piece is not a queen
+                        if (thisPiece.getType() != 1) {
+
+//                          Returns true
                             return true;
-
-                        } else {
-
-//                              Print in the console that was an enemy queen on that position
-                            System.out.println("There's an enemy queen on that position!");
-
-//                              Add an invalid score to the playing team
-                            addScoresStatsInvalid();
-
-//                              Returns false
-                            return false;
 
                         }
 
+//                      Print in the console that was an enemy queen on that position
+                        System.out.println("There's an enemy queen on that position!");
+
+//                      Returns false
+                        return false;
+
                     } else {
 
-//                          Print in the console that was an enemy queen on that position
+//                      Print in the console that was an enemy queen on that position
                         System.out.println("There's already a piece of the same team on that position!");
 
-//                          Add an invalid score to the playing team
-                        addScoresStatsInvalid();
-
-//                          Returns false
+//                      Returns false
                         return false;
 
                     }
@@ -1647,102 +2059,36 @@ public class Simulador {
 
             }
         } else {
-            for (CrazyPiece piece : crazyPiecesInGame) {
 
-//                  If that same piece is in the newPosition
-                if (piece.getPosition().equals(newPosition)) {
+//          Search in every piece in the game
+            for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
-//                      Check if the piece is form the enemy team
-                    if (piece.getIDTeam() != shift.getIdTeam()) {
+//              If that same piece is in the newPosition
+                if (thisPiece.getPosition().equals(destiny)) {
 
-//                          Call setScores
-                        setScores(piece);
+//                  Check if the piece is form the enemy team
+                    if (thisPiece.getIDTeam() != shift.getIdTeam()) {
 
-//                          Return true
+//                      Return true
                         return true;
 
-                    } else {
-
-//                          Print in the console that was an enemy queen on that position
-                        System.out.println("There's already a piece of the same team on that position!");
-
-//                          Add an invalid score to the playing team
-                        addScoresStatsInvalid();
-
-//                          Returns false
-                        return false;
-
                     }
 
+//                  Print in the console that was an enemy queen on that position
+                    System.out.println("There's already a piece of the same team on that position!");
+
+//                  Returns false
+                    return false;
+
                 }
 
             }
         }
 
-        switch (shift.getIdTeam()) {
-
-            case 10: {
-
-                addScoresStats(0,0,0,1);
-
-            }break;
-
-            case 20: {
-
-                addScoresStats(0,0,1,0);
-
-            }
-
-        }
-
-        shift.addCountNoCapture();
-
+//      If there's not a piece in the destiny position return true
         return true;
 
-    }
-
-    private void queenMovement(CrazyPiece piece, int xDifference, int yDifference, Position destiny, boolean up) {
-
-        if (up) {
-
-//          Check if the position is empty
-            if (verificaPosicaoVazia(piece, destiny)) {
-
-//              If yDifference is bigger than 0
-                if (yDifference > 0) {
-
-                } else {
-
-//                  Move up and left
-                    moveUpLeft(piece, xDifference, yDifference);
-
-                }
-
-            }
-
-        } else {
-
-//          Check if the position is empty
-            if (verificaPosicaoVazia(piece, destiny)) {
-
-//              If yDifference is bigger than 0
-                if (yDifference > 0) {
-
-//                  Move down and right
-                    moveDownRight(piece, xDifference, yDifference);
-
-                } else {
-
-//                  Move down and left
-                    moveDownLeft(piece, xDifference, yDifference);
-
-                }
-
-            }
-
-        }
-
-    }
+    }//**************************************
 
     private boolean priestMovement(Position destiny) {
 
@@ -1773,11 +2119,120 @@ public class Simulador {
 
     }
 
-    private boolean checkClearPath(int xDifference, int yDifference, int xActual, int yActual, char up) {
+    private boolean checkClearPath_Horizontal_Or_Vertical(int difference, int xActual, int yActual, boolean vertical) {
 
         int finalPosition;
 
-        if (up == 'D') {
+//      Set finalPosition value
+        if (vertical) {
+
+//          Set the finalPosition as the yActual + the difference it wants to move
+            finalPosition = yActual + difference;
+
+        } else {
+
+//          Set the finalPosition as the yActual + the difference it wants to move
+            finalPosition = xActual + difference;
+
+        }
+
+//      if the difference is negative
+        if (difference < 0) {
+
+//          If it wants to move vertically
+            if (vertical) {
+
+//              Search from the immediately left position the the actual position until the finalPosition
+                for (int position = yActual - 1; position > finalPosition; position--) {
+
+//                  If there's a piece in the way
+                    if (searchForAPiece(xActual, position)) {
+
+//                      Return false
+                        return false;
+
+                    }
+
+                }
+
+            }
+//          If it wants to move horizontally
+            else {
+
+//              Search from the immediately left position the the actual position until the finalPosition
+                for (int position = xActual - 1; position > finalPosition; position--) {
+
+//                  If there's a piece in the way
+                    if (searchForAPiece(position, yActual)) {
+
+//                      Return false
+                        return false;
+
+                    }
+
+                }
+
+            }
+
+        }
+//      If the difference is positive
+        else if (difference > 0) {
+
+            if (vertical) {
+
+//              Search from the immediately left position the the actual position until the finalPosition
+                for (int position = yActual + 1; position > finalPosition; position++) {
+
+//                  If there's a piece in the way
+                    if (searchForAPiece(xActual, position)) {
+
+//                      Return false
+                        return false;
+
+                    }
+
+                }
+
+            }
+//          If it wants to move horizontally
+            else {
+
+//              Search from the immediately left position the the actual position until the finalPosition
+                for (int position = xActual + 1; position > finalPosition; position++) {
+
+//                  If there's a piece in the way
+                    if (searchForAPiece(position, yActual)) {
+
+//                      Return false
+                        return false;
+
+                    }
+
+                }
+
+
+            }
+
+        }
+
+//      If the difference is null
+        else {
+
+//          Return false
+            return false;
+
+        }
+
+//      If there's no piece in the way return true
+        return true;
+
+    }
+
+    private boolean checkClearPath_Diagonal(int xDifference, int xActual, int yActual, boolean up) {
+
+        int finalPosition;
+
+        if (up) {
 
             finalPosition = xActual + xDifference;
 
@@ -1809,23 +2264,12 @@ public class Simulador {
             }
             else {
 
-                finalPosition = yActual + yDifference;
-
-                for (int y = yActual - 1; y < finalPosition; y--) {
-
-                    if (searchForAPiece(xActual, y)) {
-
-                        return false;
-
-                    }
-
-                }
+                return false;
 
             }
 
 
-        }
-        else if (up == 'R'){
+        } else {
 
             finalPosition = xActual + xDifference;
 
@@ -1857,53 +2301,6 @@ public class Simulador {
             }
             else {
 
-                finalPosition = yActual + yDifference;
-
-                for (int y = yActual + 1; y < finalPosition; y++) {
-
-                    if (searchForAPiece(xActual, y)) {
-
-                        return false;
-
-                    }
-
-                }
-
-            }
-
-        }
-        else {
-
-            finalPosition = xActual + xDifference;
-
-            if (xDifference < 0) {
-
-                for (int x = xActual - 1; x < finalPosition; x--) {
-
-                    if (searchForAPiece(x, yActual)) {
-
-                        return false;
-
-                    }
-
-                }
-
-            }
-            else if (xDifference > 0){
-
-                for (int x = xActual + 1; x < xDifference; x++) {
-
-                    if (searchForAPiece(x, yActual)) {
-
-                        return false;
-
-                    }
-
-                }
-
-            }
-            else {
-
                 return false;
 
             }
@@ -1914,7 +2311,7 @@ public class Simulador {
 
     }
 
-    private boolean checkClearPath_magicPony(CrazyPiece piece, int xDifference, int yDifference, int xActual, int yActual) {
+    private boolean checkClearPath_magicPony(int xDifference, int yDifference, int xActual, int yActual) {
 
         int xFinal = xActual + xDifference;
         int yFinal = yActual + yDifference;
@@ -2002,29 +2399,6 @@ public class Simulador {
 
     }
 
-    private boolean searchForAQueen(int x, int y) {
-
-//      set thisPosition for x and y
-        Position thisPosition = new Position(x, y);
-
-//      Search for a piece in thisPosition
-        for (CrazyPiece thisPiece : crazyPiecesInGame) {
-
-//          If thisPiece is in thisPosition
-            if (thisPiece.getPosition().equals(thisPosition)) {
-
-//              Return true  if thisPiece is a king else return false
-                return thisPiece.getType() == 1;
-
-            }
-
-        }
-
-//      Return false
-        return false;
-
-    }
-
     private boolean searchForAPiece(int x, int y) {
 
 //      Set thisPosition for moveLeftRight and movUpDown
@@ -2042,23 +2416,6 @@ public class Simulador {
             }
 
         }
-
-        return false;
-
-    }
-
-//  comentar
-    private boolean verificaPossiveisMovimentos(CrazyPiece piece) {
-
-        System.out.println("This piece can be moved in this ways: " +
-                "\nLeft: " + piece.getMoveEsquerda() +
-                "\nRight: " + piece.getMoveDireita() +
-                "\nUp: " + piece.getMoveCima() +
-                "\nDown: " + piece.getMoveBaixo() +
-                "\nDown and Left: " + piece.getMoveBaixoEsquerda() +
-                "\nDown and Right: " + piece.getMoveBaixoDireta() +
-                "\nUp and Left: " + piece.getMoveCimaEsquerda() +
-                "\nUp and Right: " + piece.getMoveCimaDireita());
 
         return false;
 
