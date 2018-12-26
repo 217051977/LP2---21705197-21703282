@@ -31,10 +31,10 @@ public class TestSimulador {
     @Test
     public void testGetPecasMalucas() {
         Simulador simulador = new Simulador();
-        createCrazyPiece(simulador, 1, 0, 3, 20, "White");
-        createCrazyPiece(simulador, 2, 0, 0, 10, "Black");
+        createCrazyPiece_King_Black(1, 0, 0);
+        createCrazyPiece_King_White(2, 0, 0);
 
-        assertEquals("Those pieces wasn't the right ones!", simulador.crazyPiecesInGame, simulador.getPecasMalucas());
+        assertEquals("Those pieces wasn't the right ones!", Simulador.crazyPiecesInGame, simulador.getPecasMalucas());
     }
 
 //  Authors
@@ -47,12 +47,61 @@ public class TestSimulador {
         assertEquals("That wasn't the right author!", authors, simulador.getAutores());
     }
 
+//  Move Up
+    @Test
+    public void testMoveUp() {
+        CrazyPiece piece = new ReiPreto(1, 10, "Black");
+        piece.isInGame();
+        Position origin = new Position(0, 1);
+        piece.setPosition(origin);
+        piece.moveUp(1);
+        int destiny = piece.getPosition().getyActual();
+        assertEquals("Should be 0,0 position!", 0, destiny);
+    }
+
+//  Move Down
+    @Test
+    public void testMoveDown() {
+        CrazyPiece piece = new ReiPreto(1, 10, "Black");
+        piece.isInGame();
+        Position origin = new Position(0, 1);
+        piece.setPosition(origin);
+        piece.moveDown(1);
+        int destiny = piece.getPosition().getyActual();
+        assertEquals("Should be 0,0 position!", 2, destiny);
+    }
+
+//  Move Left
+    @Test
+    public void testMoveLeft() {
+        CrazyPiece piece = new ReiPreto(1, 10, "Black");
+        piece.isInGame();
+        Position origin = new Position(0, 1);
+        piece.setPosition(origin);
+        piece.moveLeft(1);
+        int destiny = piece.getPosition().getxActual();
+        assertEquals("Should be 0,0 position!", -1, destiny);
+    }
+
+//  Move Right
+    @Test
+    public void testMoveRight() {
+        CrazyPiece piece = new ReiPreto(1, 10, "Black");
+        piece.isInGame();
+        Position origin = new Position(0, 1);
+        piece.setPosition(origin);
+        piece.moveRight(1);
+        int destiny = piece.getPosition().getxActual();
+        assertEquals("Should be 0,0 position!", 1, destiny);
+    }
+
+
 //  Number Of Pieces Captured
     @Test
     public void testGetNumberOfWhitePiecesCaptured() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiecePresentInGame(simulador, 1, 0, 1, 20, "White");
-        createCrazyPiecePresentInGame(simulador, 2, 0, 0, 10, "Black");
+        createCrazyPiece_King_White_PresentInGame(1, 0, 1);
+        createCrazyPiece_King_Black_PresentInGame(2, 0, 0);
         simulador.processaJogada(0,0,0,1);
         assertEquals("Should exist 1 white piece captured!", 1, simulador.getNumberOfWhitePiecesCaptured());
     }
@@ -60,9 +109,9 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfBlackPiecesCaptured() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
-        createCrazyPiece(simulador, 1, 0, 1, 20, "White");
-        createCrazyPiece(simulador, 2, 0, 0, 10, "Black");
+        Simulador.shift.addCount();
+        createCrazyPiece_King_Black(7, 0, 0);
+        createCrazyPiece_King_White(8, 0, 0);
         simulador.processaJogada(0,1,0,0);
         assertEquals("Should exist 1 black piece captured!", 1, simulador.getNumberOfBlackPiecesCaptured());
     }
@@ -72,8 +121,8 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByWhiteTeam_MoveEnemyPieces() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
-        createCrazyPiece(simulador, 1, 0, 0, 10, "Black");
+        Simulador.shift.addCount();
+        createCrazyPiece_King_White(1, 0, 0);
         simulador.processaJogada(0,0,0,2);
         assertEquals("You can't move the enemy pieces!", 1, simulador.getNumberOfInvalidPlaysByWhiteTeam());
     }
@@ -81,8 +130,8 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByWhiteTeam_MoveToTheSamePosition() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
-        createCrazyPiece(simulador, 1, 0, 1, 20, "White");
+        Simulador.shift.addCount();
+        createCrazyPiece_King_White( 1, 0, 1);
         simulador.processaJogada(0,1,0,1);
         assertEquals("You can't move the to the same position!", 1, simulador.getNumberOfInvalidPlaysByWhiteTeam());
     }
@@ -90,8 +139,8 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByWhiteTeam_MoveFromAnEmptyPosition() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
-        createCrazyPiece(simulador, 1, 0, 4, 20, "White");
+        Simulador.shift.addCount();
+        createCrazyPiece_King_White( 1, 0, 4);
         simulador.processaJogada(0,1,0,0);
         assertEquals("You can't move an not existent piece!", 1, simulador.getNumberOfInvalidPlaysByWhiteTeam());
     }
@@ -99,8 +148,8 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByWhiteTeam_MoveMoreThanItCan() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
-        createCrazyPiece(simulador, 1, 0, 4, 20, "White");
+        Simulador.shift.addCount();
+        createCrazyPiece_King_White( 1, 0, 4);
         simulador.processaJogada(0,4,0,0);
         assertEquals("You can't move more than what the piece allow you to!", 1, simulador.getNumberOfInvalidPlaysByWhiteTeam());
     }
@@ -108,8 +157,8 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByWhiteTeam_Correct() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
-        createCrazyPiece(simulador, 1, 0, 1, 20, "White");
+        Simulador.shift.addCount();
+        createCrazyPiece_King_White( 1, 0, 1);
         simulador.processaJogada(0,1,0,0);
         assertEquals("You can move more the piece!", 0, simulador.getNumberOfInvalidPlaysByWhiteTeam());
     }
@@ -118,7 +167,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByBlackTeam_MoveEnemyPieces() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 0, 20, "White");
+        createCrazyPiece_King_Black( 1, 0, 0);
         simulador.processaJogada(0,0,0,2);
         assertEquals("You can't move the enemy pieces!", 1, simulador.getNumberOfInvalidPlaysByBlackTeam());
     }
@@ -126,7 +175,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByBlackTeam_MoveToTheSamePosition() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 1, 10, "Black");
+        createCrazyPiece_King_Black( 1, 0, 1);
         simulador.processaJogada(0,1,0,1);
         assertEquals("You can't move the to the same position!", 1, simulador.getNumberOfInvalidPlaysByBlackTeam());
     }
@@ -134,7 +183,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByBlackTeam_MoveFromAnEmptyPosition() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 2, 10, "Black");
+        createCrazyPiece_King_Black( 1, 0, 2);
         simulador.processaJogada(0,1,0,0);
         assertEquals("You can't move an not existent piece!", 1, simulador.getNumberOfInvalidPlaysByBlackTeam());
     }
@@ -142,7 +191,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByBlackTeam_MoveMoreThanItCan() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 4, 10, "Black");
+        createCrazyPiece_King_Black( 1, 0, 4);
         simulador.processaJogada(0,4,0,0);
         assertEquals("You can't move more than what the piece allow you to!", 1, simulador.getNumberOfInvalidPlaysByBlackTeam());
     }
@@ -150,7 +199,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByBlackTeam_Correct() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 1, 10, "Black");
+        createCrazyPiece_King_Black( 1, 0, 1);
         simulador.processaJogada(0,1,0,0);
         assertEquals("You can move more the piece!", 0, simulador.getNumberOfInvalidPlaysByBlackTeam());
     }
@@ -160,8 +209,8 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfValidPlaysByWhiteTeam_InvalidPlayAsWhiteTeam() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
-        createCrazyPiece(simulador, 1, 0, 0, 20, "White");
+        Simulador.shift.addCount();
+        createCrazyPiece_King_White( 1, 0, 0);
         simulador.processaJogada(0,1,0,0);
         assertEquals("Shouldn't be considered as a valid play!", 0, simulador.getNumberOfValidPlaysByWhiteTeam());
     }
@@ -169,8 +218,8 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfValidPlaysByWhiteTeam_CorrectAsWhiteTeam() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
-        createCrazyPiece(simulador, 1, 0, 2, 20, "White");
+        Simulador.shift.addCount();
+        createCrazyPiece_King_White( 1, 0, 2);
         simulador.processaJogada(0,2,0,3);
         assertEquals("Shouldn't be considered as a valid play!", 1, simulador.getNumberOfValidPlaysByWhiteTeam());
     }
@@ -179,7 +228,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfValidPlaysByWhiteTeam_InvalidPlayAsBlackTeam() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 0, 10, "Black");
+        createCrazyPiece_King_Black( 1, 0, 0);
         simulador.processaJogada(0,1,0,0);
         assertEquals("Shouldn't be considered as a valid play!", 0, simulador.getNumberOfValidPlaysByWhiteTeam());
     }
@@ -187,7 +236,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfValidPlaysByWhiteTeam_CorrectAsBlackTeam() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 1, 10, "Black");
+        createCrazyPiece_King_Black( 1, 0, 1);
         simulador.processaJogada(0,1,0,0);
         assertEquals("Shouldn't be considered as a valid play!", 1, simulador.getNumberOfValidPlaysByBlackTeam());
     }
@@ -206,14 +255,14 @@ public class TestSimulador {
     @Test
     public void testGetIDPiece_Exists() {
         Simulador simulador = new Simulador();
-        createCrazyPiece(simulador, 1, 0, 0, 10, "Black");
+        createCrazyPiece_King_Black( 1, 0, 0);
         assertEquals("Should be \"1\"!", 1, simulador.getIDPeca(0, 0));
     }
 
     @Test
     public void testGetIDPiece_DoesntExists() {
         Simulador simulador = new Simulador();
-        createCrazyPiece(simulador, 1, 0, 0, 10, "Black");
+        createCrazyPiece_King_Black( 1, 0, 0);
         assertEquals("Should be \"0\"!", 0, simulador.getIDPeca(0, 1));
     }
 
@@ -237,9 +286,9 @@ public class TestSimulador {
     @Test
     public void testGetFirstCapture_True_AsWhite() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
-        createCrazyPiece(simulador, 1, 1, 1, 20, "White");
-        createCrazyPiece(simulador, 2, 0, 0, 10, "Black");
+        Simulador.shift.addCount();
+        createCrazyPiece_King_White( 1, 1, 1);
+        createCrazyPiece_King_Black( 2, 0, 0);
         simulador.processaJogada(1,1,0,0);
         assertTrue("First Capture should be true!", simulador.getFirstCapture());
     }
@@ -247,9 +296,9 @@ public class TestSimulador {
     @Test
     public void testGetFirstCapture_False_AsWhite() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
-        createCrazyPiece(simulador, 1, 0, 0, 20, "White");
-        createCrazyPiece(simulador, 3, 1, 1, 10, "Black");
+        Simulador.shift.addCount();
+        createCrazyPiece_King_White( 1, 0, 0);
+        createCrazyPiece_King_Black( 3, 1, 1);
         simulador.processaJogada(1,1,1,0);
         assertFalse("First Capture should be false!", simulador.getFirstCapture());
     }
@@ -258,8 +307,8 @@ public class TestSimulador {
     @Test
     public void testGetFirstCapture_True_AsBlack() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 1, 1, 20, "White");
-        createCrazyPiece(simulador, 2, 0, 0, 10, "Black");
+        createCrazyPiece_King_White( 1, 1, 1);
+        createCrazyPiece_King_Black( 2, 0, 0);
         simulador.processaJogada(0,0,1,1);
         assertTrue("First Capture should be true!", simulador.getFirstCapture());
     }
@@ -267,8 +316,8 @@ public class TestSimulador {
     @Test
     public void testGetFirstCapture_False_AsBlack() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 0, 20, "White");
-        createCrazyPiece(simulador, 2, 1, 1, 10, "Black");
+        createCrazyPiece_King_White( 1, 1, 1);
+        createCrazyPiece_King_Black( 2, 0, 0);
         simulador.processaJogada(0,0,1,0);
         assertFalse("First Capture should be false!", simulador.getFirstCapture());
     }
@@ -401,23 +450,44 @@ public class TestSimulador {
 
 //  Execute The Move
     @Test
-    public void testExecuteTheMove_AbleToMoveThePiece() {
+    public void testExecuteTheMove_AbleToMoveThePiece_Up() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 0, 10, "Black");
+        createCrazyPiece_King_Black_PresentInGame(1, 0, 1);
+        assertTrue("You can move the piece!", simulador.processaJogada(0,1,0,0));
+    }
+
+    @Test
+    public void testExecuteTheMove_AbleToMoveThePiece_Down() {
+        Simulador simulador = new Simulador(4);
+        createCrazyPiece_King_Black_PresentInGame(1, 0, 0);
         assertTrue("You can move the piece!", simulador.processaJogada(0,0,0,1));
+    }
+
+    @Test
+    public void testExecuteTheMove_AbleToMoveThePiece_Left() {
+        Simulador simulador = new Simulador(4);
+        createCrazyPiece_King_Black_PresentInGame(1, 1, 0);
+        assertTrue("You can move the piece!", simulador.processaJogada(1,0,0,0));
+    }
+
+    @Test
+    public void testExecuteTheMove_AbleToMoveThePiece_Right() {
+        Simulador simulador = new Simulador(4);
+        createCrazyPiece_King_Black_PresentInGame(1, 0, 0);
+        assertTrue("You can move the piece!", simulador.processaJogada(0,0,1,0));
     }
 
     @Test
     public void testExecuteTheMove_MoveEnemyPiece() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 0, 20, "White");
+        createCrazyPiece_King_White( 1, 0, 0);
         assertFalse("You can only move your teams pieces!", simulador.processaJogada(0,0,0,1));
     }
 
     @Test
     public void testExecuteTheMove_MoveToTheSamePosition() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 0, 10, "Black");
+        createCrazyPiece_King_Black( 1, 0, 0);
         assertFalse("You can't move to the same position!", simulador.processaJogada(0,0,0,0));
     }
 
@@ -430,7 +500,7 @@ public class TestSimulador {
     @Test
     public void testExecuteTheMove_MoveFromAnEmptyPosition() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 0, 20, "Black");
+        createCrazyPiece_King_White( 1, 0, 0);
         assertFalse("There's no piece there!", simulador.processaJogada(0,1,0,2));
     }
 
@@ -443,7 +513,7 @@ public class TestSimulador {
     @Test
     public void testExecuteTheMove_MoveMoreThanItCan() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 1, 0, 0, 20, "Black");
+        createCrazyPiece_King_White( 1, 0, 0);
         assertFalse("You can't move so many hoses!", simulador.processaJogada(0,0,0,2));
     }
 
@@ -457,146 +527,180 @@ public class TestSimulador {
     @Test
     public void testGameOver_10ShiftsWithoutAnyCapture_And_NoFirstCapture() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.countNoCapture = 10;
-        createCrazyPiece(simulador, 3, 0, 0, 20, "White");
-        createCrazyPiece(simulador, 4, 0, 0, 10, "Black");
+        Simulador.shift.countNoCapture = 10;
+        createCrazyPiece_King_White( 3, 0, 0);
+        createCrazyPiece_King_Black( 4, 0, 0);
         assertTrue("One white king and one black king is a draw!", simulador.jogoTerminado());
     }
 
     @Test
     public void testGameOver_10ShiftsWithoutAnyCapture_And_FirstCapture() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.countNoCapture = 10;
+        Simulador.shift.countNoCapture = 10;
         simulador.firstCapture = true;
-        createCrazyPiece(simulador, 5, 0, 0, 20, "White");
-        createCrazyPiece(simulador, 6, 0, 0, 10, "Black");
+        createCrazyPiece_King_Black( 5, 0, 0);
+        createCrazyPiece_King_White( 6, 0, 0);
         assertTrue("One white king and one black king is a draw!", simulador.jogoTerminado());
     }
 
     @Test
     public void testGameOver_OneWhiteKingAndOneBlackKing() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 7, 0, 0, 20, "White");
-        createCrazyPiece(simulador, 8, 0, 0, 10, "Black");
+        createCrazyPiece_King_Black( 7, 0, 0);
+        createCrazyPiece_King_White( 8, 0, 0);
         assertTrue("One white king and one black king is a draw!", simulador.jogoTerminado());
     }
 
     @Test
     public void testGameOver_TwoWhiteKings() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 9, 0, 0, 20, "White");
-        createCrazyPiece(simulador, 10, 0, 0, 20, "White");
+        createCrazyPiece_King_White( 9, 0, 0);
+        createCrazyPiece_King_White( 10, 0, 0);
         assertTrue("White team wins!", simulador.jogoTerminado());
     }
 
     @Test
     public void testGameOver_TwoBlackKings() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiece(simulador, 11, 0, 0, 10, "Black");
-        createCrazyPiece(simulador, 12, 2, 0, 10, "Black");
+        createCrazyPiece_King_Black( 11, 0, 0);
+        createCrazyPiece_King_Black( 12, 2, 0);
         assertTrue("Black team wins!", simulador.jogoTerminado());
     }
 
     @Test
     public void testGameOver_TwoWhiteKingsAndOneBlackKing() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiecePresentInGame(simulador, 13, 0, 0, 20, "White");
-        createCrazyPiecePresentInGame(simulador, 14, 1, 0, 10, "Black");
-        createCrazyPiecePresentInGame(simulador, 15, 2, 0, 20, "White");
+        createCrazyPiece_King_White_PresentInGame(13, 0, 0);
+        createCrazyPiece_King_Black_PresentInGame(14, 1, 0);
+        createCrazyPiece_King_White_PresentInGame(15, 2, 0);
         assertFalse("With two white kings and one black king the game keeps rolling", simulador.jogoTerminado());
     }
 
     @Test
     public void testGameOver_OneWhiteKingAndTwoBlackKings() {
         Simulador simulador = new Simulador(4);
-        createCrazyPiecePresentInGame(simulador, 13, 0, 0, 10, "Black");
-        createCrazyPiecePresentInGame(simulador, 14, 1, 0, 20, "White");
-        createCrazyPiecePresentInGame(simulador, 15, 2, 0, 10, "Black");
+        createCrazyPiece_King_White_PresentInGame(13, 0, 0);
+        createCrazyPiece_King_Black_PresentInGame(14, 1, 0);
+        createCrazyPiece_King_White_PresentInGame(15, 2, 0);
         assertFalse("With one white king and two black kings the game keeps rolling!", simulador.jogoTerminado());
     }
 
     //movHorizontal
-
+//  suggested play
+    //  King
     @Test
-    public void testGetSuggestedPlay() {
+    public void testGetSuggestedPlay_King() {
         Simulador simulador = new Simulador(5);
-        createCrazyPiecePresentInGame(simulador, 1, 2, 2, 10, "black");
+        createCrazyPiece_King_Black_PresentInGame(1, 2, 2);
         List<String> result = new ArrayList<>();
-        result.add("\"" + 1 + "," + 1 + "\"");
         result.add("\"" + 1 + "," + 2 + "\"");
-        result.add("\"" + 1 + "," + 3 + "\"");
+        result.add("\"" + 3 + "," + 2 + "\"");
         result.add("\"" + 2 + "," + 1 + "\"");
         result.add("\"" + 2 + "," + 3 + "\"");
-        result.add("\"" + 3 + "," + 1 + "\"");
-        result.add("\"" + 3 + "," + 2 + "\"");
+        result.add("\"" + 1 + "," + 1 + "\"");
         result.add("\"" + 3 + "," + 3 + "\"");
+        result.add("\"" + 1 + "," + 3 + "\"");
+        result.add("\"" + 3 + "," + 1 + "\"");
         assertEquals("Not the the right suggestions!", result, simulador.obterSugestoesJogada(2, 2));
 
     }
 
     @Test
-    public void testGetSuggestedPlay_2X() {
+    public void testGetSuggestedPlay_King_2X() {
         Simulador simulador = new Simulador(5);
-        createCrazyPiecePresentInGame(simulador, 1, 2, 2, 10, "black");
+        createCrazyPiece_King_Black_PresentInGame(1, 2, 2);
         List<String> result_2x = new ArrayList<>();
-        result_2x.add("\"" + 1 + "," + 1 + "\"");
         result_2x.add("\"" + 1 + "," + 2 + "\"");
-        result_2x.add("\"" + 1 + "," + 3 + "\"");
+        result_2x.add("\"" + 3 + "," + 2 + "\"");
         result_2x.add("\"" + 2 + "," + 1 + "\"");
         result_2x.add("\"" + 2 + "," + 3 + "\"");
-        result_2x.add("\"" + 3 + "," + 1 + "\"");
-        result_2x.add("\"" + 3 + "," + 2 + "\"");
+        result_2x.add("\"" + 1 + "," + 1 + "\"");
         result_2x.add("\"" + 3 + "," + 3 + "\"");
+        result_2x.add("\"" + 1 + "," + 3 + "\"");
+        result_2x.add("\"" + 3 + "," + 1 + "\"");
         simulador.obterSugestoesJogada(2,2);
         assertEquals("Not the the right suggestions!", result_2x, simulador.obterSugestoesJogada(2, 2));
 
     }
 
     @Test
+    public void testGetSuggestedPlay_King_NotCentered() {
+        Simulador simulador = new Simulador(5);
+        createCrazyPiece_King_Black_PresentInGame(1, 0, 2);
+        List<String> result = new ArrayList<>();
+        result.add("\"" + 1 + "," + 2 + "\"");
+        result.add("\"" + 0 + "," + 1 + "\"");
+        result.add("\"" + 0 + "," + 3 + "\"");
+        result.add("\"" + 1 + "," + 3 + "\"");
+        result.add("\"" + 1 + "," + 1 + "\"");
+        assertEquals("Not the the right suggestions!", result, simulador.obterSugestoesJogada(0, 2));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_King_ImpossibleToMove() {
+        Simulador simulador = new Simulador(5);
+        createCrazyPiecePresentInGame_Pony_Black(4, 4);
+        createCrazyPiecePresentInGame_Pony_Black(5, 4);
+        createCrazyPiecePresentInGame_Pony_Black(6, 4);
+        createCrazyPiecePresentInGame_Pony_Black(6, 5);
+        createCrazyPiece_King_Black_PresentInGame(1, 5, 5);
+        createCrazyPiecePresentInGame_Pony_Black(4, 5);
+        createCrazyPiecePresentInGame_Pony_Black(4, 6);
+        createCrazyPiecePresentInGame_Pony_Black(5, 6);
+        createCrazyPiecePresentInGame_Pony_Black(6, 6);
+        List<String> result = new ArrayList<>();
+        result.add("Pedido inválido");
+        assertEquals("Not the the right suggestions!", result, simulador.obterSugestoesJogada(0, 2));
+
+    }
+
+    //  Queen
+    @Test
     public void testGetSuggestedPlay_Queen() {
         Simulador simulador = new Simulador(11);
-        createCrazyPiecePresentInGame_Queen(simulador, 1, 5, 5, 10, "black");
+        createCrazyPiecePresentInGame_Queen_Black(5);
         List<String> result_queen = new ArrayList<>();
-        result_queen.add("\"" + 0 + "," + 0 + "\"");
-        result_queen.add("\"" + 0 + "," + 5 + "\"");
-        result_queen.add("\"" + 0 + "," + 10 + "\"");
-        result_queen.add("\"" + 1 + "," + 1 + "\"");
-        result_queen.add("\"" + 1 + "," + 5 + "\"");
-        result_queen.add("\"" + 1 + "," + 9 + "\"");
-        result_queen.add("\"" + 2 + "," + 2 + "\"");
-        result_queen.add("\"" + 2 + "," + 5 + "\"");
-        result_queen.add("\"" + 2 + "," + 8 + "\"");
-        result_queen.add("\"" + 3 + "," + 3 + "\"");
-        result_queen.add("\"" + 3 + "," + 5 + "\"");
-        result_queen.add("\"" + 3 + "," + 7 + "\"");
-        result_queen.add("\"" + 4 + "," + 4 + "\"");
         result_queen.add("\"" + 4 + "," + 5 + "\"");
-        result_queen.add("\"" + 4 + "," + 6 + "\"");
-        result_queen.add("\"" + 5 + "," + 0 + "\"");
-        result_queen.add("\"" + 5 + "," + 1 + "\"");
-        result_queen.add("\"" + 5 + "," + 2 + "\"");
-        result_queen.add("\"" + 5 + "," + 3 + "\"");
+        result_queen.add("\"" + 3 + "," + 5 + "\"");
+        result_queen.add("\"" + 2 + "," + 5 + "\"");
+        result_queen.add("\"" + 1 + "," + 5 + "\"");
+        result_queen.add("\"" + 0 + "," + 5 + "\"");
+        result_queen.add("\"" + 6 + "," + 5 + "\"");
+        result_queen.add("\"" + 7 + "," + 5 + "\"");
+        result_queen.add("\"" + 8 + "," + 5 + "\"");
+        result_queen.add("\"" + 9 + "," + 5 + "\"");
+        result_queen.add("\"" + 10 + "," + 5 + "\"");
         result_queen.add("\"" + 5 + "," + 4 + "\"");
+        result_queen.add("\"" + 5 + "," + 3 + "\"");
+        result_queen.add("\"" + 5 + "," + 2 + "\"");
+        result_queen.add("\"" + 5 + "," + 1 + "\"");
+        result_queen.add("\"" + 5 + "," + 0 + "\"");
         result_queen.add("\"" + 5 + "," + 6 + "\"");
         result_queen.add("\"" + 5 + "," + 7 + "\"");
         result_queen.add("\"" + 5 + "," + 8 + "\"");
         result_queen.add("\"" + 5 + "," + 9 + "\"");
         result_queen.add("\"" + 5 + "," + 10 + "\"");
-        result_queen.add("\"" + 6 + "," + 4 + "\"");
-        result_queen.add("\"" + 6 + "," + 5 + "\"");
+        result_queen.add("\"" + 4 + "," + 4 + "\"");
+        result_queen.add("\"" + 3 + "," + 3 + "\"");
+        result_queen.add("\"" + 2 + "," + 2 + "\"");
+        result_queen.add("\"" + 1 + "," + 1 + "\"");
+        result_queen.add("\"" + 0 + "," + 0 + "\"");
         result_queen.add("\"" + 6 + "," + 6 + "\"");
-        result_queen.add("\"" + 7 + "," + 3 + "\"");
-        result_queen.add("\"" + 7 + "," + 5 + "\"");
         result_queen.add("\"" + 7 + "," + 7 + "\"");
-        result_queen.add("\"" + 8 + "," + 2 + "\"");
-        result_queen.add("\"" + 8 + "," + 5 + "\"");
         result_queen.add("\"" + 8 + "," + 8 + "\"");
-        result_queen.add("\"" + 9 + "," + 1 + "\"");
-        result_queen.add("\"" + 9 + "," + 5 + "\"");
         result_queen.add("\"" + 9 + "," + 9 + "\"");
-        result_queen.add("\"" + 10 + "," + 0 + "\"");
-        result_queen.add("\"" + 10 + "," + 5 + "\"");
         result_queen.add("\"" + 10 + "," + 10 + "\"");
+        result_queen.add("\"" + 4 + "," + 6 + "\"");
+        result_queen.add("\"" + 3 + "," + 7 + "\"");
+        result_queen.add("\"" + 2 + "," + 8 + "\"");
+        result_queen.add("\"" + 1 + "," + 9 + "\"");
+        result_queen.add("\"" + 0 + "," + 10 + "\"");
+        result_queen.add("\"" + 6 + "," + 4 + "\"");
+        result_queen.add("\"" + 7 + "," + 3 + "\"");
+        result_queen.add("\"" + 8 + "," + 2 + "\"");
+        result_queen.add("\"" + 9 + "," + 1 + "\"");
+        result_queen.add("\"" + 10 + "," + 0 + "\"");
         assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
 
     }
@@ -604,105 +708,206 @@ public class TestSimulador {
     @Test
     public void testGetSuggestedPlay_Queen_NotCentered() {
         Simulador simulador = new Simulador(11);
-        createCrazyPiecePresentInGame_Queen(simulador, 1, 3, 5, 10, "black");
+        createCrazyPiecePresentInGame_Queen_Black(0);
         List<String> result_queen = new ArrayList<>();
-        result_queen.add("\"" + 0 + "," + 2 + "\"");
-        result_queen.add("\"" + 0 + "," + 5 + "\"");
-        result_queen.add("\"" + 0 + "," + 8 + "\"");
-        result_queen.add("\"" + 1 + "," + 3 + "\"");
         result_queen.add("\"" + 1 + "," + 5 + "\"");
-        result_queen.add("\"" + 1 + "," + 7 + "\"");
-        result_queen.add("\"" + 2 + "," + 4 + "\"");
         result_queen.add("\"" + 2 + "," + 5 + "\"");
-        result_queen.add("\"" + 2 + "," + 6 + "\"");
-        result_queen.add("\"" + 3 + "," + 0 + "\"");
-        result_queen.add("\"" + 3 + "," + 1 + "\"");
-        result_queen.add("\"" + 3 + "," + 2 + "\"");
-        result_queen.add("\"" + 3 + "," + 3 + "\"");
-        result_queen.add("\"" + 3 + "," + 4 + "\"");
-        result_queen.add("\"" + 3 + "," + 6 + "\"");
-        result_queen.add("\"" + 3 + "," + 7 + "\"");
-        result_queen.add("\"" + 3 + "," + 8 + "\"");
-        result_queen.add("\"" + 3 + "," + 9 + "\"");
-        result_queen.add("\"" + 3 + "," + 10 + "\"");
-        result_queen.add("\"" + 4 + "," + 4 + "\"");
+        result_queen.add("\"" + 3 + "," + 5 + "\"");
         result_queen.add("\"" + 4 + "," + 5 + "\"");
-        result_queen.add("\"" + 4 + "," + 6 + "\"");
-        result_queen.add("\"" + 5 + "," + 3 + "\"");
         result_queen.add("\"" + 5 + "," + 5 + "\"");
-        result_queen.add("\"" + 5 + "," + 7 + "\"");
-        result_queen.add("\"" + 6 + "," + 2 + "\"");
-        result_queen.add("\"" + 6 + "," + 5 + "\"");
-        result_queen.add("\"" + 6 + "," + 8 + "\"");
-        result_queen.add("\"" + 7 + "," + 1 + "\"");
-        result_queen.add("\"" + 7 + "," + 5 + "\"");
-        result_queen.add("\"" + 7 + "," + 9 + "\"");
-        result_queen.add("\"" + 8 + "," + 0 + "\"");
-        result_queen.add("\"" + 8 + "," + 5 + "\"");
-        result_queen.add("\"" + 8 + "," + 10 + "\"");
-        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(3, 5));
+        result_queen.add("\"" + 0 + "," + 4 + "\"");
+        result_queen.add("\"" + 0 + "," + 3 + "\"");
+        result_queen.add("\"" + 0 + "," + 2 + "\"");
+        result_queen.add("\"" + 0 + "," + 1 + "\"");
+        result_queen.add("\"" + 0 + "," + 0 + "\"");
+        result_queen.add("\"" + 0 + "," + 6 + "\"");
+        result_queen.add("\"" + 0 + "," + 7 + "\"");
+        result_queen.add("\"" + 0 + "," + 8 + "\"");
+        result_queen.add("\"" + 0 + "," + 9 + "\"");
+        result_queen.add("\"" + 0 + "," + 10 + "\"");
+        result_queen.add("\"" + 1 + "," + 6 + "\"");
+        result_queen.add("\"" + 2 + "," + 7 + "\"");
+        result_queen.add("\"" + 3 + "," + 8 + "\"");
+        result_queen.add("\"" + 4 + "," + 9 + "\"");
+        result_queen.add("\"" + 5 + "," + 10 + "\"");
+        result_queen.add("\"" + 1 + "," + 4 + "\"");
+        result_queen.add("\"" + 2 + "," + 3 + "\"");
+        result_queen.add("\"" + 3 + "," + 2 + "\"");
+        result_queen.add("\"" + 4 + "," + 1 + "\"");
+        result_queen.add("\"" + 5 + "," + 0 + "\"");
+        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(0, 5));
 
     }
 
     @Test
-    public void testGetSuggestedPlay_2X_Queen() {
+    public void testGetSuggestedPlay_Queen_EatingAnotherQueen() {
         Simulador simulador = new Simulador(11);
-        createCrazyPiecePresentInGame_Queen(simulador, 1, 5, 5, 10, "black");
-        List<String> result_queen_2x = new ArrayList<>();
-        result_queen_2x.add("\"" + 0 + "," + 0 + "\"");
-        result_queen_2x.add("\"" + 0 + "," + 5 + "\"");
-        result_queen_2x.add("\"" + 0 + "," + 10 + "\"");
-        result_queen_2x.add("\"" + 1 + "," + 1 + "\"");
-        result_queen_2x.add("\"" + 1 + "," + 5 + "\"");
-        result_queen_2x.add("\"" + 1 + "," + 9 + "\"");
-        result_queen_2x.add("\"" + 2 + "," + 2 + "\"");
-        result_queen_2x.add("\"" + 2 + "," + 5 + "\"");
-        result_queen_2x.add("\"" + 2 + "," + 8 + "\"");
-        result_queen_2x.add("\"" + 3 + "," + 3 + "\"");
-        result_queen_2x.add("\"" + 3 + "," + 5 + "\"");
-        result_queen_2x.add("\"" + 3 + "," + 7 + "\"");
-        result_queen_2x.add("\"" + 4 + "," + 4 + "\"");
-        result_queen_2x.add("\"" + 4 + "," + 5 + "\"");
-        result_queen_2x.add("\"" + 4 + "," + 6 + "\"");
-        result_queen_2x.add("\"" + 5 + "," + 0 + "\"");
-        result_queen_2x.add("\"" + 5 + "," + 1 + "\"");
-        result_queen_2x.add("\"" + 5 + "," + 2 + "\"");
-        result_queen_2x.add("\"" + 5 + "," + 3 + "\"");
-        result_queen_2x.add("\"" + 5 + "," + 4 + "\"");
-        result_queen_2x.add("\"" + 5 + "," + 6 + "\"");
-        result_queen_2x.add("\"" + 5 + "," + 7 + "\"");
-        result_queen_2x.add("\"" + 5 + "," + 8 + "\"");
-        result_queen_2x.add("\"" + 5 + "," + 9 + "\"");
-        result_queen_2x.add("\"" + 5 + "," + 10 + "\"");
-        result_queen_2x.add("\"" + 6 + "," + 4 + "\"");
-        result_queen_2x.add("\"" + 6 + "," + 5 + "\"");
-        result_queen_2x.add("\"" + 6 + "," + 6 + "\"");
-        result_queen_2x.add("\"" + 7 + "," + 3 + "\"");
-        result_queen_2x.add("\"" + 7 + "," + 5 + "\"");
-        result_queen_2x.add("\"" + 7 + "," + 7 + "\"");
-        result_queen_2x.add("\"" + 8 + "," + 2 + "\"");
-        result_queen_2x.add("\"" + 8 + "," + 5 + "\"");
-        result_queen_2x.add("\"" + 8 + "," + 8 + "\"");
-        result_queen_2x.add("\"" + 9 + "," + 1 + "\"");
-        result_queen_2x.add("\"" + 9 + "," + 5 + "\"");
-        result_queen_2x.add("\"" + 9 + "," + 9 + "\"");
-        result_queen_2x.add("\"" + 10 + "," + 0 + "\"");
-        result_queen_2x.add("\"" + 10 + "," + 5 + "\"");
-        result_queen_2x.add("\"" + 10 + "," + 10 + "\"");
-        simulador.obterSugestoesJogada(5,5);
-        assertEquals("Not the the right suggestions!", result_queen_2x, simulador.obterSugestoesJogada(5, 5));
+        createCrazyPiecePresentInGame_Queen_Black(5);
+        createCrazyPiecePresentInGame_Queen_White(1, 5);
+        List<String> result_queen = new ArrayList<>();
+        result_queen.add("\"" + 4 + "," + 5 + "\"");
+        result_queen.add("\"" + 3 + "," + 5 + "\"");
+        result_queen.add("\"" + 2 + "," + 5 + "\"");
+        result_queen.add("\"" + 6 + "," + 5 + "\"");
+        result_queen.add("\"" + 7 + "," + 5 + "\"");
+        result_queen.add("\"" + 8 + "," + 5 + "\"");
+        result_queen.add("\"" + 9 + "," + 5 + "\"");
+        result_queen.add("\"" + 10 + "," + 5 + "\"");
+        result_queen.add("\"" + 5 + "," + 4 + "\"");
+        result_queen.add("\"" + 5 + "," + 3 + "\"");
+        result_queen.add("\"" + 5 + "," + 2 + "\"");
+        result_queen.add("\"" + 5 + "," + 1 + "\"");
+        result_queen.add("\"" + 5 + "," + 0 + "\"");
+        result_queen.add("\"" + 5 + "," + 6 + "\"");
+        result_queen.add("\"" + 5 + "," + 7 + "\"");
+        result_queen.add("\"" + 5 + "," + 8 + "\"");
+        result_queen.add("\"" + 5 + "," + 9 + "\"");
+        result_queen.add("\"" + 5 + "," + 10 + "\"");
+        result_queen.add("\"" + 4 + "," + 4 + "\"");
+        result_queen.add("\"" + 3 + "," + 3 + "\"");
+        result_queen.add("\"" + 2 + "," + 2 + "\"");
+        result_queen.add("\"" + 1 + "," + 1 + "\"");
+        result_queen.add("\"" + 0 + "," + 0 + "\"");
+        result_queen.add("\"" + 6 + "," + 6 + "\"");
+        result_queen.add("\"" + 7 + "," + 7 + "\"");
+        result_queen.add("\"" + 8 + "," + 8 + "\"");
+        result_queen.add("\"" + 9 + "," + 9 + "\"");
+        result_queen.add("\"" + 10 + "," + 10 + "\"");
+        result_queen.add("\"" + 4 + "," + 6 + "\"");
+        result_queen.add("\"" + 3 + "," + 7 + "\"");
+        result_queen.add("\"" + 2 + "," + 8 + "\"");
+        result_queen.add("\"" + 1 + "," + 9 + "\"");
+        result_queen.add("\"" + 0 + "," + 10 + "\"");
+        result_queen.add("\"" + 6 + "," + 4 + "\"");
+        result_queen.add("\"" + 7 + "," + 3 + "\"");
+        result_queen.add("\"" + 8 + "," + 2 + "\"");
+        result_queen.add("\"" + 9 + "," + 1 + "\"");
+        result_queen.add("\"" + 10 + "," + 0 + "\"");
+        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
 
     }
 
+    @Test
+    public void testGetSuggestedPlay_Queen_LessThanTwoHousesFromPriest() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Queen_Black(5);
+        createCrazyPiecePresentInGame_Priest_White(1, 5);
+        List<String> result_queen = new ArrayList<>();
+        result_queen.add("\"" + 4 + "," + 5 + "\"");
+        result_queen.add("\"" + 3 + "," + 5 + "\"");
+        result_queen.add("\"" + 6 + "," + 5 + "\"");
+        result_queen.add("\"" + 7 + "," + 5 + "\"");
+        result_queen.add("\"" + 8 + "," + 5 + "\"");
+        result_queen.add("\"" + 9 + "," + 5 + "\"");
+        result_queen.add("\"" + 10 + "," + 5 + "\"");
+        result_queen.add("\"" + 5 + "," + 4 + "\"");
+        result_queen.add("\"" + 5 + "," + 3 + "\"");
+        result_queen.add("\"" + 5 + "," + 2 + "\"");
+        result_queen.add("\"" + 5 + "," + 1 + "\"");
+        result_queen.add("\"" + 5 + "," + 0 + "\"");
+        result_queen.add("\"" + 5 + "," + 6 + "\"");
+        result_queen.add("\"" + 5 + "," + 7 + "\"");
+        result_queen.add("\"" + 5 + "," + 8 + "\"");
+        result_queen.add("\"" + 5 + "," + 9 + "\"");
+        result_queen.add("\"" + 5 + "," + 10 + "\"");
+        result_queen.add("\"" + 4 + "," + 4 + "\"");
+        result_queen.add("\"" + 3 + "," + 3 + "\"");
+        result_queen.add("\"" + 2 + "," + 2 + "\"");
+        result_queen.add("\"" + 1 + "," + 1 + "\"");
+        result_queen.add("\"" + 0 + "," + 0 + "\"");
+        result_queen.add("\"" + 6 + "," + 6 + "\"");
+        result_queen.add("\"" + 7 + "," + 7 + "\"");
+        result_queen.add("\"" + 8 + "," + 8 + "\"");
+        result_queen.add("\"" + 9 + "," + 9 + "\"");
+        result_queen.add("\"" + 10 + "," + 10 + "\"");
+        result_queen.add("\"" + 4 + "," + 6 + "\"");
+        result_queen.add("\"" + 3 + "," + 7 + "\"");
+        result_queen.add("\"" + 2 + "," + 8 + "\"");
+        result_queen.add("\"" + 1 + "," + 9 + "\"");
+        result_queen.add("\"" + 0 + "," + 10 + "\"");
+        result_queen.add("\"" + 6 + "," + 4 + "\"");
+        result_queen.add("\"" + 7 + "," + 3 + "\"");
+        result_queen.add("\"" + 8 + "," + 2 + "\"");
+        result_queen.add("\"" + 9 + "," + 1 + "\"");
+        result_queen.add("\"" + 10 + "," + 0 + "\"");
+        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Queen_PiecesInTheWay() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Queen_Black(5);
+        createCrazyPiecePresentInGame_Pony_White();
+        List<String> result_queen = new ArrayList<>();
+        result_queen.add("\"" + 4 + "," + 5 + "\"");
+        result_queen.add("\"" + 3 + "," + 5 + "\"");
+        result_queen.add("\"" + 2 + "," + 5 + "\"");
+        result_queen.add("\"" + 1 + "," + 5 + "\"");
+        result_queen.add("\"" + 0 + "," + 5 + "\"");
+        result_queen.add("\"" + 6 + "," + 5 + "\"");
+        result_queen.add("\"" + 7 + "," + 5 + "\"");
+        result_queen.add("\"" + 8 + "," + 5 + "\"");
+        result_queen.add("\"" + 9 + "," + 5 + "\"");
+        result_queen.add("\"" + 10 + "," + 5 + "\"");
+        result_queen.add("\"" + 5 + "," + 4 + "\"");
+        result_queen.add("\"" + 5 + "," + 3 + "\"");
+        result_queen.add("\"" + 5 + "," + 2 + "\"");
+        result_queen.add("\"" + 5 + "," + 1 + "\"");
+        result_queen.add("\"" + 5 + "," + 0 + "\"");
+        result_queen.add("\"" + 5 + "," + 6 + "\"");
+        result_queen.add("\"" + 5 + "," + 7 + "\"");
+        result_queen.add("\"" + 5 + "," + 8 + "\"");
+        result_queen.add("\"" + 5 + "," + 9 + "\"");
+        result_queen.add("\"" + 5 + "," + 10 + "\"");
+        result_queen.add("\"" + 4 + "," + 4 + "\"");
+        result_queen.add("\"" + 6 + "," + 6 + "\"");
+        result_queen.add("\"" + 7 + "," + 7 + "\"");
+        result_queen.add("\"" + 8 + "," + 8 + "\"");
+        result_queen.add("\"" + 9 + "," + 9 + "\"");
+        result_queen.add("\"" + 10 + "," + 10 + "\"");
+        result_queen.add("\"" + 4 + "," + 6 + "\"");
+        result_queen.add("\"" + 3 + "," + 7 + "\"");
+        result_queen.add("\"" + 2 + "," + 8 + "\"");
+        result_queen.add("\"" + 1 + "," + 9 + "\"");
+        result_queen.add("\"" + 0 + "," + 10 + "\"");
+        result_queen.add("\"" + 6 + "," + 4 + "\"");
+        result_queen.add("\"" + 7 + "," + 3 + "\"");
+        result_queen.add("\"" + 8 + "," + 2 + "\"");
+        result_queen.add("\"" + 9 + "," + 1 + "\"");
+        result_queen.add("\"" + 10 + "," + 0 + "\"");
+        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Queen_ImpossibleToMove() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Pony_Black(4, 4);
+        createCrazyPiecePresentInGame_Pony_Black(5, 4);
+        createCrazyPiecePresentInGame_Pony_Black(6, 4);
+        createCrazyPiecePresentInGame_Pony_Black(6, 5);
+        createCrazyPiecePresentInGame_Queen_Black(5);
+        createCrazyPiecePresentInGame_Pony_Black(4, 5);
+        createCrazyPiecePresentInGame_Pony_Black(4, 6);
+        createCrazyPiecePresentInGame_Pony_Black(5, 6);
+        createCrazyPiecePresentInGame_Pony_Black(6, 6);
+        List<String> result_queen = new ArrayList<>();
+        result_queen.add("Pedido inválido");
+        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    //  Pony
     @Test
     public void testGetSuggestedPlay_Pony() {
         Simulador simulador = new Simulador(11);
-        createCrazyPiecePresentInGame_Pony(simulador, 1, 5, 5, 10, "black");
+        createCrazyPiecePresentInGame_Pony_Black(5, 5);
         List<String> result_pony = new ArrayList<>();
         result_pony.add("\"" + 3 + "," + 3 + "\"");
+        result_pony.add("\"" + 7 + "," + 7 + "\"");
         result_pony.add("\"" + 3 + "," + 7 + "\"");
         result_pony.add("\"" + 7 + "," + 3 + "\"");
-        result_pony.add("\"" + 7 + "," + 7 + "\"");
         assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 5));
 
     }
@@ -710,67 +915,525 @@ public class TestSimulador {
     @Test
     public void testGetSuggestedPlay_Pony_NotCentered() {
         Simulador simulador = new Simulador(11);
-        createCrazyPiecePresentInGame_Pony(simulador, 1, 5, 3, 10, "black");
+        createCrazyPiecePresentInGame_Pony_Black(5, 3);
         List<String> result_pony = new ArrayList<>();
         result_pony.add("\"" + 3 + "," + 1 + "\"");
+        result_pony.add("\"" + 7 + "," + 5 + "\"");
         result_pony.add("\"" + 3 + "," + 5 + "\"");
         result_pony.add("\"" + 7 + "," + 1 + "\"");
-        result_pony.add("\"" + 7 + "," + 5 + "\"");
         assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 3));
 
     }
 
     @Test
-    public void testGetSuggestedPlay_2X_Pony() {
+    public void testGetSuggestedPlay_Pony_PiecesInTheWay_Valid() {
         Simulador simulador = new Simulador(11);
-        createCrazyPiecePresentInGame_Pony(simulador, 1, 5, 5, 10, "black");
-        List<String> result_pony_2x = new ArrayList<>();
-        result_pony_2x.add("\"" + 3 + "," + 3 + "\"");
-        result_pony_2x.add("\"" + 3 + "," + 7 + "\"");
-        result_pony_2x.add("\"" + 7 + "," + 3 + "\"");
-        result_pony_2x.add("\"" + 7 + "," + 7 + "\"");
-        simulador.obterSugestoesJogada(5,5);
-        assertEquals("Not the the right suggestions!", result_pony_2x, simulador.obterSugestoesJogada(5, 5));
+        createCrazyPiecePresentInGame_Pony_Black(5, 5);
+        createCrazyPiece_King_White_PresentInGame(1, 5, 3);
+        List<String> result_pony = new ArrayList<>();
+        result_pony.add("\"" + 3 + "," + 3 + "\"");
+        result_pony.add("\"" + 7 + "," + 7 + "\"");
+        result_pony.add("\"" + 3 + "," + 7 + "\"");
+        result_pony.add("\"" + 7 + "," + 3 + "\"");
+        assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Pony_PiecesInTheWay_NotValid() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Pony_Black(5, 5);
+        createCrazyPiece_King_White_PresentInGame(1, 5, 3);
+        createCrazyPiece_King_Black_PresentInGame(1, 3, 5);
+        List<String> result_pony = new ArrayList<>();
+        result_pony.add("\"" + 7 + "," + 7 + "\"");
+        result_pony.add("\"" + 3 + "," + 7 + "\"");
+        result_pony.add("\"" + 7 + "," + 3 + "\"");
+        assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Pony_PiecesInTheWay_ImpossibleToMove() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiece_King_Black_PresentInGame(1, 5, 4);
+        createCrazyPiece_King_Black_PresentInGame(1, 4, 5);
+        createCrazyPiecePresentInGame_Pony_Black(5, 5);
+        createCrazyPiece_King_Black_PresentInGame(1, 5, 6);
+        createCrazyPiece_King_Black_PresentInGame(1, 6, 5);
+        List<String> result_pony = new ArrayList<>();
+        result_pony.add("Pedido inválido");
+        assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    //  Priest
+    @Test
+    public void testGetSuggestedPlay_Priest() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Priest_Black(5, 5);
+        List<String> result_priest = new ArrayList<>();
+        result_priest.add("\"" + 4 + "," + 4 + "\"");
+        result_priest.add("\"" + 3 + "," + 3 + "\"");
+        result_priest.add("\"" + 2 + "," + 2 + "\"");
+        result_priest.add("\"" + 6 + "," + 6 + "\"");
+        result_priest.add("\"" + 7 + "," + 7 + "\"");
+        result_priest.add("\"" + 8 + "," + 8 + "\"");
+        result_priest.add("\"" + 4 + "," + 6 + "\"");
+        result_priest.add("\"" + 3 + "," + 7 + "\"");
+        result_priest.add("\"" + 2 + "," + 8 + "\"");
+        result_priest.add("\"" + 6 + "," + 4 + "\"");
+        result_priest.add("\"" + 7 + "," + 3 + "\"");
+        result_priest.add("\"" + 8 + "," + 2 + "\"");
+        assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Priest_NotCentered() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Priest_Black(0, 5);
+        List<String> result_priest = new ArrayList<>();
+        result_priest.add("\"" + 1 + "," + 6 + "\"");
+        result_priest.add("\"" + 2 + "," + 7 + "\"");
+        result_priest.add("\"" + 3 + "," + 8 + "\"");
+        result_priest.add("\"" + 1 + "," + 4 + "\"");
+        result_priest.add("\"" + 2 + "," + 3 + "\"");
+        result_priest.add("\"" + 3 + "," + 2 + "\"");
+        assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(0, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Priest_LessThan2HousesFromAQueen() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Priest_Black(5, 5);
+        createCrazyPiecePresentInGame_Queen_White(3, 3);
+        List<String> result_priest = new ArrayList<>();
+        result_priest.add("\"" + 6 + "," + 6 + "\"");
+        result_priest.add("\"" + 7 + "," + 7 + "\"");
+        result_priest.add("\"" + 8 + "," + 8 + "\"");
+        result_priest.add("\"" + 4 + "," + 6 + "\"");
+        result_priest.add("\"" + 3 + "," + 7 + "\"");
+        result_priest.add("\"" + 2 + "," + 8 + "\"");
+        result_priest.add("\"" + 6 + "," + 4 + "\"");
+        result_priest.add("\"" + 7 + "," + 3 + "\"");
+        result_priest.add("\"" + 8 + "," + 2 + "\"");
+        assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Priest_PiecesInTheWay() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Priest_Black(5, 5);
+        createCrazyPiecePresentInGame_TowerH_White();
+        List<String> result_priest = new ArrayList<>();
+        result_priest.add("\"" + 4 + "," + 4 + "\"");
+        result_priest.add("\"" + 6 + "," + 6 + "\"");
+        result_priest.add("\"" + 7 + "," + 7 + "\"");
+        result_priest.add("\"" + 8 + "," + 8 + "\"");
+        result_priest.add("\"" + 4 + "," + 6 + "\"");
+        result_priest.add("\"" + 3 + "," + 7 + "\"");
+        result_priest.add("\"" + 2 + "," + 8 + "\"");
+        result_priest.add("\"" + 6 + "," + 4 + "\"");
+        result_priest.add("\"" + 7 + "," + 3 + "\"");
+        result_priest.add("\"" + 8 + "," + 2 + "\"");
+        assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Priest_ImpossibleToMove() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_TowerH_Black(4, 4);
+        createCrazyPiecePresentInGame_Priest_Black(5, 5);
+        createCrazyPiecePresentInGame_Priest_Black(6, 6);
+        createCrazyPiecePresentInGame_Priest_Black(6, 4);
+        createCrazyPiecePresentInGame_Priest_Black(4, 6);
+        List<String> result_priest = new ArrayList<>();
+        result_priest.add("Pedido inválido");
+        assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    //  TowerH
+    @Test
+    public void testGetSuggestedPlay_TowerH() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_TowerH_Black(5, 5);
+        List<String> result_towerH = new ArrayList<>();
+        result_towerH.add("\"" + 4 + "," + 5 + "\"");
+        result_towerH.add("\"" + 3 + "," + 5 + "\"");
+        result_towerH.add("\"" + 2 + "," + 5 + "\"");
+        result_towerH.add("\"" + 1 + "," + 5 + "\"");
+        result_towerH.add("\"" + 0 + "," + 5 + "\"");
+        result_towerH.add("\"" + 6 + "," + 5 + "\"");
+        result_towerH.add("\"" + 7 + "," + 5 + "\"");
+        result_towerH.add("\"" + 8 + "," + 5 + "\"");
+        result_towerH.add("\"" + 9 + "," + 5 + "\"");
+        result_towerH.add("\"" + 10 + "," + 5 + "\"");
+        assertEquals("Not the the right suggestions!", result_towerH, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_TowerH_NotCentered() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_TowerH_Black(0, 5);
+        List<String> result_towerH = new ArrayList<>();
+        result_towerH.add("\"" + 1 + "," + 5 + "\"");
+        result_towerH.add("\"" + 2 + "," + 5 + "\"");
+        result_towerH.add("\"" + 3 + "," + 5 + "\"");
+        result_towerH.add("\"" + 4 + "," + 5 + "\"");
+        result_towerH.add("\"" + 5 + "," + 5 + "\"");
+        result_towerH.add("\"" + 6 + "," + 5 + "\"");
+        result_towerH.add("\"" + 7 + "," + 5 + "\"");
+        result_towerH.add("\"" + 8 + "," + 5 + "\"");
+        result_towerH.add("\"" + 9 + "," + 5 + "\"");
+        result_towerH.add("\"" + 10 + "," + 5 + "\"");
+        assertEquals("Not the the right suggestions!", result_towerH, simulador.obterSugestoesJogada(0, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_TowerH_PiecesInTheWay() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_TowerH_Black(5, 5);
+        createCrazyPiecePresentInGame_Priest_White(6, 5);
+        List<String> result_towerH = new ArrayList<>();
+        result_towerH.add("\"" + 4 + "," + 5 + "\"");
+        result_towerH.add("\"" + 3 + "," + 5 + "\"");
+        result_towerH.add("\"" + 2 + "," + 5 + "\"");
+        result_towerH.add("\"" + 1 + "," + 5 + "\"");
+        result_towerH.add("\"" + 0 + "," + 5 + "\"");
+        result_towerH.add("\"" + 6 + "," + 5 + "\"");
+        assertEquals("Not the the right suggestions!", result_towerH, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_TowerH_ImpossibleToMove() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Priest_Black(4, 5);
+        createCrazyPiecePresentInGame_TowerH_Black(5, 5);
+        createCrazyPiecePresentInGame_Priest_Black(6, 5);
+        List<String> result_towerH = new ArrayList<>();
+        result_towerH.add("Pedido inválido");
+        assertEquals("Not the the right suggestions!", result_towerH, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    //  TowerV
+    @Test
+    public void testGetSuggestedPlay_TowerV() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_TowerV_Black(5);
+        List<String> result_towerV = new ArrayList<>();
+        result_towerV.add("\"" + 5 + "," + 4 + "\"");
+        result_towerV.add("\"" + 5 + "," + 3 + "\"");
+        result_towerV.add("\"" + 5 + "," + 2 + "\"");
+        result_towerV.add("\"" + 5 + "," + 1 + "\"");
+        result_towerV.add("\"" + 5 + "," + 0 + "\"");
+        result_towerV.add("\"" + 5 + "," + 6 + "\"");
+        result_towerV.add("\"" + 5 + "," + 7 + "\"");
+        result_towerV.add("\"" + 5 + "," + 8 + "\"");
+        result_towerV.add("\"" + 5 + "," + 9 + "\"");
+        result_towerV.add("\"" + 5 + "," + 10 + "\"");
+        assertEquals("Not the the right suggestions!", result_towerV, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_TowerV_NotCentered() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_TowerV_Black(0);
+        List<String> result_towerV = new ArrayList<>();
+        result_towerV.add("\"" + 0 + "," + 4 + "\"");
+        result_towerV.add("\"" + 0 + "," + 3 + "\"");
+        result_towerV.add("\"" + 0 + "," + 2 + "\"");
+        result_towerV.add("\"" + 0 + "," + 1 + "\"");
+        result_towerV.add("\"" + 0 + "," + 0 + "\"");
+        result_towerV.add("\"" + 0 + "," + 6 + "\"");
+        result_towerV.add("\"" + 0 + "," + 7 + "\"");
+        result_towerV.add("\"" + 0 + "," + 8 + "\"");
+        result_towerV.add("\"" + 0 + "," + 9 + "\"");
+        result_towerV.add("\"" + 0 + "," + 10 + "\"");
+        assertEquals("Not the the right suggestions!", result_towerV, simulador.obterSugestoesJogada(0, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_TowerV_PiecesInTheWay() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_TowerV_Black(5);
+        createCrazyPiecePresentInGame_Priest_White(5, 4);
+        List<String> result_towerV = new ArrayList<>();
+        result_towerV.add("\"" + 5 + "," + 4 + "\"");
+        result_towerV.add("\"" + 5 + "," + 6 + "\"");
+        result_towerV.add("\"" + 5 + "," + 7 + "\"");
+        result_towerV.add("\"" + 5 + "," + 8 + "\"");
+        result_towerV.add("\"" + 5 + "," + 9 + "\"");
+        result_towerV.add("\"" + 5 + "," + 10 + "\"");
+        assertEquals("Not the the right suggestions!", result_towerV, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_TowerV_ImpossibleToMove() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Priest_Black(5, 4);
+        createCrazyPiecePresentInGame_TowerV_Black(5);
+        createCrazyPiecePresentInGame_Priest_Black(5, 6);
+        List<String> result_towerV = new ArrayList<>();
+        result_towerV.add("Pedido inválido");
+        assertEquals("Not the the right suggestions!", result_towerV, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    //  Bunny
+    @Test
+    public void testGetSuggestedPlay_Bunny_ParShift() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Bunny_Black(5, 5);
+        List<String> result_bunny = new ArrayList<>();
+        result_bunny.add("\"" + 4 + "," + 4 + "\"");
+        result_bunny.add("\"" + 6 + "," + 6 + "\"");
+        result_bunny.add("\"" + 4 + "," + 6 + "\"");
+        result_bunny.add("\"" + 6 + "," + 4 + "\"");
+        assertEquals("Not the the right suggestions!", result_bunny, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Bunny_OddShift() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Bunny_White();
+        Simulador.shift.addCount();
+        List<String> result_bunny = new ArrayList<>();
+        result_bunny.add("Pedido inválido");
+        assertEquals("Not the the right suggestions!", result_bunny, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Bunny_NotCentered() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Bunny_Black(0, 5);
+        List<String> result_bunny = new ArrayList<>();
+        result_bunny.add("\"" + 1 + "," + 6 + "\"");
+        result_bunny.add("\"" + 1 + "," + 4 + "\"");
+        assertEquals("Not the the right suggestions!", result_bunny, simulador.obterSugestoesJogada(0, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_Bunny_ImpossibleToMove() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Bunny_Black(4, 4);
+        createCrazyPiecePresentInGame_Bunny_Black(5, 5);
+        createCrazyPiecePresentInGame_Bunny_Black(6, 6);
+        createCrazyPiecePresentInGame_Bunny_Black(4, 6);
+        createCrazyPiecePresentInGame_Bunny_Black(6, 4);
+        List<String> result_bunny = new ArrayList<>();
+        result_bunny.add("Pedido inválido");
+        assertEquals("Not the the right suggestions!", result_bunny, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    //  Joker
+    @Test
+    public void testGetSuggestedPlay_BunnyJoker_ParShift() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Joker_Black();
+        List<String> result_BunnyJoker = new ArrayList<>();
+        result_BunnyJoker.add("\"" + 4 + "," + 4 + "\"");
+        result_BunnyJoker.add("\"" + 6 + "," + 6 + "\"");
+        result_BunnyJoker.add("\"" + 4 + "," + 6 + "\"");
+        result_BunnyJoker.add("\"" + 6 + "," + 4 + "\"");
+        assertEquals("Not the the right suggestions!", result_BunnyJoker, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    @Test
+    public void testGetSuggestedPlay_BunnyJoker_OddShift() {
+        Simulador simulador = new Simulador(11);
+        createCrazyPiecePresentInGame_Joker_White();
+        Simulador.shift.addCount();
+        List<String> result_BunnyJoker= new ArrayList<>();
+        result_BunnyJoker.add("Pedido inválido");
+        assertEquals("Not the the right suggestions!", result_BunnyJoker, simulador.obterSugestoesJogada(5, 5));
 
     }
 
 
-    private void createCrazyPiece (Simulador simulador, int PieceId, int x, int y, int idTeam, String name) {
+    private void createCrazyPiece_King_White (int PieceId, int x, int y) {
 
         Position piecePosition = new Position(x,y);
-        CrazyPiece piece = new ReiBranco(PieceId, idTeam, name);
+        CrazyPiece piece = new ReiBranco(PieceId, 10, "Black");
         piece.setPosition(piecePosition);
-        simulador.crazyPiecesInGame.add(piece);
+        Simulador.crazyPiecesInGame.add(piece);
 
     }
 
-    private void createCrazyPiecePresentInGame(Simulador simulador, int PieceId, int x, int y, int idTeam, String name) {
+    private void createCrazyPiece_King_Black (int PieceId, int x, int y) {
 
-        Position piecePosition = new Position(x, y);
-        CrazyPiece piece = new ReiBranco(PieceId, idTeam, name);
-        piece.isInGame();
+        Position piecePosition = new Position(x,y);
+        CrazyPiece piece = new ReiBranco(PieceId, 20, "White");
         piece.setPosition(piecePosition);
-        simulador.crazyPiecesInGame.add(piece);
+        Simulador.crazyPiecesInGame.add(piece);
 
     }
 
-    private void createCrazyPiecePresentInGame_Queen(Simulador simulador, int PieceId, int x, int y, int idTeam, String name) {
+    private void createCrazyPiece_King_White_PresentInGame (int PieceId, int x, int y) {
 
-        Position piecePosition = new Position(x, y);
-        CrazyPiece piece = new RainhaBranca(PieceId, idTeam, name);
+        Position piecePosition = new Position(x,y);
+        CrazyPiece piece = new ReiBranco(PieceId, 20, "White");
         piece.isInGame();
         piece.setPosition(piecePosition);
-        simulador.crazyPiecesInGame.add(piece);
+        Simulador.crazyPiecesInGame.add(piece);
 
     }
 
-    private void createCrazyPiecePresentInGame_Pony(Simulador simulador, int PieceId, int x, int y, int idTeam, String name) {
+    private void createCrazyPiece_King_Black_PresentInGame (int PieceId, int x, int y) {
 
-        Position piecePosition = new Position(x, y);
-        CrazyPiece piece = new PoneiMagicoBranco(PieceId, idTeam, name);
+        Position piecePosition = new Position(x,y);
+        CrazyPiece piece = new ReiBranco(PieceId, 10, "Black");
         piece.isInGame();
         piece.setPosition(piecePosition);
-        simulador.crazyPiecesInGame.add(piece);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_Queen_White(int x, int y) {
+
+        Position piecePosition = new Position(x, y);
+        CrazyPiece piece = new RainhaBranca(0, 20, "White");
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_Queen_Black(int x) {
+
+        Position piecePosition = new Position(x, 5);
+        CrazyPiece piece = new RainhaBranca(1, 10, "Black");
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_Pony_White() {
+
+        Position piecePosition = new Position(4, 4);
+        CrazyPiece piece = new PoneiMagicoBranco(1, 20, "White");
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_Pony_Black(int x, int y) {
+
+        Position piecePosition = new Position(x, y);
+        CrazyPiece piece = new PoneiMagicoBranco(1, 10, "Black");
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_Priest_White(int x, int y) {
+
+        Position piecePosition = new Position(x, y);
+        CrazyPiece piece = new PadreDaVilaBranco(1, 20, "White");
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_Priest_Black(int x, int y) {
+
+        Position piecePosition = new Position(x, y);
+        CrazyPiece piece = new PadreDaVilaBranco(1, 10, "Black");
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_TowerH_White() {
+
+        Position piecePosition = new Position(4, 4);
+        CrazyPiece piece = new TorreHBranca(1, 20, "White");
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_TowerH_Black(int x, int y) {
+
+        Position piecePosition = new Position(x, y);
+        CrazyPiece piece = new TorreHBranca(1, 10, "Black");
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_TowerV_Black(int x) {
+
+        Position piecePosition = new Position(x, 5);
+        CrazyPiece piece = new TorreVBranca(1, 10, "black");
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_Bunny_White() {
+
+        Position piecePosition = new Position(5, 5);
+        CrazyPiece piece = new LebreBranca(1, 20, "White");
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_Bunny_Black(int x, int y) {
+
+        Position piecePosition = new Position(x, y);
+        CrazyPiece piece = new LebreBranca(1, 10, "Black");
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_Joker_White() {
+
+        Position piecePosition = new Position(5, 5);
+        CrazyPiece piece = new JokerBranco(1, 20, "White");
+        piece.pieceId = (byte) 7;
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
+
+    }
+
+    private void createCrazyPiecePresentInGame_Joker_Black() {
+
+        Position piecePosition = new Position(5, 5);
+        CrazyPiece piece = new JokerBranco(1, 10, "Black");
+        piece.pieceId = (byte) 6;
+        piece.isInGame();
+        piece.setPosition(piecePosition);
+        Simulador.crazyPiecesInGame.add(piece);
 
     }
 

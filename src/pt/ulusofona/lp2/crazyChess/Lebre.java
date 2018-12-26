@@ -1,5 +1,7 @@
 package pt.ulusofona.lp2.crazyChess;
 
+import java.util.List;
+
 public class Lebre extends CrazyPiece {
 
     Lebre() {
@@ -8,15 +10,11 @@ public class Lebre extends CrazyPiece {
         super.moveVertical = false;
         super.moveHorizontal = false;
 
-//      set how much it has to move
-        super.minMovHorizontal = 1;
-        super.minMovVertical = 1;
-
 //      set the type piece as 6 (Lebre)
         super.type = 6;
 
 //      set the relative value
-        super.valorRelativo = 2;
+        super.relativeValue = 2;
 
     }
 
@@ -34,7 +32,7 @@ public class Lebre extends CrazyPiece {
         super.type = 6;
 
 //      set the relative value
-        super.valorRelativo = 2;
+        super.relativeValue = 2;
 
 //      from the parameters received:
         //  set the piece ID
@@ -42,6 +40,23 @@ public class Lebre extends CrazyPiece {
 
         //  set the piece name
         super.name = name;
+
+    }
+
+    @Override
+    public List<Position> possiblesPositions(int boardSize) {
+
+        super.possiblesPositions.removeAll(possiblesPositions);
+
+        if (Simulador.shift.getCount() % 2 == 0 || Simulador.shift.getCount() == 0 ) {
+
+            super.possiblesPositions_Diagonal(boardSize);
+
+            super.possiblesPositions_RemovePosition();
+
+        }
+
+        return possiblesPositions;
 
     }
 

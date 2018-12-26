@@ -1,6 +1,7 @@
 package pt.ulusofona.lp2.crazyChess;
 
-import pt.ulusofona.lp2.crazyChess.CrazyPiece;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PoneiMagico extends CrazyPiece {
 
@@ -22,7 +23,7 @@ public class PoneiMagico extends CrazyPiece {
         super.type = 2;
 
 //      set the relative value
-        super.valorRelativo = 5;
+        super.relativeValue = 5;
 
     }
 
@@ -44,7 +45,7 @@ public class PoneiMagico extends CrazyPiece {
         super.type = 2;
 
 //      set the relative value
-        super.valorRelativo = 5;
+        super.relativeValue = 5;
 
 //      from the parameters received:
         //  set the piece ID
@@ -52,6 +53,26 @@ public class PoneiMagico extends CrazyPiece {
 
         //  set the piece name
         super.name = name;
+
+    }
+
+    @Override
+    public List<Position> possiblesPositions(int boardSize) {
+
+        List<Position> possiblesPositions = new ArrayList<>();
+        Position suggestedPosition;
+        suggestedPosition = new Position((super.position.getxActual() - 2), (super.position.getyActual() - 2));
+        possiblesPositions.add(suggestedPosition);
+        suggestedPosition = new Position((super.position.getxActual() + 2), (super.position.getyActual() + 2));
+        possiblesPositions.add(suggestedPosition);
+        suggestedPosition = new Position((super.position.getxActual() - 2), (super.position.getyActual() + 2));
+        possiblesPositions.add(suggestedPosition);
+        suggestedPosition = new Position((super.position.getxActual() + 2), (super.position.getyActual() - 2));
+        possiblesPositions.add(suggestedPosition);
+
+
+
+        return possiblesPositions;
 
     }
 

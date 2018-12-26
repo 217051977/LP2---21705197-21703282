@@ -1,6 +1,6 @@
 package pt.ulusofona.lp2.crazyChess;
 
-import pt.ulusofona.lp2.crazyChess.CrazyPiece;
+import java.util.List;
 
 public class TorreH extends CrazyPiece {
 
@@ -14,14 +14,11 @@ public class TorreH extends CrazyPiece {
         super.maxMovHorizontal = Integer.MAX_VALUE;
         super.maxMovVertical = 0;
 
-//      set how much it has to move
-        super.minMovHorizontal = 1;
-
 //      set the type piece as 4 (H Tower)
         super.type = 4;
 
 //      set the relative value
-        super.valorRelativo = 3;
+        super.relativeValue = 3;
 
     }
 
@@ -43,7 +40,7 @@ public class TorreH extends CrazyPiece {
         super.type = 4;
 
 //      set the relative value
-        super.valorRelativo = 3;
+        super.relativeValue = 3;
 
 //      from the parameters received:
         //  set the piece ID
@@ -51,6 +48,44 @@ public class TorreH extends CrazyPiece {
 
         //  set the piece name
         super.name = name;
+
+    }
+
+    @Override
+    protected void possiblesPositions_Horizontal(int boardSize) {
+
+//      left
+        for (int left = position.getxActual() - minMovHorizontal - 1; left >= position.getxActual() - maxMovHorizontal; left--) {
+
+            if (left >= 0) {
+
+                possiblesPositions.add(super.createPosition_Horizontal(left));
+
+            } else {
+
+                break;
+
+            }
+
+        }
+
+//      right
+        for (int right = position.getxActual() + minMovHorizontal + 1; right < boardSize; right++) {
+
+            possiblesPositions.add(super.createPosition_Horizontal(right));
+
+        }
+
+    }
+
+    @Override
+    public List<Position> possiblesPositions(int boardSize) {
+
+        possiblesPositions_Horizontal(boardSize);
+
+        super.possiblesPositions_RemovePosition();
+
+        return possiblesPositions;
 
     }
 

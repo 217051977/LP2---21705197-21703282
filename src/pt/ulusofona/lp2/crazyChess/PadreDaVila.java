@@ -1,6 +1,7 @@
 package pt.ulusofona.lp2.crazyChess;
 
-import pt.ulusofona.lp2.crazyChess.CrazyPiece;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PadreDaVila extends CrazyPiece {
 
@@ -14,15 +15,11 @@ public class PadreDaVila extends CrazyPiece {
         super.maxMovHorizontal = 3;
         super.maxMovVertical = 3;
 
-//      set how much it has to move
-        super.minMovHorizontal = 1;
-        super.minMovVertical = 1;
-
 //      set the type piece as 3 (Padre da vila)
         super.type = 3;
 
 //      set the relative value
-        super.valorRelativo = 3;
+        super.relativeValue = 3;
 
     }
 
@@ -44,7 +41,7 @@ public class PadreDaVila extends CrazyPiece {
         super.type = 3;
 
 //      set the relative value
-        super.valorRelativo = 3;
+        super.relativeValue = 3;
 
 //      from the parameters received:
         //  set the piece ID
@@ -52,6 +49,54 @@ public class PadreDaVila extends CrazyPiece {
 
         //  set the piece name
         super.name = name;
+
+    }
+
+    @Override
+    public List<Position> possiblesPositions(int boardSize) {
+
+        super.possiblesPositions_Diagonal(boardSize);
+
+        super.possiblesPositions_RemovePosition();
+
+        List<Position> positionsBarrier = new ArrayList<>();
+
+        for (CrazyPiece thisPiece : Simulador.crazyPiecesInGame) {
+
+            if (thisPiece.getType() == 1) {
+
+                positionsBarrier = thisPiece.getPosition().oneSquareBarrier(boardSize);
+
+            }
+
+        }
+
+        return removePiecesInSideBarrier(possiblesPositions, positionsBarrier);
+
+    }
+
+    protected List<Position> removePiecesInSideBarrier(List<Position> possiblesPositions, List<Position> positionsBarrier) {
+
+        List<Position> POSITIONS_TO_ERASE = new ArrayList<>();
+
+        for (Position thisPosition : possiblesPositions) {
+
+            for (Position positionsEraser : positionsBarrier) {
+
+
+                if (thisPosition.equals(positionsEraser)) {
+
+                    POSITIONS_TO_ERASE.add(thisPosition);
+
+                }
+
+            }
+
+        }
+
+        possiblesPositions.removeAll(POSITIONS_TO_ERASE);
+
+        return possiblesPositions;
 
     }
 

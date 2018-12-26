@@ -1,10 +1,10 @@
 package pt.ulusofona.lp2.crazyChess;
 
+import java.util.List;
+
 public class Joker extends CrazyPiece {
 
-    private byte pieceId = 1;
-
-    Joker() {
+    public Joker() {
 
 //      Because it stats as a queen:
         //  set how much it can move
@@ -18,7 +18,7 @@ public class Joker extends CrazyPiece {
         super.canChangeType = true; // for now
 
 //      set the relative value
-        super.valorRelativo = 4;
+        super.relativeValue = 4;
 
     }
 
@@ -36,7 +36,7 @@ public class Joker extends CrazyPiece {
         super.canChangeType = true; // for now
 
 //      set the relative value
-        super.valorRelativo = 4;
+        super.relativeValue = 4;
 
 //      from the parameters received:
         //  set the piece ID
@@ -47,14 +47,6 @@ public class Joker extends CrazyPiece {
 
     }
 
-    @Override
-    public byte getPieceId() {
-
-        return pieceId;
-
-    }
-
-    @Override
     public void changePieceType() {
 
         if (pieceId == 6) {
@@ -81,6 +73,85 @@ public class Joker extends CrazyPiece {
             pieceId = 6;
 
         }
+
+    }
+
+    @Override
+    public List<Position> possiblesPositions(int boardSize) {
+
+        possiblesPositions.removeAll(possiblesPositions);
+
+
+        switch (pieceId) {
+
+            case 1: {
+
+                CrazyPiece queenJoker = new Rainha();
+                queenJoker.setPosition(position);
+//                queenJoker.setPosition(new Position(super.position.getxActual(), super.position.getyActual()));
+
+                possiblesPositions = queenJoker.possiblesPositions(boardSize);
+
+            }
+            break;
+
+            case 2 : {
+
+                CrazyPiece ponyJoker = new PoneiMagico();
+                ponyJoker.setPosition(position);
+//                ponyJoker.setPosition(new Position(super.position.getxActual(), super.position.getyActual()));
+
+                possiblesPositions = ponyJoker.possiblesPositions(boardSize);
+
+            }
+            break;
+
+            case 3 : {
+
+                CrazyPiece priestJoker = new PadreDaVila();
+                priestJoker.setPosition(position);
+//                priestJoker.setPosition(new Position(super.position.getxActual(), super.position.getyActual()));
+
+                possiblesPositions = priestJoker.possiblesPositions(boardSize);
+
+            }
+            break;
+
+            case 4 : {
+
+                CrazyPiece towerHJoker = new TorreH();
+                towerHJoker.setPosition(position);
+//                towerHJoker.setPosition(new Position(super.position.getxActual(), super.position.getyActual()));
+
+                possiblesPositions = towerHJoker.possiblesPositions(boardSize);
+
+            }
+            break;
+
+            case 5 : {
+
+                CrazyPiece towerVJoker = new TorreV();
+                towerVJoker.setPosition(position);
+//                towerVJoker.setPosition(new Position(super.position.getxActual(), super.position.getyActual()));
+
+                possiblesPositions = towerVJoker.possiblesPositions(boardSize);
+
+            }
+            break;
+
+            case 6 : {
+
+                CrazyPiece bunnyJoker = new Lebre();
+                bunnyJoker.setPosition(position);
+//                bunnyJoker.setPosition(new Position(super.position.getxActual(), super.position.getyActual()));
+
+                possiblesPositions = bunnyJoker.possiblesPositions(boardSize);
+
+            }
+
+        }
+
+        return possiblesPositions;
 
     }
 

@@ -1,6 +1,7 @@
 package pt.ulusofona.lp2.crazyChess;
 
-import pt.ulusofona.lp2.crazyChess.CrazyPiece;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Rainha extends CrazyPiece {
 
@@ -14,7 +15,7 @@ public class Rainha extends CrazyPiece {
         super.type = 1;
 
 //      set the relative value
-        super.valorRelativo = 8;
+        super.relativeValue = 8;
 
     }
 
@@ -28,7 +29,7 @@ public class Rainha extends CrazyPiece {
         super.type = 1;
 
 //      set the relative value
-        super.valorRelativo = 8;
+        super.relativeValue = 8;
 
 //      from the parameters received:
         //  set the piece ID
@@ -36,6 +37,41 @@ public class Rainha extends CrazyPiece {
 
         //  set the piece name
         super.name = name;
+
+    }
+
+    @Override
+    public List<Position> possiblesPositions(int boardSize) {
+
+        possiblesPositions.removeAll(possiblesPositions);
+
+        super.possiblesPositions_Horizontal(boardSize);
+
+        super.possiblesPositions_Vertical(boardSize);
+
+        super.possiblesPositions_Diagonal(boardSize);
+
+        super.possiblesPositions_RemovePosition();
+        List<Position> positionsBarrier = new ArrayList<>();
+
+        for (CrazyPiece thisPiece : Simulador.crazyPiecesInGame) {
+
+            if (thisPiece.getType() == 1) {
+
+                positionsBarrier.add(thisPiece.getPosition());
+
+            } else if (thisPiece.getType() == 3) {
+
+                positionsBarrier = thisPiece.getPosition().oneSquareBarrier(boardSize);
+
+            }
+
+        }
+
+        CrazyPiece priestAuxiliary = new PadreDaVila();
+        ((PadreDaVila) priestAuxiliary).removePiecesInSideBarrier(possiblesPositions, positionsBarrier);
+
+        return possiblesPositions;
 
     }
 

@@ -11,7 +11,7 @@ public class Rei extends CrazyPiece {
         super.type = 0;
 /*
 //      set the relative value
-        super.valorRelativo = Integer.MAX_VALUE;
+        super.relativeValue = Integer.MAX_VALUE;
 */
     }
 
@@ -21,7 +21,7 @@ public class Rei extends CrazyPiece {
         super.type = 0;
 /*
 //      set the relative value
-        super.valorRelativo = Integer.MAX_VALUE;
+        super.relativeValue = Integer.MAX_VALUE;
 */
 
 //      from the parameters received:
