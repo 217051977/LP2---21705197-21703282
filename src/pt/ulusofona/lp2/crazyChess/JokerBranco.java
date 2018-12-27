@@ -2,10 +2,10 @@ package pt.ulusofona.lp2.crazyChess;
 
 class JokerBranco extends Joker {
 
-    JokerBranco(int id, int idTeam, String name) {
+    JokerBranco(int id, String name) {
 
         super.id = id;
-        super.idTeam = idTeam;
+        super.idTeam = 20;
         super.name = name;
         super.imagePNG = "Marvel/Joker/DeadPool.png";
 

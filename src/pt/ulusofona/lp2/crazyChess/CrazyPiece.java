@@ -198,64 +198,109 @@ public class CrazyPiece {
     }
 
 //  movement
-    public boolean move(int xDifference, int yDifference) {
+    public boolean move(Position destiny, int boardSize) {
 
-        int xPosition = position.getxActual();
-        int yPosition = position.getyActual();
+//      Get possiblesPosition
+        possiblesPositions(boardSize);
 
-        if (xDifference != 0 && yDifference != 0 &&
-                Math.abs(xDifference) == Math.abs(yDifference)) {
+//      Set destinyFounded and haveScore as false
+        boolean destinyFounded = false,
+                haveScore = false;
 
-            if (xDifference > 0) {
+//      search in every possible position
+        for (Position thisPosition : possiblesPositions) {
 
-                moveRight(xDifference);
+//          If there destiny is on of them
+            if (thisPosition.equals(destiny)) {
 
-            } else {
+//              search in the game pieces
+                for (CrazyPiece thisPiece : Simulador.crazyPiecesInGame) {
 
-                moveLeft(xDifference);
+//                  if there is one in the destiny
+                    if (thisPiece.getPosition().equals(destiny)) {
+
+//                      if the team playing is
+                        switch (Simulador.shift.getIdTeam()) {
+
+                            case 10 : {
+
+//                              add to black team 1 white piece eaten and 1 valid play
+                                Simulador.addScoresStats(0, 1, 0, 1);
+
+                            }
+                            break;
+
+                            case 20 : {
+
+//                              add to white team 1 black piece eaten and 1 valid play
+                                Simulador.addScoresStats(1, 0, 1, 0);
+
+                            }
+
+                        }
+
+                        Simulador.firstCapture = true;
+
+//                      set haveScore as true
+                        haveScore = true;
+
+//                      leave the cycle
+                        break;
+
+                    }
+
+                }
+
+//              if there's no score setted
+                if (!haveScore) {
+
+//                  if the team playing is
+                    switch (Simulador.shift.getIdTeam()) {
+
+                        case 10: {
+
+//                          add to black team 1 white piece eaten and 1 valid play
+                            Simulador.addScoresStats(0, 0, 0, 1);
+
+                        }
+                        break;
+
+                        case 20: {
+
+//                          add to white team 1 black piece eaten and 1 valid play
+                            Simulador.addScoresStats(0, 0, 1, 0);
+
+                        }
+
+                    }
+
+                }
+
+//              change the position of thisPiece to destiny
+                position.changePosition(destiny);
+
+//              set destinyFounded as true
+                destinyFounded = true;
+
+//              leave the cycle
+                break;
 
             }
 
-            if (yDifference > 0) {
+        }
 
-                moveDown(yDifference);
+//      if there wasn't any destiny in the possiblesPositions
+        if (!destinyFounded) {
 
-            } else {
+//          add an invalid score to the playing team
+            Simulador.addScoresStatsInvalid();
 
-                moveUp(yDifference);
-
-            }
-
-        } else if (xDifference != xPosition && yDifference == yPosition) {
-
-            if (xDifference > 0) {
-
-                moveRight(xDifference);
-
-            } else {
-
-                moveLeft(xDifference);
-
-            }
-
-        } else if (xDifference == xPosition && yDifference != yPosition) {
-
-            if (yDifference > 0) {
-
-                moveDown(yDifference);
-
-            } else {
-
-                moveUp(yDifference);
-
-            }
-
-        } else {
-
+//          return true
             return false;
 
         }
 
+//      return false
         return true;
 
     }
@@ -305,30 +350,6 @@ public class CrazyPiece {
 
 //      return true if the image received is the same of this piece
         return this.imagePNG.equals(imagePNG);
-
-    }
-
-
-//  move
-
-    public boolean move(Position destiny, int boardSize) {
-
-        possiblesPositions.removeAll(possiblesPositions);
-
-        possiblesPositions(boardSize);
-
-        for (Position thisPosition : possiblesPositions) {
-
-            if (destiny.equals(thisPosition)) {
-
-                position.changePosition(destiny);
-
-                return true;
-            }
-
-        }
-
-        return false;
 
     }
 
@@ -540,54 +561,63 @@ public class CrazyPiece {
 
         List<Position> POSITIONS_TO_ERASE = new ArrayList<>();
 
-        for (CrazyPiece thisPiece : Simulador.crazyPiecesInGame) {
+        for (Position destiny : possiblesPositions) {
 
-            for (Position destiny : possiblesPositions) {
+            if (destiny.equals(position)) {
 
-                if (destiny.equals(position)) {
+                possiblesPositions.remove(destiny);
+                continue;
 
-                    possiblesPositions.remove(destiny);
-                    continue;
+            }
 
-                }
+            List<Integer> positionsDifferences = position.positionDifferences(destiny);
 
-                List<Integer> positionsDifferences = position.positionDifferences(destiny);
+//          if it moves down right
+            if (positionsDifferences.get(0) > 0 && positionsDifferences.get(1) > 0) {
 
-                if (positionsDifferences.get(0) > 0 && positionsDifferences.get(1) > 0) {
+                canMoveDownRight = canMove(canMoveDownRight, POSITIONS_TO_ERASE, destiny);
 
-                    canMoveDownRight = canMove(canMoveDownRight, POSITIONS_TO_ERASE, thisPiece, destiny);
+            }
+//          if it moves up right
+            else if (positionsDifferences.get(0) > 0 && positionsDifferences.get(1) < 0) {
 
-                } else if (positionsDifferences.get(0) > 0 && positionsDifferences.get(1) < 0) {
+                canMoveUpRight = canMove(canMoveUpRight, POSITIONS_TO_ERASE, destiny);
 
-                    canMoveUpRight = canMove(canMoveUpRight, POSITIONS_TO_ERASE, thisPiece, destiny);
+            }
+//          if it moves down left
+            else if (positionsDifferences.get(0) < 0 && positionsDifferences.get(1) > 0) {
 
-                } else if (positionsDifferences.get(0) < 0 && positionsDifferences.get(1) > 0) {
+                canMoveDownLeft = canMove(canMoveDownLeft, POSITIONS_TO_ERASE, destiny);
 
-                    canMoveDownLeft = canMove(canMoveDownLeft, POSITIONS_TO_ERASE, thisPiece, destiny);
+            }
+//          if it moves up left
+            else if (positionsDifferences.get(0) < 0 && positionsDifferences.get(1) < 0) {
 
-                } else if (positionsDifferences.get(0) < 0 && positionsDifferences.get(1) < 0) {
+                canMoveUpLeft = canMove(canMoveUpLeft, POSITIONS_TO_ERASE, destiny);
 
-                    canMoveUpLeft = canMove(canMoveUpLeft, POSITIONS_TO_ERASE, thisPiece, destiny);
+            }
+//          if it moves right
+            else if (positionsDifferences.get(0) > 0 && positionsDifferences.get(1) == 0) {
 
-                }
+                canMoveRight = canMove(canMoveRight, POSITIONS_TO_ERASE, destiny);
 
-                else if (positionsDifferences.get(0) > 0 && positionsDifferences.get(1) == 0) {
+            }
+//          if it moves left
+            else if (positionsDifferences.get(0) < 0 && positionsDifferences.get(1) == 0) {
 
-                    canMoveRight = canMove(canMoveRight, POSITIONS_TO_ERASE, thisPiece, destiny);
+                canMoveLeft = canMove(canMoveLeft, POSITIONS_TO_ERASE, destiny);
 
-                } else if (positionsDifferences.get(0) < 0 && positionsDifferences.get(1) == 0) {
+            }
+//          if it moves up
+            else if (positionsDifferences.get(0) == 0 && positionsDifferences.get(1) < 0) {
 
-                    canMoveLeft = canMove(canMoveLeft, POSITIONS_TO_ERASE, thisPiece, destiny);
+                canMoveUp = canMove(canMoveUp, POSITIONS_TO_ERASE, destiny);
 
-                } else if (positionsDifferences.get(0) == 0 && positionsDifferences.get(1) < 0) {
+            }
+//          if it moves down
+            else if (positionsDifferences.get(0) == 0 && positionsDifferences.get(1) > 0) {
 
-                    canMoveUp = canMove(canMoveUp, POSITIONS_TO_ERASE, thisPiece, destiny);
-
-                } else if (positionsDifferences.get(0) == 0 && positionsDifferences.get(1) > 0) {
-
-                    canMoveDown = canMove(canMoveDown, POSITIONS_TO_ERASE, thisPiece, destiny);
-
-                }
+                canMoveDown = canMove(canMoveDown, POSITIONS_TO_ERASE, destiny);
 
             }
 
@@ -597,16 +627,23 @@ public class CrazyPiece {
 
     }
 
-    private boolean canMove(boolean canMove, List<Position> POSITIONS_TO_ERASE, CrazyPiece thisPiece, Position destiny) {
+    private boolean canMove(boolean canMove, List<Position> POSITIONS_TO_ERASE, Position destiny) {
+
         if (canMove) {
 
-            if (destiny.equals(thisPiece.getPosition())) {
+            for (CrazyPiece thisPiece : Simulador.crazyPiecesInGame) {
 
-                canMove = false;
+                if (destiny.equals(thisPiece.getPosition())) {
 
-                if (thisPiece.getIDTeam() == idTeam) {
+                    canMove = false;
 
-                    POSITIONS_TO_ERASE.add(destiny);
+                    if (thisPiece.getIDTeam() == idTeam) {
+
+                        POSITIONS_TO_ERASE.add(destiny);
+
+                    }
+
+                    break;
 
                 }
 
@@ -617,7 +654,9 @@ public class CrazyPiece {
             POSITIONS_TO_ERASE.add(destiny);
 
         }
+
         return canMove;
+
     }
 
     protected Position createPosition_Diagonal(int horizontal, int vertical) {

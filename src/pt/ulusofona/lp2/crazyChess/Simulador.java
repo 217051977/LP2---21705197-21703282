@@ -13,19 +13,20 @@ import java.util.Scanner;
 public class Simulador {
 
     private int boardSize;
-    private int numberOfBlackPiecesCaptured = 0,
-               numberOfWhitePiecesCaptured = 0,
-               numberOfValidPlaysByBlackTeam = 0,
-               numberOfValidPlaysByWhiteTeam = 0,
-               numberOfInvalidPlaysByBlackTeam = 0,
-               numberOfInvalidPlaysByWhiteTeam = 0;
+    private static int numberOfBlackPiecesCaptured = 0;
+    private static int numberOfWhitePiecesCaptured = 0;
+    private static int numberOfValidPlaysByBlackTeam = 0;
+    private static int numberOfValidPlaysByWhiteTeam = 0;
+    private static int numberOfInvalidPlaysByBlackTeam = 0;
+    private static int numberOfInvalidPlaysByWhiteTeam = 0;
     static List<CrazyPiece> crazyPiecesInGame = new ArrayList<>();
     List<CrazyPiece> allCrazyPieces = new ArrayList<>();
-    private List<String> authors = new ArrayList<>(), suggestedPlay = new ArrayList<>();
+    private List<String> authors = new ArrayList<>();
+    private List<String> suggestedPlay = new ArrayList<>();
     List<String> scores = new ArrayList<>();
     List<Team> team = new ArrayList<>();
     static Shift shift = new Shift();
-    boolean firstCapture = false;
+    public static boolean firstCapture = false;
 
 //    Constructor
     public Simulador() {}//*********************************************************************************************
@@ -138,31 +139,12 @@ public class Simulador {
 
     public boolean getFirstCapture() {
 
-        return this.firstCapture;
+        return firstCapture;
 
     }//****************************************************************************
 
-    private int setAuxiliary(int auxiliary, int defRelationToCenterBoard) {
-
-        int verticalAuxiliary;
-
-        if (defRelationToCenterBoard < 0) {
-
-            verticalAuxiliary = auxiliary - defRelationToCenterBoard;
-
-        } else {
-
-            verticalAuxiliary = auxiliary + defRelationToCenterBoard;
-
-        }
-
-        return verticalAuxiliary;
-
-    }//***************************************
-
     public List<String> obterSugestoesJogada(int xO, int yO) {
 
-        List<String> suggestedPositions = new ArrayList<>();
         List<Position> possiblesPositions;
 
 //      clear the list
@@ -183,56 +165,9 @@ public class Simulador {
 //                  Create a list with all the positions possibles for the piece moved
                     possiblesPositions = thisPiece.possiblesPositions(boardSize);
 
-                    List<Integer> positionDifferences;
-
-                    int xDifference;
-                    int yDifference;
-
-//                  Search in every position received
                     for (Position thisPosition : possiblesPositions) {
 
-                        if (thisPosition.getxActual() >= 0 && thisPosition.getyActual() < boardSize) {
-
-                            if (checkEmptyPosition(thisPiece, thisPosition)) {
-
-                                positionDifferences = thisPiece.getPosition().positionDifferences(thisPosition);
-
-                                if (!positionDifferences.isEmpty()) {
-
-                                    xDifference = positionDifferences.get(0);
-                                    yDifference = positionDifferences.get(1);
-
-                                    if (xDifference != 0 && yDifference != 0) {
-
-                                        if (checkClearPath_Diagonal(xDifference, yDifference, thisPiece.getPosition().getxActual(), thisPiece.getPosition().getyActual())) {
-
-                                            suggestedPlay.add("\"" + thisPosition.getxActual() + "," + thisPosition.getyActual() + "\"");
-
-                                        }
-
-                                    } else if (xDifference != 0) {
-
-                                        if (checkClearPath_Horizontal_Or_Vertical(xDifference, thisPiece.getPosition().getxActual(), thisPiece.getPosition().getyActual(), false)) {
-
-                                            suggestedPlay.add("\"" + thisPosition.getxActual() + "," + thisPosition.getyActual() + "\"");
-
-                                        }
-
-                                    } else if (yDifference != 0) {
-
-                                        if (checkClearPath_Horizontal_Or_Vertical(yDifference, thisPiece.getPosition().getxActual(), thisPiece.getPosition().getyActual(), true)) {
-
-                                            suggestedPlay.add("\"" + thisPosition.getxActual() + "," + thisPosition.getyActual() + "\"");
-
-                                        }
-
-                                    }
-
-                                }
-
-                            }
-
-                        }
+                        suggestedPlay.add("\"" + thisPosition.getxActual() + "," + thisPosition.getyActual() + "\"");
 
                     }
 
@@ -389,11 +324,11 @@ public class Simulador {
 
                         if (Integer.parseInt(piecesInfo[2]) == 10) {
 
-                            piece = new ReiPreto(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+                            piece = new ReiPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else if (Integer.parseInt(piecesInfo[2]) == 20) {
 
-                            piece = new ReiBranco(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+                            piece = new ReiBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else {
 
@@ -405,11 +340,11 @@ public class Simulador {
 
                         if (Integer.parseInt(piecesInfo[2]) == 10) {
 
-                            piece = new RainhaPreta(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+                            piece = new RainhaPreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else if (Integer.parseInt(piecesInfo[2]) == 20) {
 
-                            piece = new RainhaBranca(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+                            piece = new RainhaBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else {
 
@@ -421,11 +356,11 @@ public class Simulador {
 
                         if (Integer.parseInt(piecesInfo[2]) == 10) {
 
-                            piece = new PoneiMagicoPreto(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+                            piece = new PoneiMagicoPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else if (Integer.parseInt(piecesInfo[2]) == 20) {
 
-                            piece = new PoneiMagicoBranco(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+                            piece = new PoneiMagicoBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else {
 
@@ -437,11 +372,11 @@ public class Simulador {
 
                         if (Integer.parseInt(piecesInfo[2]) == 10) {
 
-                            piece = new PadreDaVilaPreto(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+                            piece = new PadreDaVilaPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else if (Integer.parseInt(piecesInfo[2]) == 20) {
 
-                            piece = new PadreDaVilaBranco(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+                            piece = new PadreDaVilaBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else {
 
@@ -453,11 +388,11 @@ public class Simulador {
 
                         if (Integer.parseInt(piecesInfo[2]) == 10) {
 
-                            piece = new TorreHPreta(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+                            piece = new TorreHPreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else if (Integer.parseInt(piecesInfo[2]) == 20) {
 
-                            piece = new TorreHBranca(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+                            piece = new TorreHBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else {
 
@@ -469,11 +404,11 @@ public class Simulador {
 
                         if (Integer.parseInt(piecesInfo[2]) == 10) {
 
-                            piece = new TorreVPreta(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+                            piece = new TorreVPreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else if (Integer.parseInt(piecesInfo[2]) == 20) {
 
-                            piece = new TorreVBranca(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+                            piece = new TorreVBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else {
 
@@ -485,11 +420,11 @@ public class Simulador {
 
                         if (Integer.parseInt(piecesInfo[2]) == 10) {
 
-                            piece = new LebrePreta(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+                            piece = new LebrePreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else if (Integer.parseInt(piecesInfo[2]) == 20) {
 
-                            piece = new LebreBranca(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+                            piece = new LebreBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else {
 
@@ -501,11 +436,11 @@ public class Simulador {
 
                         if (Integer.parseInt(piecesInfo[2]) == 10) {
 
-                            piece = new JokerPreto(Integer.parseInt(piecesInfo[0]), 10, piecesInfo[3]);
+                            piece = new JokerPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else if (Integer.parseInt(piecesInfo[2]) == 20) {
 
-                            piece = new JokerBranco(Integer.parseInt(piecesInfo[0]), 20, piecesInfo[3]);
+                            piece = new JokerBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                         } else {
 
@@ -570,7 +505,14 @@ public class Simulador {
 
             }
 
-            return nLines == boardSizeMaxIndex;
+            if (nLines == boardSizeMaxIndex) {
+
+                allCrazyPieces.addAll(crazyPiecesInGame);
+                return true;
+
+            }
+
+            return false;
 
         } catch (FileNotFoundException e) {
 
@@ -597,74 +539,40 @@ public class Simulador {
 //  Processes the play
     public boolean processaJogada(int xO, int yO, int xD, int yD) {
 
-//      Check if the move is between the board rang
-        if (xD >= 0 && xD <= (boardSize - 1) &&
-            yD >= 0 && yD <= (boardSize - 1)) {
+//      If the positionOrigin is in side the board
+        if (xO >= 0 && xO < boardSize && yO >= 0 && yO < boardSize) {
 
-//          Creates the positionOrigin as the origin position
-            Position positionOrigin = new Position(xO, yO);
+//          Check if the move is between the board rang
+            if (xD >= 0 && xD <= (boardSize - 1) && yD >= 0 && yD <= (boardSize - 1)) {
 
-//          For every piece in the list of pieces in the game
-            for (CrazyPiece piece : crazyPiecesInGame) {
+//              If the originPosition is different dorm the destinyPosition
+                if (xO != xD || yO != yD) {
 
-//              If the position of this piece is in the positionOrigin
-                if (piece.getPosition().equals(positionOrigin)) {
+//                  Creates the positionOrigin as the origin position
+                    Position origin = new Position(xO, yO);
 
-//                  Check if it belongs to the playing team
-                    if (piece.getIDTeam() == shift.getIdTeam()) {
+                    Position destiny = new Position(xD, yD);
 
-//                      Set the difference as the destiny coordinate minus the origin coordinate
-                        int xDifference = xD - xO;
-                        int yDifference = yD - yO;
+//                  For every piece in the list of pieces in the game
+                    for (CrazyPiece thiPiece : crazyPiecesInGame) {
 
-//                      Set the module of the difference as them self
-                        int xDifferenceABS = xDifference;
-                        int yDifferenceABS = yDifference;
+//                      If the position of this piece is in the positionOrigin
+                        if (thiPiece.getPosition().equals(origin)) {
 
-//                      If the difference of the X axis is lower of 0
-                        if (xDifference < 0) {
+//                          Check if it belongs to the playing team
+                            if (thiPiece.getIDTeam() == shift.getIdTeam()) {
 
-//                          Set it's module as symmetric
-                            xDifferenceABS *= (-1);
-
-                        }
-//                      If the difference of the Y axis is lower of 0
-                        if (yDifference < 0) {
-
-//                          Set it's module as symmetric
-                            yDifferenceABS *= (-1);
-
-                        }
-
-//                      Check if the it can move that amount of houses
-                        if (piece.getMinMovHorizontal() <= xDifferenceABS &&
-                                piece.getMaxMovHorizontal() >= xDifferenceABS &&
-                                piece.getMinMovVertical() <= yDifferenceABS &&
-                                piece.getMaxMovVertical() >= yDifferenceABS) {
-
-//                          Create a destiny Position
-                            Position destiny = new Position(xD, yD);
-
-                            if (checkEmptyPosition(piece, destiny)) {
-
-                                if (checkMovement(piece, xDifference, yDifference, destiny)) {
-
-//                                  Change shift and team
-                                    shift.addCount();
-
-//                                  Returns true
-                                    return true;
-
-                                }
+//                              return the value returned of the move method of this piece
+                                return thiPiece.move(destiny, boardSize);
 
                             }
+
+//                          If the piece doesn't belong to the playing team leaves the cycle
+                            break;
 
                         }
 
                     }
-
-//                  If the piece doesn't belong to the playing team leaves the cycle
-                    break;
 
                 }
 
@@ -755,1026 +663,6 @@ public class Simulador {
 
     }//******************************************************************************
 
-//  private functions
-    private boolean checkMovement(CrazyPiece piece, int xDifference, int yDifference, Position destiny) {
-
-//      If the piece moves in the diagonal
-        if (xDifference != 0 && yDifference != 0) {
-
-//          Check if it can move like that
-            if (piece.getMoveDiagonal()) {
-
-                if (moveDiagonally(piece, xDifference, yDifference, destiny)) {
-
-                    return true;
-
-                }
-
-            }
-
-//      If the piece moves in the vertical
-        } else if (xDifference != 0) {
-
-//          Check if it can move like that
-            if (piece.getMoveHorizontal()) {
-
-//              Check if it can go tho that position
-                if (moveHorizontally(piece, xDifference)) {
-
-                    return true;
-
-                }
-
-            }
-
-//      If the piece moves in the horizontal
-        } else if (yDifference != 0) {
-
-//          Check if it can move like that
-            if (piece.getMovVertical()) {
-
-//              Check if it can go tho that position
-                if (moveVertically(piece, yDifference)) {
-
-                    return true;
-
-                }
-
-            }
-
-        }
-
-//      Print in the console the directions that the piece can be moved
-        System.out.println("This piece can be moved in this ways: " +
-                "\nHorizontal: " + piece.getMoveHorizontal() +
-                "\nVertical: " + piece.getMovVertical() +
-                "\nDiagonal: " + piece.getMoveDiagonal());
-
-//      Returns false
-        return false;
-
-    }//*********
-
-    private boolean moveHorizontally(CrazyPiece piece, int xDifference) {
-
-        if (xDifference > 0) {
-
-            switch (piece.getType()) {
-
-                case 0 : {
-
-//                  Move up and right
-                    moveRight(piece, xDifference);
-
-//                  Return true
-                    return true;
-
-                }
-
-                case 1 : {
-
-                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxActual(),
-                            piece.getPosition().getyActual(), false)) {
-
-//                      Move up and right
-                        moveRight(piece, xDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                }
-                break;
-
-                case 5 : {
-
-                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxActual(),
-                            piece.getPosition().getyActual(), false)) {
-
-//                      Move up and right
-                        moveRight(piece, xDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                }
-                break;
-
-                case 7 : {
-
-//                      Check if there is a piece in the way
-                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxActual(),
-                            piece.getPosition().getyActual(), false)) {
-
-//                          Move up and right
-                        moveRight(piece, xDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                }
-
-            }
-
-        } else if (xDifference < 0) {
-
-            switch (piece.getType()) {
-
-                case 0 : {
-
-//                  Move up and right
-                    moveLeft(piece, xDifference);
-
-//                  Return true
-                    return true;
-
-                }
-
-                case 1 : {
-
-                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxActual(),
-                            piece.getPosition().getyActual(), false)) {
-
-//                      Move up and right
-                        moveLeft(piece, xDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                }
-                break;
-
-                case 5 : {
-
-                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxActual(),
-                            piece.getPosition().getyActual(), false)) {
-
-//                      Move up and right
-                        moveLeft(piece, xDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                }
-                break;
-
-                case 7 : {
-
-//                      Check if there is a piece in the way
-                    if (checkClearPath_Horizontal_Or_Vertical(xDifference, piece.getPosition().getxActual(),
-                            piece.getPosition().getyActual(), false)) {
-
-//                      Move up and right
-                        moveLeft(piece, xDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                }
-
-            }
-
-        }
-
-//      Return false
-        return false;
-
-    }//*****************************************
-
-    private boolean moveVertically(CrazyPiece piece, int yDifference) {
-
-        if (yDifference < 0) {
-
-            switch (piece.getType()) {
-
-                case 0 : {
-
-//                      Move up and right
-                    moveUp(piece, yDifference);
-
-//                  Return true
-                    return true;
-
-                }
-
-                case 1 : {
-
-                    if (checkClearPath_Horizontal_Or_Vertical(yDifference, piece.getPosition().getxActual(),
-                            piece.getPosition().getyActual(), true)) {
-
-//                      Move up and right
-                        moveUp(piece, yDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                }
-                break;
-
-                case 5 : {
-
-                    if (checkClearPath_Horizontal_Or_Vertical(yDifference, piece.getPosition().getxActual(),
-                            piece.getPosition().getyActual(), true)) {
-
-//                      Move up and right
-                        moveUp(piece, yDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                }
-                break;
-
-                case 7 : {
-
-//                      Check if there is a piece in the way
-                    if (checkClearPath_Horizontal_Or_Vertical(yDifference, piece.getPosition().getxActual(),
-                            piece.getPosition().getyActual(), true)) {
-
-//                      Move up and right
-                        moveUp(piece, yDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                }
-
-            }
-
-        } else if (yDifference > 0) {
-
-            switch (piece.getType()) {
-
-                case 0 : {
-
-//                      Move up and right
-                    moveDown(piece, yDifference);
-
-//                  Return true
-                    return true;
-
-                }
-
-                case 1 : {
-
-                    if (checkClearPath_Horizontal_Or_Vertical(yDifference, piece.getPosition().getxActual(),
-                            piece.getPosition().getyActual(), true)) {
-
-//                      Move up and right
-                        moveDown(piece, yDifference);
-
-//                  Return true
-                        return true;
-
-                    }
-
-                }
-                break;
-
-                case 5 : {
-
-                    if (checkClearPath_Horizontal_Or_Vertical(yDifference, piece.getPosition().getxActual(),
-                            piece.getPosition().getyActual(), true)) {
-
-//                      Move up and right
-                        moveDown(piece, yDifference);
-
-//                  Return true
-                        return true;
-
-                    }
-
-                }
-                break;
-
-                case 7 : {
-
-//                      Check if there is a piece in the way
-                    if (checkClearPath_Horizontal_Or_Vertical(yDifference, piece.getPosition().getxActual(),
-                            piece.getPosition().getyActual(), true)) {
-
-//                      Move up and right
-                        moveDown(piece, yDifference);
-
-//                  Return true
-                        return true;
-
-                    }
-
-                }
-
-            }
-
-        }
-
-//      Return true
-        return false;
-
-    }//*******************************************
-
-    private boolean moveDiagonally(CrazyPiece piece, int xDifference, int yDifference, Position destiny) {
-
-//      If xDifference is bigger than 0
-        if (xDifference > 0) {
-
-            if (yDifference > 0) {
-
-                switch (piece.getType()) {
-
-                    case 0 : {
-
-//                      Move up and right
-                        moveUpRight(piece, xDifference, yDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                    case 1 : {
-
-//                      Check if there is a piece in the way
-                        if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                piece.getPosition().getyActual())) {
-
-//                          Move up and right
-                            moveUpRight(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 2 : {
-
-//                      If there are no kings in the way
-                        if (checkClearPath_magicPony(xDifference, yDifference,
-                                piece.getPosition().getxActual(), piece.getPosition().getyActual())) {
-
-//                          Move up and right
-                            moveUpRight(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 3 : {
-
-//                      check if there is a piece in the way
-                        if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                piece.getPosition().getyActual()) && priestMovement(destiny)) {
-
-//                          Move up and right
-                            moveUpRight(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 6 : {
-
-
-//                      If we are playing in an odd shift
-                        if (shift.getIdTeam() %2 != 0) {
-
-//                          Move up and right
-                            moveUpRight(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 7 : {
-
-                        switch (piece.getPieceId()) {
-
-                            case 1 : {
-
-
-//                              check if there is a piece in the way
-                                if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                        piece.getPosition().getyActual())) {
-
-//                                  Move up and right
-                                    moveUpRight(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-                            break;
-
-                            case 2 : {
-
-
-//                              If there are no kings in the way
-                                if (checkClearPath_magicPony(xDifference, yDifference,
-                                        piece.getPosition().getxActual(), piece.getPosition().getyActual())) {
-
-//                                  Move up and right
-                                    moveUpRight(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-                            break;
-
-                            case 3 : {
-
-
-//                              check if there is a piece in the way
-                                if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                        piece.getPosition().getyActual()) && priestMovement(destiny)) {
-
-//                                  Move up and right
-                                    moveUpRight(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-                            break;
-
-                            default : {
-
-
-//                              If we are playing in an odd shift
-                                if (shift.getIdTeam() %2 != 0) {
-
-//                                  Move up and right
-                                    moveUpRight(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            } else if (yDifference < 0) {
-
-                switch (piece.getType()) {
-
-
-                    case 0 : {
-
-
-//                      Move up and right
-                        moveUpLeft(piece, xDifference, yDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                    case 1 : {
-
-
-//                      Check if there is a piece in the way
-                        if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                piece.getPosition().getyActual())) {
-
-//                          Move up and right
-                            moveUpLeft(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 2 : {
-
-
-//                      If there are no kings in the way
-                        if (checkClearPath_magicPony(xDifference, yDifference,
-                                piece.getPosition().getxActual(), piece.getPosition().getyActual())) {
-
-//                          Move up and right
-                            moveUpLeft(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 3 : {
-
-
-//                      check if there is a piece in the way
-                        if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                piece.getPosition().getyActual()) && priestMovement(destiny)) {
-
-//                          Move up and right
-                            moveUpLeft(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 6 : {
-
-
-//                      If we are playing in an odd shift
-                        if (shift.getIdTeam() %2 != 0) {
-
-//                          Move up and right
-                            moveUpLeft(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 7 : {
-
-                        switch (piece.getPieceId()) {
-
-
-                            case 1 : {
-
-
-//                              check if there is a piece in the way
-                                if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                        piece.getPosition().getyActual())) {
-
-//                                  Move up and right
-                                    moveUpLeft(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-                            break;
-
-                            case 2 : {
-
-
-//                              If there are no kings in the way
-                                if (checkClearPath_magicPony(xDifference, yDifference,
-                                        piece.getPosition().getxActual(), piece.getPosition().getyActual())) {
-
-//                                  Move up and right
-                                    moveUpLeft(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-                            break;
-
-                            case 3 : {
-
-
-//                              check if there is a piece in the way
-                                if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                        piece.getPosition().getyActual()) && priestMovement(destiny)) {
-
-//                                  Move up and right
-                                    moveUpLeft(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-                            break;
-
-                            default : {
-
-
-//                              If we are playing in an odd shift
-                                if (shift.getIdTeam() %2 != 0) {
-
-//                                  Move up and right
-                                    moveUpLeft(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-//      If xDifference is lower than 0
-        else if (xDifference < 0) {
-
-            if (yDifference > 0) {
-
-                switch (piece.getType()) {
-
-                    case 0 : {
-
-//                      Move up and right
-                        moveDownRight(piece, xDifference, yDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                    case 1 : {
-
-
-//                      Check if there is a piece in the way
-                        if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                piece.getPosition().getyActual())) {
-
-//                          Move up and right
-                            moveDownRight(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 2 : {
-
-
-//                      If there are no kings in the way
-                        if (checkClearPath_magicPony(xDifference, yDifference,
-                                piece.getPosition().getxActual(), piece.getPosition().getyActual())) {
-
-//                          Move up and right
-                            moveDownRight(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 3 : {
-
-
-//                      check if there is a piece in the way
-                        if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                piece.getPosition().getyActual()) && priestMovement(destiny)) {
-
-//                          Move up and right
-                            moveDownRight(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 6 : {
-
-
-//                      If we are playing in an odd shift
-                        if (shift.getIdTeam() %2 != 0) {
-
-//                          Move up and right
-                            moveDownRight(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 7 : {
-
-
-                        switch (piece.getPieceId()) {
-
-                            case 1 : {
-
-
-//                              check if there is a piece in the way
-                                if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                        piece.getPosition().getyActual())) {
-
-//                                  Move up and right
-                                    moveDownRight(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-                            break;
-
-                            case 2 : {
-
-
-//                              If there are no kings in the way
-                                if (checkClearPath_magicPony(xDifference, yDifference,
-                                        piece.getPosition().getxActual(), piece.getPosition().getyActual())) {
-
-//                                  Move up and right
-                                    moveDownRight(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-                            break;
-
-                            case 3 : {
-
-
-//                              check if there is a piece in the way
-                                if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                        piece.getPosition().getyActual()) && priestMovement(destiny)) {
-
-//                                  Move up and right
-                                    moveDownRight(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-                            break;
-
-                            default : {
-
-
-//                              If we are playing in an odd shift
-                                if (shift.getIdTeam() %2 != 0) {
-
-//                                  Move up and right
-                                    moveDownRight(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            } else if (yDifference < 0) {
-
-                switch (piece.getType()) {
-
-
-                    case 0 : {
-
-
-//                      Move up and right
-                        moveDownLeft(piece, xDifference, yDifference);
-
-//                      Return true
-                        return true;
-
-                    }
-
-                    case 1 : {
-
-
-//                      Check if there is a piece in the way
-                        if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                piece.getPosition().getyActual())) {
-
-//                          Move up and right
-                            moveDownLeft(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 2 : {
-
-
-//                      If there are no kings in the way
-                        if (checkClearPath_magicPony(xDifference, yDifference,
-                                piece.getPosition().getxActual(), piece.getPosition().getyActual())) {
-
-//                          Move up and right
-                            moveDownLeft(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 3 : {
-
-
-//                      check if there is a piece in the way
-                        if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                piece.getPosition().getyActual()) && priestMovement(destiny)) {
-
-//                          Move up and right
-                            moveDownLeft(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 6 : {
-
-
-//                      If we are playing in an odd shift
-                        if (shift.getIdTeam() %2 != 0) {
-
-//                          Move up and right
-                            moveDownLeft(piece, xDifference, yDifference);
-
-//                          Return true
-                            return true;
-
-                        }
-
-                    }
-                    break;
-
-                    case 7 : {
-
-
-                        switch (piece.getPieceId()) {
-
-
-                            case 1 : {
-
-
-//                              check if there is a piece in the way
-                                if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                        piece.getPosition().getyActual())) {
-
-//                                  Move up and right
-                                    moveDownLeft(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-                            break;
-
-                            case 2 : {
-
-
-//                              If there are no kings in the way
-                                if (checkClearPath_magicPony(xDifference, yDifference,
-                                        piece.getPosition().getxActual(), piece.getPosition().getyActual())) {
-
-//                                  Move up and right
-                                    moveDownLeft(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-                            break;
-
-                            case 3 : {
-
-
-//                              check if there is a piece in the way
-                                if (checkClearPath_Diagonal(xDifference, yDifference, piece.getPosition().getxActual(),
-                                        piece.getPosition().getyActual()) && priestMovement(destiny)) {
-
-//                                  Move up and right
-                                    moveDownLeft(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-                            break;
-
-                            default : {
-
-
-//                              If we are playing in an odd shift
-                                if (shift.getIdTeam() %2 != 0) {
-
-//                                  Move up and right
-                                    moveDownLeft(piece, xDifference, yDifference);
-
-//                                  Return true
-                                    return true;
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-//      Return true
-        return false;
-
-    }//********
-
     private void changeJokerType() {
 
         for (CrazyPiece piece : crazyPiecesInGame) {
@@ -1824,559 +712,17 @@ public class Simulador {
 
     }//************************************************************
 
-    private void setScores(CrazyPiece piece, Position destiny, boolean hasCaptured) {
+    public static void addScoresStats(int numberOfBlackPiecesCaptured, int numberOfWhitePiecesCaptured,
+                                      int numberOfValidPlaysByWhiteTeam, int numberOfValidPlaysByBlackTeam) {
 
-        CrazyPiece capturedPiece = null;
+        Simulador.numberOfBlackPiecesCaptured += numberOfBlackPiecesCaptured;
+        Simulador.numberOfWhitePiecesCaptured += numberOfWhitePiecesCaptured;
+        Simulador.numberOfValidPlaysByWhiteTeam += numberOfValidPlaysByWhiteTeam;
+        Simulador.numberOfValidPlaysByBlackTeam += numberOfValidPlaysByBlackTeam;
 
-        if (hasCaptured) {
+    }//*****
 
-            for (CrazyPiece thisPiece : crazyPiecesInGame) {
-
-                if (thisPiece.getPosition().equals(destiny)) {
-
-//              Call setScores_Capture
-                    setScores_Capture(piece);
-
-                    capturedPiece = thisPiece;
-
-                }
-
-            }
-
-            if (capturedPiece != null) {
-
-//          Remove this piece from crazyPiecesInGame
-                crazyPiecesInGame.remove(capturedPiece);
-
-            }
-
-        }
-
-        else {
-
-            switch (shift.getIdTeam()) {
-
-                case 10: {
-
-                    addScoresStats(0, 0, 0, 1);
-
-                }
-                break;
-
-                case 20: {
-
-                    addScoresStats(0, 0, 1, 0);
-
-                }
-
-            }
-
-            shift.addCountNoCapture();
-
-        }
-
-    }//*****************************
-
-    private boolean checkEmptyPosition(CrazyPiece piece, Position destiny) {
-
-        boolean haveScore = false;
-
-//      If the type of the piece is queen
-        if (piece.getType() == 1) {
-
-//          Search in every piece in the game
-            for (CrazyPiece thisPiece : crazyPiecesInGame) {
-
-//              If that same piece is in the newPosition
-                if (thisPiece.getPosition().equals(destiny)) {
-
-//                  Check if the piece is form the enemy team
-                    if (thisPiece.getIDTeam() != shift.getIdTeam()) {
-
-//                      If this piece is not a queen
-                        if (thisPiece.getType() != 1) {
-
-//                          Set captured score
-                            setScores(piece, destiny, true);
-
-//                          Set haveScore as true
-                            haveScore = true;
-
-//                          Returns true
-                            return true;
-
-                        }
-
-//                      Print in the console that was an enemy queen on that position
-                        System.out.println("There's an enemy queen on that position!");
-
-//                      Returns false
-                        return false;
-
-                    } else {
-
-//                      Print in the console that was an enemy queen on that position
-                        System.out.println("There's already a piece of the same team on that position!");
-
-//                      Returns false
-                        return false;
-
-                    }
-
-                }
-
-            }
-        } else {
-
-//          Search in every piece in the game
-            for (CrazyPiece thisPiece : crazyPiecesInGame) {
-
-//              If that same piece is in the newPosition
-                if (thisPiece.getPosition().equals(destiny)) {
-
-//                  Check if the piece is form the enemy team
-                    if (thisPiece.getIDTeam() != shift.getIdTeam()) {
-
-//                      Set captured score
-                        setScores(piece, destiny, true);
-
-//                      Set haveScore as true
-                        haveScore = true;
-
-//                      Return true
-                        return true;
-
-                    }
-
-//                  Print in the console that was an enemy queen on that position
-                    System.out.println("There's already a piece of the same team on that position!");
-
-//                  Returns false
-                    return false;
-
-                }
-
-            }
-        }
-
-        if (!haveScore) {
-
-//          Set no captured score
-            setScores(piece, destiny, false);
-
-        }
-
-//      If there's not a piece in the destiny position return true
-        return true;
-
-    }//**************************************
-
-    private boolean priestMovement(Position destiny) {
-
-        int minHorizontal = destiny.getxActual() - 2;
-        int maxHorizontal = destiny.getxActual() + 2;
-        int minVertical = destiny.getyActual() - 2;
-        int maxVertical = destiny.getyActual() + 2;
-
-        for (int x = minHorizontal; x < maxHorizontal; x++) {
-
-            for (int y = minVertical; y < maxVertical; y++) {
-
-                for (CrazyPiece piece : crazyPiecesInGame) {
-
-                    if (piece.getType() == 1) {
-
-                        return false;
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        return true;
-
-    }
-
-    private boolean checkClearPath_Horizontal_Or_Vertical(int difference, int xActual, int yActual, boolean vertical) {
-
-        int finalPosition;
-
-//      Set finalPosition value
-        if (vertical) {
-
-//          Set the finalPosition as the yActual + the difference it wants to move
-            finalPosition = yActual + difference;
-
-        } else {
-
-//          Set the finalPosition as the yActual + the difference it wants to move
-            finalPosition = xActual + difference;
-
-        }
-
-//      if the difference is negative
-        if (difference < 0) {
-
-//          If it wants to move vertically
-            if (vertical) {
-
-//              Search from the immediately left position the the actual position until the finalPosition
-                for (int position = yActual - 1; position > finalPosition; position--) {
-
-//                  If there's a piece in the way
-                    if (searchForAPiece(xActual, position)) {
-
-//                      Return false
-                        return false;
-
-                    }
-
-                }
-
-            }
-//          If it wants to move horizontally
-            else {
-
-//              Search from the immediately left position the the actual position until the finalPosition
-                for (int position = xActual - 1; position > finalPosition; position--) {
-
-//                  If there's a piece in the way
-                    if (searchForAPiece(position, yActual)) {
-
-//                      Return false
-                        return false;
-
-                    }
-
-                }
-
-            }
-
-        }
-//      If the difference is positive
-        else if (difference > 0) {
-
-            if (vertical) {
-
-//              Search from the immediately left position the the actual position until the finalPosition
-                for (int position = yActual + 1; position > finalPosition; position++) {
-
-//                  If there's a piece in the way
-                    if (searchForAPiece(xActual, position)) {
-
-//                      Return false
-                        return false;
-
-                    }
-
-                }
-
-            }
-//          If it wants to move horizontally
-            else {
-
-//              Search from the immediately left position the the actual position until the finalPosition
-                for (int position = xActual + 1; position > finalPosition; position++) {
-
-//                  If there's a piece in the way
-                    if (searchForAPiece(position, yActual)) {
-
-//                      Return false
-                        return false;
-
-                    }
-
-                }
-
-
-            }
-
-        }
-
-//      If the difference is null
-        else {
-
-//          Return false
-            return false;
-
-        }
-
-//      If there's no piece in the way return true
-        return true;
-
-    }//************************
-
-    private boolean checkClearPath_Diagonal(int xDifference, int yDifference, int xActual, int yActual) {
-
-        int finalPosition;
-
-        if (yDifference < 0) {
-
-            finalPosition = xActual + xDifference;
-
-            if (xDifference < 0) {
-
-                for (int y = yActual - 1, x = xActual - 1; x < finalPosition; y--, x--) {
-
-                    if (searchForAPiece(x, y)) {
-
-                        return false;
-
-                    }
-
-                }
-
-            }
-            else if (xDifference > 0){
-
-                for (int y = yActual - 1, x = xActual + 1; x < finalPosition; y--, x++) {
-
-                    if (searchForAPiece(x, y)) {
-
-                        return false;
-
-                    }
-
-                }
-
-            }
-            else {
-
-                return false;
-
-            }
-
-
-        } else if (yDifference > 0){
-
-            finalPosition = xActual + xDifference;
-
-            if (xDifference < 0) {
-
-                for (int y = yActual + 1, x = xActual - 1; x < finalPosition; y++, x--) {
-
-                    if (searchForAPiece(x, y)) {
-
-                        return false;
-
-                    }
-
-                }
-
-            }
-            else if (xDifference > 0){
-
-                for (int y = yActual + 1, x = xActual + 1; x < xDifference; y++, x++) {
-
-                    if (searchForAPiece(x, y)) {
-
-                        return false;
-
-                    }
-
-                }
-
-            }
-            else {
-
-                return false;
-
-            }
-
-        } else {
-
-            return false;
-
-        }
-
-        return true;
-
-    }
-
-    private boolean checkClearPath_magicPony(int xDifference, int yDifference, int xActual, int yActual) {
-
-        int xFinal = xActual + xDifference;
-        int yFinal = yActual + yDifference;
-
-//      Create foundAKing flag
-        boolean foundAKing = false;
-
-//      First it will check if is any king in the X axis
-        for (int movHorizontal = xActual + 1; movHorizontal <= xFinal; movHorizontal++) {
-
-//          Set foundAKing as the searchForAKing return
-            foundAKing = searchForAKing(movHorizontal, yActual);
-
-//          If there was a king in the way
-            if (foundAKing) {
-
-//              Leave the cycle
-                break;
-
-            }
-
-        }
-
-//      If there wasn't any king in the way
-        if (!foundAKing) {
-
-//          Set foundAKing as the searchForAKing return
-            foundAKing = searchForAKing(xFinal, yActual + 1);
-
-        }
-        else {
-
-//          Reset foundAKing
-            foundAKing = false;
-
-//          First it will check if is any king in the X axis
-            for (int movVertical = yActual + 1; movVertical <= xFinal; movVertical++) {
-
-//              Set foundAKing as the searchForAKing return
-                foundAKing = searchForAKing(xActual, movVertical);
-
-//              If there was a king in the way
-                if (foundAKing) {
-
-//                  Leave the cycle
-                    break;
-
-                }
-
-            }
-
-//          If there wasn't any king in the way
-            if (!foundAKing) {
-
-                return !searchForAKing(xActual + 1, yFinal);
-
-            }
-
-        }
-
-        return true;
-
-    }
-
-    private boolean searchForAKing(int x, int y) {
-
-//      set thisPosition for x and y
-        Position thisPosition = new Position(x, y);
-
-//      Search for a piece in thisPosition
-        for (CrazyPiece thisPiece : crazyPiecesInGame) {
-
-//          If thisPiece is in thisPosition
-            if (thisPiece.getPosition().equals(thisPosition)) {
-
-//              Return true  if thisPiece is a king else return false
-                return thisPiece.getType() == 0;
-
-            }
-
-        }
-
-//      Return false
-        return false;
-
-    }
-
-    private boolean searchForAPiece(int x, int y) {
-
-//      Set thisPosition for moveLeftRight and movUpDown
-        Position thisPosition = new Position(x, y);
-
-//      Search for a piece in thisPosition
-        for (CrazyPiece thisPiece : crazyPiecesInGame) {
-
-//          If thisPiece is in thisPosition
-            if (thisPiece.getPosition().equals(thisPosition)) {
-
-//              Return true if thisPiece is a king else return false
-                return true;
-
-            }
-
-        }
-
-        return false;
-
-    }
-
-    private void moveLeft(CrazyPiece piece, int xDifference) {
-
-        piece.moveLeft((xDifference * (-1)));
-        shift.addCount();
-
-    }
-
-    private void moveRight(CrazyPiece piece, int xDifference) {
-
-        piece.moveRight(xDifference);
-        shift.addCount();
-
-    }
-
-    private void moveUp(CrazyPiece piece, int yDifference) {
-
-        piece.moveUp((yDifference * (-1)));
-        shift.addCount();
-
-    }
-
-    private void moveDown(CrazyPiece piece, int yDifference) {
-
-        piece.moveDown(yDifference);
-        shift.addCount();
-
-    }
-
-    private void moveDownLeft(CrazyPiece piece, int xDifference, int yDifference) {
-
-        piece.moveDown((yDifference * (-1)));
-        piece.moveLeft((xDifference * (-1)));
-        shift.addCount();
-
-    }
-
-    private void moveUpLeft(CrazyPiece piece, int xDifference, int yDifference) {
-
-        piece.moveUp(yDifference);
-        piece.moveLeft((xDifference * (-1)));
-        shift.addCount();
-
-    }
-
-    private void moveUpRight(CrazyPiece piece, int xDifference, int yDifference) {
-
-        piece.moveUp(yDifference);
-        piece.moveRight(xDifference);
-        shift.addCount();
-
-    }
-
-    private void moveDownRight(CrazyPiece piece, int xDifference, int yDifference) {
-
-        piece.moveDown((yDifference * (-1)));
-        piece.moveRight(xDifference);
-        shift.addCount();
-
-    }
-
-    private void addScoresStats(int numberOfBlackPiecesCaptured, int numberOfWhitePiecesCaptured, int numberOfValidPlaysByWhiteTeam,
-                                 int numberOfValidPlaysByBlackTeam) {
-
-        this.numberOfBlackPiecesCaptured += numberOfBlackPiecesCaptured;
-        this.numberOfWhitePiecesCaptured += numberOfWhitePiecesCaptured;
-        this.numberOfValidPlaysByWhiteTeam += numberOfValidPlaysByWhiteTeam;
-        this.numberOfValidPlaysByBlackTeam += numberOfValidPlaysByBlackTeam;
-
-    }
-
-    private void addScoresStatsInvalid() {
+    public static void addScoresStatsInvalid() {
 
         switch (shift.getIdTeam()) {
 
@@ -2394,7 +740,7 @@ public class Simulador {
 
         }
 
-    }
+    }//******************************************************************
 
     private void addScoreStatsToPrint(String s) {
 
@@ -2410,6 +756,6 @@ public class Simulador {
         scores.add(String.valueOf(numberOfValidPlaysByWhiteTeam));
         scores.add(String.valueOf(numberOfInvalidPlaysByWhiteTeam));
 
-    }
+    }//*****************************************************************
 
 }

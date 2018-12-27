@@ -2,10 +2,10 @@ package pt.ulusofona.lp2.crazyChess;
 
 class RainhaPreta extends Rainha {
 
-    RainhaPreta(int id, int idTeam, String name) {
+    RainhaPreta(int id, String name) {
 
         super.id = id;
-        super.idTeam = idTeam;
+        super.idTeam = 10;
         super.name = name;
         super.imagePNG = "DC/Queen/Bumble_Bee.png";
 
