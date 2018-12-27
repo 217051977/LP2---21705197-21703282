@@ -166,7 +166,7 @@ public class CrazyPiece {
 
     }
 
-    public List<Position> possiblesPositions(int boardSize) {
+    public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
         possiblesPositions.removeAll(possiblesPositions);
 
@@ -176,7 +176,7 @@ public class CrazyPiece {
 
         possiblesPositions_Diagonal(boardSize);
 
-        possiblesPositions_RemovePosition();
+        possiblesPositions_RemovePosition(crazyPiecesInGame);
 
         return possiblesPositions;
 
@@ -198,14 +198,16 @@ public class CrazyPiece {
     }
 
 //  movement
-    public boolean move(Position destiny, int boardSize) {
+    public String move(Position destiny, int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
 //      Get possiblesPosition
-        possiblesPositions(boardSize);
+        possiblesPositions(boardSize, crazyPiecesInGame, shift);
 
 //      Set destinyFounded and haveScore as false
         boolean destinyFounded = false,
                 haveScore = false;
+
+        String score = "";
 
 //      search in every possible position
         for (Position thisPosition : possiblesPositions) {
@@ -214,32 +216,34 @@ public class CrazyPiece {
             if (thisPosition.equals(destiny)) {
 
 //              search in the game pieces
-                for (CrazyPiece thisPiece : Simulador.crazyPiecesInGame) {
+                for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
 //                  if there is one in the destiny
                     if (thisPiece.getPosition().equals(destiny)) {
 
 //                      if the team playing is
-                        switch (Simulador.shift.getIdTeam()) {
+                        switch (shift.getIdTeam()) {
 
                             case 10 : {
 
-//                              add to black team 1 white piece eaten and 1 valid play
-                                Simulador.addScoresStats(0, 1, 0, 1);
+                                score = "0,1,0,1";
+
+////                              add to black team 1 white piece eaten and 1 valid play
+//                                Simulador.addScoresStats(0, 1, 0, 1);
 
                             }
                             break;
 
                             case 20 : {
 
-//                              add to white team 1 black piece eaten and 1 valid play
-                                Simulador.addScoresStats(1, 0, 1, 0);
+                                score = "1,0,1,0";
+
+////                              add to white team 1 black piece eaten and 1 valid play
+//                                Simulador.addScoresStats(1, 0, 1, 0);
 
                             }
 
                         }
-
-                        Simulador.firstCapture = true;
 
 //                      set haveScore as true
                         haveScore = true;
@@ -255,20 +259,24 @@ public class CrazyPiece {
                 if (!haveScore) {
 
 //                  if the team playing is
-                    switch (Simulador.shift.getIdTeam()) {
+                    switch (shift.getIdTeam()) {
 
                         case 10: {
 
-//                          add to black team 1 white piece eaten and 1 valid play
-                            Simulador.addScoresStats(0, 0, 0, 1);
+                            score = "0,0,0,1";
+
+////                          add to black team 1 white piece eaten and 1 valid play
+//                            Simulador.addScoresStats(0, 0, 0, 1);
 
                         }
                         break;
 
                         case 20: {
 
-//                          add to white team 1 black piece eaten and 1 valid play
-                            Simulador.addScoresStats(0, 0, 1, 0);
+                            score = "0,0,1,0";
+
+////                          add to white team 1 black piece eaten and 1 valid play
+//                            Simulador.addScoresStats(0, 0, 1, 0);
 
                         }
 
@@ -289,19 +297,19 @@ public class CrazyPiece {
 
         }
 
-//      if there wasn't any destiny in the possiblesPositions
-        if (!destinyFounded) {
-
-//          add an invalid score to the playing team
-            Simulador.addScoresStatsInvalid();
-
-//          return true
-            return false;
-
-        }
+////      if there wasn't any destiny in the possiblesPositions
+//        if (!destinyFounded) {
+//
+////          add an invalid score to the playing team
+//            Simulador.addScoresStatsInvalid();
+//
+////          return true
+//            return false;
+//
+//        }
 
 //      return false
-        return true;
+        return score;
 
     }
 
@@ -547,7 +555,7 @@ public class CrazyPiece {
 
     }
 
-    protected void possiblesPositions_RemovePosition() {
+    protected void possiblesPositions_RemovePosition(List<CrazyPiece> crazyPiecesInGame) {
 
         boolean canMoveUpLeft = true,
                 canMoveDownRight = true,
@@ -575,49 +583,49 @@ public class CrazyPiece {
 //          if it moves down right
             if (positionsDifferences.get(0) > 0 && positionsDifferences.get(1) > 0) {
 
-                canMoveDownRight = canMove(canMoveDownRight, POSITIONS_TO_ERASE, destiny);
+                canMoveDownRight = canMove(canMoveDownRight, POSITIONS_TO_ERASE, destiny, crazyPiecesInGame);
 
             }
 //          if it moves up right
             else if (positionsDifferences.get(0) > 0 && positionsDifferences.get(1) < 0) {
 
-                canMoveUpRight = canMove(canMoveUpRight, POSITIONS_TO_ERASE, destiny);
+                canMoveUpRight = canMove(canMoveUpRight, POSITIONS_TO_ERASE, destiny, crazyPiecesInGame);
 
             }
 //          if it moves down left
             else if (positionsDifferences.get(0) < 0 && positionsDifferences.get(1) > 0) {
 
-                canMoveDownLeft = canMove(canMoveDownLeft, POSITIONS_TO_ERASE, destiny);
+                canMoveDownLeft = canMove(canMoveDownLeft, POSITIONS_TO_ERASE, destiny, crazyPiecesInGame);
 
             }
 //          if it moves up left
             else if (positionsDifferences.get(0) < 0 && positionsDifferences.get(1) < 0) {
 
-                canMoveUpLeft = canMove(canMoveUpLeft, POSITIONS_TO_ERASE, destiny);
+                canMoveUpLeft = canMove(canMoveUpLeft, POSITIONS_TO_ERASE, destiny, crazyPiecesInGame);
 
             }
 //          if it moves right
             else if (positionsDifferences.get(0) > 0 && positionsDifferences.get(1) == 0) {
 
-                canMoveRight = canMove(canMoveRight, POSITIONS_TO_ERASE, destiny);
+                canMoveRight = canMove(canMoveRight, POSITIONS_TO_ERASE, destiny, crazyPiecesInGame);
 
             }
 //          if it moves left
             else if (positionsDifferences.get(0) < 0 && positionsDifferences.get(1) == 0) {
 
-                canMoveLeft = canMove(canMoveLeft, POSITIONS_TO_ERASE, destiny);
+                canMoveLeft = canMove(canMoveLeft, POSITIONS_TO_ERASE, destiny, crazyPiecesInGame);
 
             }
 //          if it moves up
             else if (positionsDifferences.get(0) == 0 && positionsDifferences.get(1) < 0) {
 
-                canMoveUp = canMove(canMoveUp, POSITIONS_TO_ERASE, destiny);
+                canMoveUp = canMove(canMoveUp, POSITIONS_TO_ERASE, destiny, crazyPiecesInGame);
 
             }
 //          if it moves down
             else if (positionsDifferences.get(0) == 0 && positionsDifferences.get(1) > 0) {
 
-                canMoveDown = canMove(canMoveDown, POSITIONS_TO_ERASE, destiny);
+                canMoveDown = canMove(canMoveDown, POSITIONS_TO_ERASE, destiny, crazyPiecesInGame);
 
             }
 
@@ -627,11 +635,11 @@ public class CrazyPiece {
 
     }
 
-    private boolean canMove(boolean canMove, List<Position> POSITIONS_TO_ERASE, Position destiny) {
+    private boolean canMove(boolean canMove, List<Position> POSITIONS_TO_ERASE, Position destiny, List<CrazyPiece> crazyPiecesInGame) {
 
         if (canMove) {
 
-            for (CrazyPiece thisPiece : Simulador.crazyPiecesInGame) {
+            for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
                 if (destiny.equals(thisPiece.getPosition())) {
 

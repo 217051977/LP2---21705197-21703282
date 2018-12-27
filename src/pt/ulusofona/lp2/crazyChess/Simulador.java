@@ -13,20 +13,20 @@ import java.util.Scanner;
 public class Simulador {
 
     private int boardSize;
-    private static int numberOfBlackPiecesCaptured = 0;
-    private static int numberOfWhitePiecesCaptured = 0;
-    private static int numberOfValidPlaysByBlackTeam = 0;
-    private static int numberOfValidPlaysByWhiteTeam = 0;
-    private static int numberOfInvalidPlaysByBlackTeam = 0;
-    private static int numberOfInvalidPlaysByWhiteTeam = 0;
-    static List<CrazyPiece> crazyPiecesInGame = new ArrayList<>();
+    private int numberOfBlackPiecesCaptured = 0;
+    private int numberOfWhitePiecesCaptured = 0;
+    private int numberOfValidPlaysByBlackTeam = 0;
+    private int numberOfValidPlaysByWhiteTeam = 0;
+    private int numberOfInvalidPlaysByBlackTeam = 0;
+    private int numberOfInvalidPlaysByWhiteTeam = 0;
+    List<CrazyPiece> crazyPiecesInGame = new ArrayList<>();
     List<CrazyPiece> allCrazyPieces = new ArrayList<>();
     private List<String> authors = new ArrayList<>();
     private List<String> suggestedPlay = new ArrayList<>();
     List<String> scores = new ArrayList<>();
     List<Team> team = new ArrayList<>();
-    static Shift shift = new Shift();
-    public static boolean firstCapture = false;
+    Shift shift = new Shift();
+    public boolean firstCapture = false;
 
 //    Constructor
     public Simulador() {}//*********************************************************************************************
@@ -163,7 +163,7 @@ public class Simulador {
                 if (thisPiece.getIDTeam() == shift.getIdTeam()) {
 
 //                  Create a list with all the positions possibles for the piece moved
-                    possiblesPositions = thisPiece.possiblesPositions(boardSize);
+                    possiblesPositions = thisPiece.possiblesPositions(boardSize, crazyPiecesInGame, shift);
 
                     for (Position thisPosition : possiblesPositions) {
 
@@ -563,7 +563,31 @@ public class Simulador {
                             if (thiPiece.getIDTeam() == shift.getIdTeam()) {
 
 //                              return the value returned of the move method of this piece
-                                return thiPiece.move(destiny, boardSize);
+                                String score = thiPiece.move(destiny, boardSize, crazyPiecesInGame, shift);
+
+                                if (score.equals("")) {
+
+                                    addScoresStatsInvalid();
+
+                                    return false;
+
+                                } else {
+
+                                    String[] values = score.split(",");
+
+                                    addScoresStats(Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[2]), Integer.parseInt(values[3]));
+
+                                    if (Integer.parseInt(values[0]) != 0 || Integer.parseInt(values[1]) != 0) {
+
+                                        firstCapture = true;
+
+                                    }
+
+                                    changeJokerType();
+
+                                    return true;
+
+                                }
 
                             }
 
@@ -679,62 +703,29 @@ public class Simulador {
 
     }
 
-    private void setScores_Capture(CrazyPiece piece) {
-
-//      If the team that is playing is:
-        switch (shift.getIdTeam()) {
-
-            case 10: {
-
-//              Add this score to it
-                addScoresStats(0, 1, 0, 1);
-
-            }
-            break;
-
-            case 20: {
-
-//              Add this score to it
-                addScoresStats(1, 0, 1, 0);
-
-            }
-
-        }
-
-//      Set firstCapture as tue
-        firstCapture = true;
-
-//      Reset the number of shifts that it hasn't had an capture
-        shift.resetCountNoCapture();
-
-//      Change any joker pieceType in the game
-        changeJokerType();
-
-    }//************************************************************
-
-    public static void addScoresStats(int numberOfBlackPiecesCaptured, int numberOfWhitePiecesCaptured,
+    public void addScoresStats(int numberOfBlackPiecesCaptured, int numberOfWhitePiecesCaptured,
                                       int numberOfValidPlaysByWhiteTeam, int numberOfValidPlaysByBlackTeam) {
 
-        Simulador.numberOfBlackPiecesCaptured += numberOfBlackPiecesCaptured;
-        Simulador.numberOfWhitePiecesCaptured += numberOfWhitePiecesCaptured;
-        Simulador.numberOfValidPlaysByWhiteTeam += numberOfValidPlaysByWhiteTeam;
-        Simulador.numberOfValidPlaysByBlackTeam += numberOfValidPlaysByBlackTeam;
+        this.numberOfBlackPiecesCaptured += numberOfBlackPiecesCaptured;
+        this.numberOfWhitePiecesCaptured += numberOfWhitePiecesCaptured;
+        this.numberOfValidPlaysByWhiteTeam += numberOfValidPlaysByWhiteTeam;
+        this.numberOfValidPlaysByBlackTeam += numberOfValidPlaysByBlackTeam;
 
     }//*****
 
-    public static void addScoresStatsInvalid() {
+    public void addScoresStatsInvalid() {
 
         switch (shift.getIdTeam()) {
 
             case 10: {
 
-                numberOfInvalidPlaysByBlackTeam++;
+                this.numberOfInvalidPlaysByBlackTeam++;
 
             }break;
 
             case 20: {
 
-                numberOfInvalidPlaysByWhiteTeam++;
+                this.numberOfInvalidPlaysByWhiteTeam++;
 
             }
 

@@ -57,18 +57,18 @@ public class PoneiMagico extends CrazyPiece {
     }
 
     @Override
-    public List<Position> possiblesPositions(int boardSize) {
+    public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
-        searchForAPiece_DownRight(boardSize);
-        searchForAPiece_DownLeft(boardSize);
-        searchForAPiece_UpLeft(boardSize);
-        searchForAPiece_UpRight(boardSize);
+        searchForAPiece_DownRight(boardSize, crazyPiecesInGame);
+        searchForAPiece_DownLeft(boardSize, crazyPiecesInGame);
+        searchForAPiece_UpLeft(boardSize, crazyPiecesInGame);
+        searchForAPiece_UpRight(boardSize, crazyPiecesInGame);
 
         return possiblesPositions;
 
     }
 
-    private void searchForAPiece_DownRight(int boardSize) {
+    private void searchForAPiece_DownRight(int boardSize, List<CrazyPiece> crazyPiecesInGame) {
 
         boolean pieceFound;
 
@@ -80,24 +80,24 @@ public class PoneiMagico extends CrazyPiece {
         if (maxRight < boardSize && maxDown < boardSize) {
 
 //      check down
-            pieceFound = checkPieceInTheWay(minDown, maxDown, super.position.getxActual(), true, boardSize);
+            pieceFound = checkPieceInTheWay(minDown, maxDown, super.position.getxActual(), true, boardSize, crazyPiecesInGame);
 
 //      if there wasn't a piece in the way check right
             if (!pieceFound) {
 
-                pieceFound = checkPieceInTheWay(minRight, maxRight, super.position.getyActual() + 2, false, boardSize);
+                pieceFound = checkPieceInTheWay(minRight, maxRight, super.position.getyActual() + 2, false, boardSize, crazyPiecesInGame);
 
             }
 //      if there was a piece in the way
             if (pieceFound) {
 
 //          check right
-                pieceFound = checkPieceInTheWay(minRight, maxRight, super.position.getyActual(), false, boardSize);
+                pieceFound = checkPieceInTheWay(minRight, maxRight, super.position.getyActual(), false, boardSize, crazyPiecesInGame);
 
 //          if there wasn't a piece in the way check down
                 if (!pieceFound) {
 
-                    pieceFound = checkPieceInTheWay(minDown, maxDown, super.position.getxActual() + 2, true, boardSize);
+                    pieceFound = checkPieceInTheWay(minDown, maxDown, super.position.getxActual() + 2, true, boardSize, crazyPiecesInGame);
 
                 }
 
@@ -113,7 +113,7 @@ public class PoneiMagico extends CrazyPiece {
 
     }
 
-    private void searchForAPiece_DownLeft(int boardSize) {
+    private void searchForAPiece_DownLeft(int boardSize, List<CrazyPiece> crazyPiecesInGame) {
 
         boolean pieceFound;
 
@@ -125,24 +125,24 @@ public class PoneiMagico extends CrazyPiece {
         if (maxLeft >= 0 && maxDown < boardSize) {
 
 //      check down
-            pieceFound = checkPieceInTheWay(minDown, maxDown, super.position.getxActual(), true, boardSize);
+            pieceFound = checkPieceInTheWay(minDown, maxDown, super.position.getxActual(), true, boardSize, crazyPiecesInGame);
 
 //      if there wasn't a piece in the way check left
             if (!pieceFound) {
 
-                pieceFound = checkPieceInTheWay(minLeft, maxLeft, super.position.getyActual() + 2, false, boardSize);
+                pieceFound = checkPieceInTheWay(minLeft, maxLeft, super.position.getyActual() + 2, false, boardSize, crazyPiecesInGame);
 
             }
 //      if there was a piece in the way
             if (pieceFound) {
 
 //          check left
-                pieceFound = checkPieceInTheWay(minLeft, maxLeft, super.position.getyActual(), false, boardSize);
+                pieceFound = checkPieceInTheWay(minLeft, maxLeft, super.position.getyActual(), false, boardSize, crazyPiecesInGame);
 
 //          if there wasn't a piece in the way check down
                 if (!pieceFound) {
 
-                    pieceFound = checkPieceInTheWay(minDown, maxDown, super.position.getxActual() - 2, true, boardSize);
+                    pieceFound = checkPieceInTheWay(minDown, maxDown, super.position.getxActual() - 2, true, boardSize, crazyPiecesInGame);
 
                 }
 
@@ -158,7 +158,7 @@ public class PoneiMagico extends CrazyPiece {
 
     }
 
-    private void searchForAPiece_UpLeft(int boardSize) {
+    private void searchForAPiece_UpLeft(int boardSize, List<CrazyPiece> crazyPiecesInGame) {
 
         boolean pieceFound;
 
@@ -170,24 +170,24 @@ public class PoneiMagico extends CrazyPiece {
         if (minUp >= 0 && minLeft >= 0) {
 
 //          check up
-            pieceFound = checkPieceInTheWay(minUp, maxUp, super.position.getxActual(), true, boardSize);
+            pieceFound = checkPieceInTheWay(minUp, maxUp, super.position.getxActual(), true, boardSize, crazyPiecesInGame);
 
 //          if there wasn't a piece in the way check left
             if (!pieceFound) {
 
-                pieceFound = checkPieceInTheWay(minLeft, maxLeft, super.position.getyActual() - 2, false, boardSize);
+                pieceFound = checkPieceInTheWay(minLeft, maxLeft, super.position.getyActual() - 2, false, boardSize, crazyPiecesInGame);
 
             }
 //          if there was a piece in the way
             if (pieceFound) {
 
 //              check left
-                pieceFound = checkPieceInTheWay(minLeft, maxLeft, super.position.getyActual(), false, boardSize);
+                pieceFound = checkPieceInTheWay(minLeft, maxLeft, super.position.getyActual(), false, boardSize, crazyPiecesInGame);
 
 //              if there wasn't a piece in the way check up
                 if (!pieceFound) {
 
-                    pieceFound = checkPieceInTheWay(minUp, maxUp, super.position.getxActual() - 2, true, boardSize);
+                    pieceFound = checkPieceInTheWay(minUp, maxUp, super.position.getxActual() - 2, true, boardSize, crazyPiecesInGame);
 
                 }
 
@@ -203,7 +203,7 @@ public class PoneiMagico extends CrazyPiece {
 
     }
 
-    private void searchForAPiece_UpRight(int boardSize) {
+    private void searchForAPiece_UpRight(int boardSize,  List<CrazyPiece> crazyPiecesInGame) {
 
         boolean pieceFound;
 
@@ -215,24 +215,24 @@ public class PoneiMagico extends CrazyPiece {
         if (minUp >= 0 && maxRight < boardSize) {
 
 //          check up
-            pieceFound = checkPieceInTheWay(minUp, maxUp, super.position.getxActual(), true, boardSize);
+            pieceFound = checkPieceInTheWay(minUp, maxUp, super.position.getxActual(), true, boardSize, crazyPiecesInGame);
 
 //          if there wasn't a piece in the way check right
             if (!pieceFound) {
 
-                pieceFound = checkPieceInTheWay(minRight, maxRight, super.position.getyActual() - 2, false, boardSize);
+                pieceFound = checkPieceInTheWay(minRight, maxRight, super.position.getyActual() - 2, false, boardSize, crazyPiecesInGame);
 
             }
 //          if there was a piece in the way
             if (pieceFound) {
 
 //              check right
-                pieceFound = checkPieceInTheWay(minRight, maxRight, super.position.getyActual(), false, boardSize);
+                pieceFound = checkPieceInTheWay(minRight, maxRight, super.position.getyActual(), false, boardSize, crazyPiecesInGame);
 
 //              if there wasn't a piece in the way check up
                 if (!pieceFound) {
 
-                    pieceFound = checkPieceInTheWay(minUp, maxUp, super.position.getxActual() + 2, true, boardSize);
+                    pieceFound = checkPieceInTheWay(minUp, maxUp, super.position.getxActual() + 2, true, boardSize, crazyPiecesInGame);
 
                 }
 
@@ -248,7 +248,7 @@ public class PoneiMagico extends CrazyPiece {
 
     }
 
-    private boolean checkPieceInTheWay(int min, int max,int otherCoordinate , boolean vertical, int boardSize) {
+    private boolean checkPieceInTheWay(int min, int max,int otherCoordinate , boolean vertical, int boardSize,  List<CrazyPiece> crazyPiecesInGame) {
 
         Position thisPosition;
         boolean pieceFound = false;
@@ -265,7 +265,7 @@ public class PoneiMagico extends CrazyPiece {
 
             }
 
-            pieceFound = findPieceIn(thisPosition);
+            pieceFound = findPieceIn(thisPosition,  crazyPiecesInGame);
 
             if (pieceFound) {
 
@@ -280,11 +280,11 @@ public class PoneiMagico extends CrazyPiece {
 
     }
 
-    private boolean findPieceIn(Position thisPosition) {
+    private boolean findPieceIn(Position thisPosition,  List<CrazyPiece> crazyPiecesInGame) {
 
         boolean pieceFound = false;
 
-        for (CrazyPiece thisPiece : Simulador.crazyPiecesInGame) {
+        for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
             if (thisPiece.getPosition().equals(thisPosition)) {
 

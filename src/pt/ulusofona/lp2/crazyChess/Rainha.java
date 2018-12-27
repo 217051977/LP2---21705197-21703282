@@ -41,7 +41,7 @@ public class Rainha extends CrazyPiece {
     }
 
     @Override
-    public List<Position> possiblesPositions(int boardSize) {
+    public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
         possiblesPositions.removeAll(possiblesPositions);
 
@@ -51,10 +51,10 @@ public class Rainha extends CrazyPiece {
 
         super.possiblesPositions_Diagonal(boardSize);
 
-        super.possiblesPositions_RemovePosition();
+        super.possiblesPositions_RemovePosition(crazyPiecesInGame);
         List<Position> positionsBarrier = new ArrayList<>();
 
-        for (CrazyPiece thisPiece : Simulador.crazyPiecesInGame) {
+        for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
             if (thisPiece.getType() == 1) {
 

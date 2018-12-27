@@ -77,7 +77,7 @@ public class Joker extends CrazyPiece {
     }
 
     @Override
-    public List<Position> possiblesPositions(int boardSize) {
+    public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
         possiblesPositions.removeAll(possiblesPositions);
 
@@ -90,7 +90,7 @@ public class Joker extends CrazyPiece {
                 queenJoker.setPosition(position);
 //                queenJoker.setPosition(new Position(super.position.getxActual(), super.position.getyActual()));
 
-                possiblesPositions = queenJoker.possiblesPositions(boardSize);
+                possiblesPositions = queenJoker.possiblesPositions(boardSize, crazyPiecesInGame, shift);
 
             }
             break;
@@ -101,7 +101,7 @@ public class Joker extends CrazyPiece {
                 ponyJoker.setPosition(position);
 //                ponyJoker.setPosition(new Position(super.position.getxActual(), super.position.getyActual()));
 
-                possiblesPositions = ponyJoker.possiblesPositions(boardSize);
+                possiblesPositions = ponyJoker.possiblesPositions(boardSize, crazyPiecesInGame, shift);
 
             }
             break;
@@ -112,7 +112,7 @@ public class Joker extends CrazyPiece {
                 priestJoker.setPosition(position);
 //                priestJoker.setPosition(new Position(super.position.getxActual(), super.position.getyActual()));
 
-                possiblesPositions = priestJoker.possiblesPositions(boardSize);
+                possiblesPositions = priestJoker.possiblesPositions(boardSize, crazyPiecesInGame, shift);
 
             }
             break;
@@ -123,7 +123,7 @@ public class Joker extends CrazyPiece {
                 towerHJoker.setPosition(position);
 //                towerHJoker.setPosition(new Position(super.position.getxActual(), super.position.getyActual()));
 
-                possiblesPositions = towerHJoker.possiblesPositions(boardSize);
+                possiblesPositions = towerHJoker.possiblesPositions(boardSize, crazyPiecesInGame, shift);
 
             }
             break;
@@ -134,7 +134,7 @@ public class Joker extends CrazyPiece {
                 towerVJoker.setPosition(position);
 //                towerVJoker.setPosition(new Position(super.position.getxActual(), super.position.getyActual()));
 
-                possiblesPositions = towerVJoker.possiblesPositions(boardSize);
+                possiblesPositions = towerVJoker.possiblesPositions(boardSize, crazyPiecesInGame, shift);
 
             }
             break;
@@ -145,7 +145,7 @@ public class Joker extends CrazyPiece {
                 bunnyJoker.setPosition(position);
 //                bunnyJoker.setPosition(new Position(super.position.getxActual(), super.position.getyActual()));
 
-                possiblesPositions = bunnyJoker.possiblesPositions(boardSize);
+                possiblesPositions = bunnyJoker.possiblesPositions(boardSize, crazyPiecesInGame, shift);
 
             }
 

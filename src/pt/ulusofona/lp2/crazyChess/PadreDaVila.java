@@ -53,15 +53,15 @@ public class PadreDaVila extends CrazyPiece {
     }
 
     @Override
-    public List<Position> possiblesPositions(int boardSize) {
+    public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
         super.possiblesPositions_Diagonal(boardSize);
 
-        super.possiblesPositions_RemovePosition();
+        super.possiblesPositions_RemovePosition(crazyPiecesInGame);
 
         List<Position> positionsBarrier = new ArrayList<>();
 
-        for (CrazyPiece thisPiece : Simulador.crazyPiecesInGame) {
+        for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
             if (thisPiece.getType() == 1) {
 
