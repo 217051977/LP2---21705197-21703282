@@ -24,7 +24,6 @@ public class Simulador {
     private List<String> authors = new ArrayList<>();
     private List<String> suggestedPlay = new ArrayList<>();
     List<String> scores = new ArrayList<>();
-    List<Team> team = new ArrayList<>();
     Shift shift = new Shift();
     public boolean firstCapture = false;
 

@@ -421,6 +421,13 @@ public class TestSimulador {
         assertTrue("Should work!", simulador.iniciaJogo(file));
     }
 
+    @Test
+    public void testStartGame_Correct_All_Pieces() {
+        Simulador simulador = new Simulador();
+        File file = new File("test-files/RUN_FULL_FILE.txt");
+        assertTrue("Should work!", simulador.iniciaJogo(file));
+    }
+
 //  Execute The Move
     @Test
     public void testExecuteTheMove_AbleToMoveThePiece_Up() {
