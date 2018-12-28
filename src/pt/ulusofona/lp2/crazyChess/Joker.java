@@ -6,8 +6,6 @@ public class Joker extends CrazyPiece {
 
     public Joker() {
 
-//      Because it stats as a queen:
-        //  set how much it can move
         super.maxMovHorizontal = 5;
         super.maxMovVertical = 5;
 
@@ -20,42 +18,60 @@ public class Joker extends CrazyPiece {
 //      set the relative value
         super.relativeValue = 4;
 
-    }
-
-    public Joker(int id, String name) {
-
-//      Because it stats as a queen:
-        //  set how much it can move
-        super.maxMovHorizontal = 5;
-        super.maxMovVertical = 5;
-
-//      set the type piece as 7 (Joker)
-        super.type = 7;
-
-//      set the impossibility to change type!
-        super.canChangeType = true; // for now
-
-//      set the relative value
-        super.relativeValue = 4;
-
-//      from the parameters received:
-        //  set the piece ID
-        super.id = id;
-
-        //  set the piece name
-        super.name = name;
+//      set typeName as this className
+        super.typeName = "Joker/Rainha";
 
     }
 
     public void changePieceType() {
 
-        if (pieceId == 6) {
+        if (super.pieceId == 6) {
 
-            pieceId = 1;
+            super.pieceId = 1;
+            super.typeName = "Joker/Rainha";
 
         } else {
 
             pieceId++;
+
+            switch (pieceId) {
+
+                case 2 : {
+
+                    super.typeName = "Joker/Ponei Mágico";
+
+                }
+                break;
+
+                case 3 : {
+
+                    super.typeName = "Joker/Padre da Vila";
+
+                }
+                break;
+
+                case 4 : {
+
+                    super.typeName = "Joker/TorreH";
+
+                }
+                break;
+
+                case 5 : {
+
+                    super.typeName = "Joker/TorreV";
+
+                }
+                break;
+
+                case 6 : {
+
+                    super.typeName = "Joker/Lebre";
+
+                }
+                break;
+
+            }
 
         }
 

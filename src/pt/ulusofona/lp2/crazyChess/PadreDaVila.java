@@ -21,34 +21,8 @@ public class PadreDaVila extends CrazyPiece {
 //      set the relative value
         super.relativeValue = 3;
 
-    }
-
-    public PadreDaVila(int id, String name) {
-
-//      set the movement of the Padre da vila type piece
-        super.moveVertical = false;
-        super.moveHorizontal = false;
-
-//      set how much it can move
-        super.maxMovHorizontal = 3;
-        super.maxMovVertical = 3;
-
-//      set how much it has to move
-        super.minMovHorizontal = 1;
-        super.minMovVertical = 1;
-
-//      set the type piece as 3 (Padre da vila)
-        super.type = 3;
-
-//      set the relative value
-        super.relativeValue = 3;
-
-//      from the parameters received:
-        //  set the piece ID
-        super.id = id;
-
-        //  set the piece name
-        super.name = name;
+//      set typeName as this className
+        super.typeName = "Padre da Vila";
 
     }
 

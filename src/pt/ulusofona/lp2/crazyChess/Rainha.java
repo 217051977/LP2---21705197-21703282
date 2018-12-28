@@ -17,26 +17,8 @@ public class Rainha extends CrazyPiece {
 //      set the relative value
         super.relativeValue = 8;
 
-    }
-
-    public Rainha(int id, String name) {
-
-//      set how much it can move
-        super.maxMovHorizontal = 5;
-        super.maxMovVertical = 5;
-
-//      set the type piece as 1 (Queen)
-        super.type = 1;
-
-//      set the relative value
-        super.relativeValue = 8;
-
-//      from the parameters received:
-        //  set the piece ID
-        super.id = id;
-
-        //  set the piece name
-        super.name = name;
+//      set typeName as this className
+        super.typeName = "Rainha";
 
     }
 
@@ -68,8 +50,8 @@ public class Rainha extends CrazyPiece {
 
         }
 
-        CrazyPiece priestAuxiliary = new PadreDaVila();
-        ((PadreDaVila) priestAuxiliary).removePiecesInSideBarrier(possiblesPositions, positionsBarrier);
+        PadreDaVila priestAuxiliary = new PadreDaVila();
+        priestAuxiliary.removePiecesInSideBarrier(possiblesPositions, positionsBarrier);
 
         return possiblesPositions;
 

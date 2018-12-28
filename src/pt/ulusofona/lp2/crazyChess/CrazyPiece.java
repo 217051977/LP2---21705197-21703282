@@ -13,6 +13,7 @@ public class CrazyPiece {
     protected int maxMovHorizontal = 1, maxMovVertical = 1, minMovHorizontal = 0, minMovVertical = 0,
             id, type, idTeam, relativeValue;
     protected byte pieceId = 1;
+    protected String typeName;
     protected List<Position> possiblesPositions = new ArrayList<>();
 
 
@@ -98,51 +99,9 @@ public class CrazyPiece {
 
     }
 
-    public int getMinMovHorizontal() {
-
-        return minMovHorizontal;
-
-    }
-
-    public int getMinMovVertical() {
-
-        return minMovVertical;
-
-    }
-
-    public int getMaxMovVertical() {
-
-        return maxMovVertical;
-
-    }
-
     public int getIdTeam() {
 
         return idTeam;
-
-    }
-
-    public int getMaxMovHorizontal() {
-
-        return maxMovHorizontal;
-
-    }
-
-    public boolean getMovVertical() {
-
-        return moveVertical;
-
-    }
-
-    public boolean getMoveHorizontal() {
-
-        return moveHorizontal;
-
-    }
-
-    public boolean getMoveDiagonal() {
-
-        return moveDiagonal;
 
     }
 
@@ -204,8 +163,7 @@ public class CrazyPiece {
         possiblesPositions(boardSize, crazyPiecesInGame, shift);
 
 //      Set destinyFounded and haveScore as false
-        boolean destinyFounded = false,
-                haveScore = false;
+        boolean haveScore = false;
 
         String score = "";
 
@@ -286,9 +244,6 @@ public class CrazyPiece {
 
 //              change the position of thisPiece to destiny
                 position.changePosition(destiny);
-
-//              set destinyFounded as true
-                destinyFounded = true;
 
 //              leave the cycle
                 break;
@@ -411,27 +366,39 @@ public class CrazyPiece {
     public String toString() {
 
 //      set a string type variable called string as the toString settings
-        String string = id +
-                        " | " + type +
-                        " | " + idTeam +
-                        " | " + name +
+        String string = this.id +
+                        " | " + this.typeName +
+                        " | " + this.relativeValue +
+                        " | " + this.idTeam +
+                        " | " + this.name +
                         " @ ";
 
+        string += checkPosition();
+
+//      return the value of the variable string
+        return string;
+
+    }
+
+    protected String checkPosition() {
+
+        String string;
+
 //      if actual position in x axis as the value of null OR actual position in y axis as the value of null
-        if(position.getxActual() == null || position.getyActual() == null){
+        if(this.position.getxActual() == null || this.position.getyActual() == null){
 
 //          add this to the variable string
-            string += "(n/a)";
+            string = "(n/a)";
 
         }else {
 
 //          add this to the variable string
-            string += "(" + position.getxActual() + ", " + position.getyActual() + ")";
+            string = "(" + this.position.getxActual() + ", " + this.position.getyActual() + ")";
 
         }
 
-//      return the value of the variable string
         return string;
+
     }
 
 //  protected

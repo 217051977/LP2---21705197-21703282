@@ -11,8 +11,6 @@ public class Position {
 
 
 //  constructor
-    public Position() {}
-
     public Position(int xActual, int yActual) {
 
 //      set the variable of this same class as the value received
@@ -141,11 +139,11 @@ public class Position {
     }
 
 
-//  toString
-    public String toString() {
-
-        return "xActual = " + xActual + " | yActual = " + yActual;
-
-    }
+////  toString
+//    public String toString() {
+//
+//        return "xActual = " + xActual + " | yActual = " + yActual;
+//
+//    }
 
 }

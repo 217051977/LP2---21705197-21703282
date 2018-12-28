@@ -1,35 +1,37 @@
 package pt.ulusofona.lp2.crazyChess;
 
-import pt.ulusofona.lp2.crazyChess.CrazyPiece;
-import pt.ulusofona.lp2.crazyChess.Position;
-
 public class Rei extends CrazyPiece {
 
     Rei() {
 
 //      set the type piece as 0 (king)
         super.type = 0;
+
+//      set typeName as this className
+        super.typeName = "Rei";
 /*
 //      set the relative value
         super.relativeValue = Integer.MAX_VALUE;
 */
     }
 
-    public Rei(int id, String name) {
 
-//      set the type piece as 0 (king)
-        super.type = 0;
-/*
-//      set the relative value
-        super.relativeValue = Integer.MAX_VALUE;
-*/
+    @Override
+//  toString (por acabar)
+    public String toString() {
 
-//      from the parameters received:
-        //  set the piece ID
-        super.id = id;
+//      set a string type variable called string as the toString settings
+        String string = this.id +
+                " | " + this.typeName +
+                " | " + "(infinito)" +
+                " | " + this.idTeam +
+                " | " + this.name +
+                " @ ";
 
-        //  set the piece name
-        super.name = name;
+        string += checkPosition();
+
+//      return the value of the variable string
+        return string;
 
     }
 

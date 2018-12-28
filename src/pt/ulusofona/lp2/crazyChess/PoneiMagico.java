@@ -25,34 +25,8 @@ public class PoneiMagico extends CrazyPiece {
 //      set the relative value
         super.relativeValue = 5;
 
-    }
-
-    public PoneiMagico(int id, String name) {
-
-//      set the movement of the Ponei magico type piece
-        super.moveVertical = false;
-        super.moveHorizontal = false;
-
-//      set how much it can move
-        super.maxMovHorizontal = 2;
-        super.maxMovVertical = 2;
-
-//      set how much it has to move
-        super.minMovHorizontal = 2;
-        super.minMovVertical = 2;
-
-//      set the type piece as 2 (Ponei magico)
-        super.type = 2;
-
-//      set the relative value
-        super.relativeValue = 5;
-
-//      from the parameters received:
-        //  set the piece ID
-        super.id = id;
-
-        //  set the piece name
-        super.name = name;
+//      set typeName as this className
+        super.typeName = "Ponei Mágico";
 
     }
 
