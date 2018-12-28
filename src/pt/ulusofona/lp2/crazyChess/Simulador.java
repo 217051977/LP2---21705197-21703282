@@ -4,6 +4,8 @@ import jdk.nashorn.internal.ir.annotations.Ignore;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -198,13 +200,75 @@ public class Simulador {
 //  Save Game
     public boolean gravarJogo(File ficheiroDestino) {
 
-//        try {
-//
-//        }catch (FileNotFoundException e) {
-//
-//            return false;
-//
-//        }
+        boolean pieceFounded;
+
+        String newLine = System.getProperty("line.separator");
+
+        try {
+
+            FileWriter writer = new FileWriter(ficheiroDestino);
+
+            writer.write(String.valueOf(boardSize));
+            writer.write(newLine);
+            writer.write(String.valueOf(allCrazyPieces.size()));
+            writer.write(newLine);
+
+            for (CrazyPiece thisPiece : allCrazyPieces) {
+
+                writer.write(thisPiece.saveFile_ToString());
+                writer.write(newLine);
+
+            }
+
+            for (int line = 0 ; line < boardSize; line++) {
+
+                for (int column = 0; column < boardSize; column++) {
+
+                    pieceFounded = false;
+
+                    Position thisPosition = new Position(column, line);
+
+                    for (CrazyPiece thisPiece : crazyPiecesInGame) {
+
+                        if (thisPiece.getPosition().equals(thisPosition)) {
+
+                            writer.write(String.valueOf(thisPiece.getId()));
+
+                            pieceFounded = true;
+
+                            break;
+
+                        }
+
+                    }
+
+                    if (!pieceFounded) {
+
+                        writer.write(String.valueOf(0));
+
+                    }
+
+                    if (column != boardSize - 1) {
+
+                        writer.write(":");
+
+                    }
+
+                }
+
+                writer.write(newLine);
+
+            }
+
+            writer.write(String.valueOf(shift.getIdTeam()));
+            writer.write(setTeamStats(numberOfValidPlaysByBlackTeam, numberOfWhitePiecesCaptured, numberOfInvalidPlaysByBlackTeam));
+            writer.write(setTeamStats(numberOfValidPlaysByWhiteTeam, numberOfBlackPiecesCaptured, numberOfInvalidPlaysByWhiteTeam));
+
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return true;
 
@@ -232,8 +296,8 @@ public class Simulador {
 
             while (scan.hasNextLine()) {
 
-                String linha = scan.nextLine();
-                System.out.println(linha);
+                String line = scan.nextLine();
+                System.out.println(line);
                 nPiecesMaxIndex = nPieces + 2;
                 boardSizeMaxIndex = boardSize + nPiecesMaxIndex;
 
@@ -255,7 +319,7 @@ public class Simulador {
 
                     try {
 
-                        boardSize = Integer.parseInt(linha);
+                        boardSize = Integer.parseInt(line);
 
                     }catch (ArithmeticException notAnInteger) {
 
@@ -267,7 +331,7 @@ public class Simulador {
 
                     try {
 
-                        nPieces = Integer.parseInt(linha);
+                        nPieces = Integer.parseInt(line);
 
                     }catch (ArithmeticException notAnInteger) {
 
@@ -277,7 +341,7 @@ public class Simulador {
 
                 } else if (nLines < nPiecesMaxIndex) {
 
-                    piecesInfo = linha.split(":");
+                    piecesInfo = line.split(":");
 
                     if (piecesInfo.length != 4) {
 
@@ -461,7 +525,7 @@ public class Simulador {
 
                 } else if (nLines < boardSizeMaxIndex) {
 
-                    boardInfo = linha.split(":");
+                    boardInfo = line.split(":");
 
                     if (boardInfo.length != boardSize) {
 
@@ -580,7 +644,13 @@ public class Simulador {
 
                                         firstCapture = true;
 
+                                        shift.resetCountNoCapture();
+
                                     }
+
+                                    shift.addCount();
+
+                                    shift.addCountNoCapture();
 
                                     changeJokerType();
 
@@ -702,7 +772,7 @@ public class Simulador {
 
     }
 
-    public void addScoresStats(int numberOfBlackPiecesCaptured, int numberOfWhitePiecesCaptured,
+    private void addScoresStats(int numberOfBlackPiecesCaptured, int numberOfWhitePiecesCaptured,
                                       int numberOfValidPlaysByWhiteTeam, int numberOfValidPlaysByBlackTeam) {
 
         this.numberOfBlackPiecesCaptured += numberOfBlackPiecesCaptured;
@@ -712,7 +782,7 @@ public class Simulador {
 
     }//*****
 
-    public void addScoresStatsInvalid() {
+    private void addScoresStatsInvalid() {
 
         switch (shift.getIdTeam()) {
 
@@ -730,7 +800,7 @@ public class Simulador {
 
         }
 
-    }//******************************************************************
+    }//************************************************************************
 
     private void addScoreStatsToPrint(String s) {
 
@@ -747,5 +817,13 @@ public class Simulador {
         scores.add(String.valueOf(numberOfInvalidPlaysByWhiteTeam));
 
     }//*****************************************************************
+
+    private String setTeamStats(int numberOfValidPlays, int numberOfPiecesCaptured, int numberOfInvalidPlays) {
+
+        return ":" + numberOfValidPlays +
+                ":" + numberOfPiecesCaptured +
+                ":" + numberOfInvalidPlays;
+
+    }//***
 
 }

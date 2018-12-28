@@ -380,6 +380,15 @@ public class CrazyPiece {
 
     }
 
+    public String saveFile_ToString() {
+
+        return this.id +
+                ":" + this.type +
+                ":" + this.idTeam +
+                ":" + this.name;
+
+    }
+
     protected String checkPosition() {
 
         String string;
