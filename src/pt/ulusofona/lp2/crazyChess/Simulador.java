@@ -30,8 +30,8 @@ public class Simulador {
     public boolean firstCapture = false;
     private Position previousPosition;
     private CrazyPiece previousCrazyPiece;
-    private CrazyPiece crazyPiece_Removed_From_The_Game;
-    private List<CrazyPiece> crazyPiece_Removed_From_The_Game_Aux = new ArrayList<>();
+    private CrazyPiece crazyPieceRemovedFromTheGame;
+    private List<CrazyPiece> crazyPieceRemovedFromTheGameAux = new ArrayList<>();
     private int hasCaughtAPiece = 0;
     private int previousCountNoCapture = -1;
     private boolean hasMadeUndo = false;
@@ -252,7 +252,24 @@ public class Simulador {
                     }
 
 //                  Re-add the piece removed from game back to it
-                    crazyPiecesInGame.add(crazyPiece_Removed_From_The_Game);
+                    crazyPiecesInGame.add(crazyPieceRemovedFromTheGame);
+
+                    switch (shift.idTeam) {
+
+                        case 10 : {
+
+                            undoScoresStats(0, 1, 0, 1);
+
+                        }
+                        break;
+
+                        case 20 : {
+
+                            undoScoresStats(1, 0, 1, 0);
+
+                        }
+
+                    }
 
                 }
 //              If there was no capture
@@ -269,6 +286,23 @@ public class Simulador {
 
 //                          Undo the movement that thisPiece as made
                             thisPiece.undoMov(previousPosition);
+
+                        }
+
+                    }
+
+                    switch (shift.idTeam) {
+
+                        case 10 : {
+
+                            undoScoresStats(0, 0, 0, 1);
+
+                        }
+                        break;
+
+                        case 20 : {
+
+                            undoScoresStats(0, 0, 1, 0);
 
                         }
 
@@ -726,7 +760,7 @@ public class Simulador {
                             if (thiPiece.getIDTeam() == shift.getIdTeam()) {
 
 //                              return the value returned of the move method of this piece
-                                String score = thiPiece.move(destiny, boardSize, crazyPiecesInGame, crazyPiece_Removed_From_The_Game_Aux, shift);
+                                String score = thiPiece.move(destiny, boardSize, crazyPiecesInGame, crazyPieceRemovedFromTheGameAux, shift);
 
                                 if (score.equals("")) {
 
@@ -760,9 +794,9 @@ public class Simulador {
 
                                         shift.resetCountNoCapture();
 
-                                        crazyPiece_Removed_From_The_Game = crazyPiece_Removed_From_The_Game_Aux.get(0);
+                                        crazyPieceRemovedFromTheGame = crazyPieceRemovedFromTheGameAux.get(0);
 
-                                        crazyPiece_Removed_From_The_Game_Aux.remove(crazyPiece_Removed_From_The_Game);
+                                        crazyPieceRemovedFromTheGameAux.remove(crazyPieceRemovedFromTheGame);
 
                                     } else {
 
@@ -908,6 +942,16 @@ public class Simulador {
         this.numberOfWhitePiecesCaptured += numberOfWhitePiecesCaptured;
         this.numberOfValidPlaysByWhiteTeam += numberOfValidPlaysByWhiteTeam;
         this.numberOfValidPlaysByBlackTeam += numberOfValidPlaysByBlackTeam;
+
+    }//*****
+
+    private void undoScoresStats(int numberOfBlackPiecesCaptured, int numberOfWhitePiecesCaptured,
+                                      int numberOfValidPlaysByWhiteTeam, int numberOfValidPlaysByBlackTeam) {
+
+        this.numberOfBlackPiecesCaptured -= numberOfBlackPiecesCaptured;
+        this.numberOfWhitePiecesCaptured -= numberOfWhitePiecesCaptured;
+        this.numberOfValidPlaysByWhiteTeam -= numberOfValidPlaysByWhiteTeam;
+        this.numberOfValidPlaysByBlackTeam -= numberOfValidPlaysByBlackTeam;
 
     }//*****
 
