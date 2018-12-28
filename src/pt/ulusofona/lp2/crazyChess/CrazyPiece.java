@@ -142,22 +142,10 @@ public class CrazyPiece {
     }
 
 //  undo
-    public void undoPieceType() {
-
-        if (pieceId != 1) {
-
-            pieceId--;
-
-        } else {
-
-            pieceId = 6;
-
-        }
-
-    }
+    public void undoPieceType() {}
 
 //  movement
-    public String move(Position destiny, int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
+    public String move(Position destiny, int boardSize, List<CrazyPiece> crazyPiecesInGame, List<CrazyPiece> CRAZY_PIECE_REMOVED_FROM_THE_GAME_AUX, Shift shift) {
 
 //      Get possiblesPosition
         possiblesPositions(boardSize, crazyPiecesInGame, shift);
@@ -202,6 +190,15 @@ public class CrazyPiece {
                             }
 
                         }
+
+//                      set CRAZYPIECE_REVOMED_FROM_THE_GAME as thisPiece
+                        CRAZY_PIECE_REMOVED_FROM_THE_GAME_AUX.add(thisPiece);
+
+//                      remove thisPiece from crazyPiecesInGame
+                        crazyPiecesInGame.remove(thisPiece);
+
+//                      remove thisPiece from the game
+                        thisPiece.isOutOfGame();
 
 //                      set haveScore as true
                         haveScore = true;
@@ -346,6 +343,12 @@ public class CrazyPiece {
 
 
         hasChangedType = true;
+
+    }
+
+    public void undoMov(Position previousPosition) {
+
+        this.position = previousPosition;
 
     }
 
@@ -549,7 +552,7 @@ public class CrazyPiece {
 
             if (destiny.equals(position)) {
 
-                possiblesPositions.remove(destiny);
+                POSITIONS_TO_ERASE.add(destiny);
                 continue;
 
             }

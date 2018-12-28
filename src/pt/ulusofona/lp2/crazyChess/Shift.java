@@ -42,27 +42,19 @@ public class Shift {
 
     }
 
-    public boolean removeCount() {
+    public void removeCount() {
 
-        if (count > 0) {
+        this.count--;
 
-            this.count--;
+        if (idTeam == 20) {
 
-            if (idTeam == 1) {
+            idTeam = 10;
 
-                idTeam = 0;
+        } else {
 
-            } else {
-
-                idTeam = 1;
-
-            }
-
-            return true;
+            idTeam = 20;
 
         }
-
-        return false;
 
     }
 
@@ -74,11 +66,13 @@ public class Shift {
 
     public void removeCountNoCapture() {
 
-        if (countNoCapture > 0) {
+        countNoCapture--;
 
-            countNoCapture--;
+    }
 
-        }
+    public void undoCountNoCapture(int countNoCapture) {
+
+        this.countNoCapture = countNoCapture;
 
     }
 

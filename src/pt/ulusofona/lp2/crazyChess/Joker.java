@@ -95,9 +95,6 @@ public class Joker extends CrazyPiece {
     @Override
     public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
-        possiblesPositions.removeAll(possiblesPositions);
-
-
         switch (pieceId) {
 
             case 1: {

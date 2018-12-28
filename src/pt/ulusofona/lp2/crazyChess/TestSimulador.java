@@ -524,6 +524,58 @@ public class TestSimulador {
     }
 
     @Test
+    public void testExecuteTheMove_MoveTowerV_With_EnemyPieceInTheWay_Up() {
+        Simulador simulador = new Simulador(4);
+        createCrazyPiecePresentInGame_Bunny_Black(1, 1, simulador);
+        createCrazyPiecePresentInGame_TowerV_White(simulador);
+        assertFalse("It has a a piece in the way!", simulador.processaJogada(1,2,1,0));
+    }
+
+    @Test
+    public void testExecuteTheMove_MoveTowerV_With_Up_Valid() {
+        Simulador simulador = new Simulador(4);
+        createCrazyPiecePresentInGame_Bunny_Black(1, 0, simulador);
+        createCrazyPiecePresentInGame_TowerV_White(simulador);
+        assertFalse("It has a a piece in the way!", simulador.processaJogada(1,2,1,1));
+    }
+
+    @Test
+    public void testExecuteTheMove_MoveTowerV_With_EnemyPieceInTheWay_Up_And_Down() {
+        Simulador simulador = new Simulador(4);
+        createCrazyPiecePresentInGame_Pony_Black(1, 3, simulador);
+        createCrazyPiecePresentInGame_Bunny_Black(1, 1, simulador);
+        createCrazyPiecePresentInGame_TowerV_White(simulador);
+        assertFalse("It has a a piece in the way!", simulador.processaJogada(1,2,1,0));
+        assertFalse("It has a a piece in the way!", simulador.processaJogada(1,2,1,4));
+    }
+
+    @Test
+    public void testExecuteTheMove_MoveTowerV_WithUp_And_Down_Valid() {
+        Simulador simulador = new Simulador(4);
+        createCrazyPiecePresentInGame_Pony_Black(1, 4, simulador);
+        createCrazyPiecePresentInGame_Bunny_Black(1, 0, simulador);
+        createCrazyPiecePresentInGame_TowerV_White(simulador);
+        assertFalse("It has a a piece in the way!", simulador.processaJogada(1,2,1,1));
+        assertFalse("It has a a piece in the way!", simulador.processaJogada(1,2,1,3));
+    }
+
+    @Test
+    public void testExecuteTheMove_MoveTowerV_With_EnemyPieceInTheWay_Down() {
+        Simulador simulador = new Simulador(4);
+        createCrazyPiecePresentInGame_Pony_Black(1, 3, simulador);
+        createCrazyPiecePresentInGame_TowerV_White(simulador);
+        assertFalse("It has a a piece in the way!", simulador.processaJogada(1,2,1,4));
+    }
+
+    @Test
+    public void testExecuteTheMove_MoveTowerV_With_Down_Valid() {
+        Simulador simulador = new Simulador(4);
+        createCrazyPiecePresentInGame_Pony_Black(1, 4, simulador);
+        createCrazyPiecePresentInGame_TowerV_White(simulador);
+        assertFalse("It has a a piece in the way!", simulador.processaJogada(1,2,1,3));
+    }
+
+    @Test
     public void testExecuteTheMove_WhitePiece_After_BlackPieceMove() {
         Simulador simulador = new Simulador(4);
         createCrazyPiecePresentInGame_Pony_Black(2, 2, simulador);
@@ -1020,6 +1072,47 @@ public class TestSimulador {
 
     }
 
+//  undo
+    @Test
+    public void testUndoPlay_CountNoCapture() {
+        Simulador simulator = createSimulator(4);
+        createCrazyPiece_King_White_PresentInGame(1, 1, 0, simulator);
+        createCrazyPiece_King_Black_PresentInGame(2, 0, 0, simulator);
+        assertTrue("Should eat the other piece!", simulator.processaJogada(0, 0, 1, 0));
+        assertEquals("Should be -1!", -1, simulator.getPreviousCountNoCapture());
+    }
+
+    @Test
+    public void testUndoPlay_CountNoCapture_After_ValidPlays() {
+        Simulador simulator = createSimulator(5);
+        testUndoPieces_Aux(simulator);
+        assertEquals("Shouldn't be any change!", 3, simulator.getPreviousCountNoCapture());
+    }
+
+    @Test
+    public void testUndoPlay_CountNoCapture_After_ValidPlays_And_Before_AnotherValidPlay() {
+        Simulador simulator = createSimulator(5);
+        testUndoPieces_Aux(simulator);
+        assertEquals("Shouldn't be any change!", 3, simulator.getPreviousCountNoCapture());
+        assertTrue("Should eat the other piece!", simulator.processaJogada(2, 1, 2, 0));
+        assertEquals("Shouldn't be any change!", -1, simulator.getPreviousCountNoCapture());
+    }
+
+//    @Test_Aux
+    private void testUndoPieces_Aux(Simulador simulator) {
+        createCrazyPiece_King_White_PresentInGame(1, 0, 0, simulator);
+        createCrazyPiece_King_Black_PresentInGame(2, 4, 0, simulator);
+        createCrazyPiece_King_Black_PresentInGame(3, 2, 1, simulator);
+        assertTrue("Should be able to move!", simulator.processaJogada(4, 0, 3, 0));
+        assertTrue("Should be able to move!", simulator.processaJogada(0, 0, 1, 0));
+        assertTrue("Should be able to move!", simulator.processaJogada(3, 0, 2, 0));
+        assertTrue("Should eat the other piece!", simulator.processaJogada(1, 0, 2, 0));
+        assertEquals("Should be 2!", 3, simulator.getPreviousCountNoCapture());
+
+    }
+
+//  privates functions
+    //  creates
     private Simulador createSimulator(int boardSize) {
 
         return new Simulador(boardSize);
@@ -1219,7 +1312,7 @@ public class TestSimulador {
 
     }
 
-//  set results
+    //  set results
     private List<String> setKingResult() {
 
         List<String> result = new ArrayList<>();

@@ -94,25 +94,6 @@ public class Position {
 
     }
 
-    public List<Integer> positionDifferences_ABS(Position destiny) {
-
-        List<Integer> positionDifferences_ABS = new ArrayList<>();
-
-        if (xActual.equals(destiny.getxActual()) && yActual.equals(destiny.xActual)) {
-
-            return positionDifferences_ABS;
-
-        }
-
-        int xDifference_ABS = Math.abs(destiny.getxActual() - xActual);
-        positionDifferences_ABS.add(xDifference_ABS);
-        int yDifference_ABS = Math.abs(destiny.getyActual() - yActual);
-        positionDifferences_ABS.add(yDifference_ABS);
-
-        return positionDifferences_ABS;
-
-    }
-
     public List<Position> oneSquareBarrier(int boardSize) {
 
         List<Position> squareBarrier = new ArrayList<>();
