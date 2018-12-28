@@ -34,6 +34,7 @@ public class Rainha extends CrazyPiece {
         super.possiblesPositions_Diagonal(boardSize);
 
         super.possiblesPositions_RemovePosition(crazyPiecesInGame);
+
         List<Position> positionsBarrier = new ArrayList<>();
 
         for (CrazyPiece thisPiece : crazyPiecesInGame) {
@@ -44,7 +45,7 @@ public class Rainha extends CrazyPiece {
 
             } else if (thisPiece.getType() == 3) {
 
-                positionsBarrier = thisPiece.getPosition().oneSquareBarrier(boardSize);
+                positionsBarrier.addAll(thisPiece.getPosition().oneSquareBarrier(boardSize));
 
             }
 

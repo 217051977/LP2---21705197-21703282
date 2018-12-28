@@ -30,8 +30,8 @@ public class Simulador {
     public boolean firstCapture = false;
     private Position previousPosition;
     private CrazyPiece previousCrazyPiece;
-    private CrazyPiece CRAZY_PIECE_REMOVED_FROM_THE_GAME;
-    private List<CrazyPiece> CRAZY_PIECE_REMOVED_FROM_THE_GAME_AUX = new ArrayList<>();
+    private CrazyPiece crazyPiece_Removed_From_The_Game;
+    private List<CrazyPiece> crazyPiece_Removed_From_The_Game_Aux = new ArrayList<>();
     private int hasCaughtAPiece = 0;
     private int previousCountNoCapture = -1;
     private boolean hasMadeUndo = false;
@@ -252,7 +252,7 @@ public class Simulador {
                     }
 
 //                  Re-add the piece removed from game back to it
-                    crazyPiecesInGame.add(CRAZY_PIECE_REMOVED_FROM_THE_GAME);
+                    crazyPiecesInGame.add(crazyPiece_Removed_From_The_Game);
 
                 }
 //              If there was no capture
@@ -726,7 +726,7 @@ public class Simulador {
                             if (thiPiece.getIDTeam() == shift.getIdTeam()) {
 
 //                              return the value returned of the move method of this piece
-                                String score = thiPiece.move(destiny, boardSize, crazyPiecesInGame, CRAZY_PIECE_REMOVED_FROM_THE_GAME_AUX, shift);
+                                String score = thiPiece.move(destiny, boardSize, crazyPiecesInGame, crazyPiece_Removed_From_The_Game_Aux, shift);
 
                                 if (score.equals("")) {
 
@@ -760,9 +760,9 @@ public class Simulador {
 
                                         shift.resetCountNoCapture();
 
-                                        CRAZY_PIECE_REMOVED_FROM_THE_GAME = CRAZY_PIECE_REMOVED_FROM_THE_GAME_AUX.get(0);
+                                        crazyPiece_Removed_From_The_Game = crazyPiece_Removed_From_The_Game_Aux.get(0);
 
-                                        CRAZY_PIECE_REMOVED_FROM_THE_GAME_AUX.remove(CRAZY_PIECE_REMOVED_FROM_THE_GAME);
+                                        crazyPiece_Removed_From_The_Game_Aux.remove(crazyPiece_Removed_From_The_Game);
 
                                     } else {
 

@@ -145,7 +145,7 @@ public class CrazyPiece {
     public void undoPieceType() {}
 
 //  movement
-    public String move(Position destiny, int boardSize, List<CrazyPiece> crazyPiecesInGame, List<CrazyPiece> CRAZY_PIECE_REMOVED_FROM_THE_GAME_AUX, Shift shift) {
+    public String move(Position destiny, int boardSize, List<CrazyPiece> crazyPiecesInGame, List<CrazyPiece> crazyPiece_Removed_From_The_Game_Aux, Shift shift) {
 
 //      Get possiblesPosition
         possiblesPositions(boardSize, crazyPiecesInGame, shift);
@@ -192,7 +192,7 @@ public class CrazyPiece {
                         }
 
 //                      set CRAZYPIECE_REVOMED_FROM_THE_GAME as thisPiece
-                        CRAZY_PIECE_REMOVED_FROM_THE_GAME_AUX.add(thisPiece);
+                        crazyPiece_Removed_From_The_Game_Aux.add(thisPiece);
 
 //                      remove thisPiece from crazyPiecesInGame
                         crazyPiecesInGame.remove(thisPiece);

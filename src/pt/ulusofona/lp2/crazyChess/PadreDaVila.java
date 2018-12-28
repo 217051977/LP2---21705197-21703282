@@ -39,7 +39,7 @@ public class PadreDaVila extends CrazyPiece {
 
             if (thisPiece.getType() == 1) {
 
-                positionsBarrier = thisPiece.getPosition().oneSquareBarrier(boardSize);
+                positionsBarrier.addAll(thisPiece.getPosition().oneSquareBarrier(boardSize));
 
             }
 
@@ -56,7 +56,6 @@ public class PadreDaVila extends CrazyPiece {
         for (Position thisPosition : possiblesPositions) {
 
             for (Position positionsEraser : positionsBarrier) {
-
 
                 if (thisPosition.equals(positionsEraser)) {
 
