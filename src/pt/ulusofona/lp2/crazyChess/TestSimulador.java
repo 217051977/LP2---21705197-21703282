@@ -586,6 +586,24 @@ public class TestSimulador {
         assertFalse("The white piece should be able to move!", simulador.processaJogada(2,1,2,2));
     }
 
+    @Test
+    public void testExecuteTheMove_MovePony_AboveKing_After_UndoAndMove_ThatSameKing() {
+        Simulador simulador = new Simulador(11);
+
+        CrazyPiece pony = new PoneiMagicoPreto(1, "White");
+        Position ponyPosition = new Position(2, 0);
+        pony.setPosition(ponyPosition);
+        simulador.crazyPiecesInGame.add(pony);
+        createCrazyPiece_King_Black_PresentInGame(2, 0, 0, simulador);
+        createCrazyPiece_King_Black_PresentInGame(3, 0, 1, simulador);
+        createCrazyPiece_King_White_PresentInGame(4, 10, 0, simulador);
+        assertTrue("Should be able to move", simulador.processaJogada(0, 1, 1, 2));
+        simulador.anularJogadaAnterior();
+        assertTrue("Should be able to move!", simulador.processaJogada(0, 1, 1, 2));
+        assertTrue("Should be able to move!", simulador.processaJogada(10, 0, 10, 1));
+        assertFalse("Shouldn't be able to move!", simulador.processaJogada(2, 0, 0, 2));
+    }
+
 //  Game Over
     @Test
     public void testGameOver_NoPieces() {

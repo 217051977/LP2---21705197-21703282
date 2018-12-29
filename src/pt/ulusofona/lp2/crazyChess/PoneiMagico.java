@@ -264,9 +264,10 @@ public class PoneiMagico extends CrazyPiece {
                 if (thisPiece.getType() == 0) {
 
                     pieceFound = true;
-                    break;
 
                 }
+
+                break;
 
             }
 
