@@ -39,7 +39,11 @@ public class PadreDaVila extends CrazyPiece {
 
             if (thisPiece.getType() == 1) {
 
-                positionsBarrier.addAll(thisPiece.getPosition().oneSquareBarrier(boardSize));
+                if (thisPiece.getIDTeam() == shift.getIdTeam()) {
+
+                    positionsBarrier.addAll(thisPiece.getPosition().oneSquareBarrier(boardSize));
+
+                }
 
             }
 
