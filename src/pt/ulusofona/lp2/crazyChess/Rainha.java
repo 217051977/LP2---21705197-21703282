@@ -45,7 +45,7 @@ public class Rainha extends CrazyPiece {
 
             } else if (thisPiece.getType() == 3) {
 
-                if (thisPiece.getIDTeam() == shift.getIdTeam()) {
+                if (thisPiece.getIDTeam() != shift.getIdTeam()) {
 
                     positionsBarrier.addAll(thisPiece.getPosition().oneSquareBarrier(boardSize));
 
