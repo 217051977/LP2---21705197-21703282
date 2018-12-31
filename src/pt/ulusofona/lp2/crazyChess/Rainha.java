@@ -25,7 +25,7 @@ public class Rainha extends CrazyPiece {
     @Override
     public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
-        possiblesPositions.removeAll(possiblesPositions);
+        possiblesPositions.clear();
 
         super.possiblesPositions_Horizontal(boardSize);
 

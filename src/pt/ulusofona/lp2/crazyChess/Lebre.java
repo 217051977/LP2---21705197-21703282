@@ -24,7 +24,7 @@ public class Lebre extends CrazyPiece {
     @Override
     public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
-        super.possiblesPositions.removeAll(possiblesPositions);
+        super.possiblesPositions.clear();
 
         if (shift.getCount() % 2 == 0 || shift.getCount() == 0 ) {
 

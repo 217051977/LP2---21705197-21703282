@@ -165,7 +165,7 @@ public class Simulador {
         List<Position> possiblesPositions;
 
 //      clear the list
-        suggestedPlay.removeAll(suggestedPlay);
+        suggestedPlay.clear();
 
 //      Create a new position with the destination
         Position origin = new Position(xO, yO);
