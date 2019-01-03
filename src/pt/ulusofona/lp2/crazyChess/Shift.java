@@ -121,4 +121,13 @@ public class Shift {
                 "\nShift counter: " + count;
 
     }
+
+    public void reset() {
+
+        count = 0;
+        countNoCapture = 0;
+        idTeam = 10;
+
+    }
+
 }
