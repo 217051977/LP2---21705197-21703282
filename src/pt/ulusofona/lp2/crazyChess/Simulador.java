@@ -181,7 +181,7 @@ public class Simulador {
 
                     for (Position thisPosition : possiblesPositions) {
 
-                        suggestedPlay.add("\"" + thisPosition.getxActual() + "," + thisPosition.getyActual() + "\"");
+                        suggestedPlay.add("\"" + thisPosition.getxActual() + ", " + thisPosition.getyActual() + "\"");
 
                     }
 

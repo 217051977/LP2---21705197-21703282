@@ -20,6 +20,8 @@ public class CrazyPiece {
 //  Constructor
     public CrazyPiece() {
 
+        position = new Position(-1, -1);
+
     }
 
     public CrazyPiece(int id, String name) {
