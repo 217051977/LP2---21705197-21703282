@@ -69,7 +69,6 @@ public class Joker extends CrazyPiece {
                     super.typeName = "Joker/Lebre";
 
                 }
-                break;
 
             }
 
@@ -80,6 +79,51 @@ public class Joker extends CrazyPiece {
     public void changePieceType(int pieceType) {
 
         pieceId = (byte) pieceType;
+
+        switch (pieceId) {
+
+            case 1 : {
+
+                super.typeName = "Joker/Rainha";
+
+            }
+            break;
+
+            case 2 : {
+
+                super.typeName = "Joker/Ponei Mágico";
+
+            }
+            break;
+
+            case 3 : {
+
+                super.typeName = "Joker/Padre da Vila";
+
+            }
+            break;
+
+            case 4 : {
+
+                super.typeName = "Joker/TorreH";
+
+            }
+            break;
+
+            case 5 : {
+
+                super.typeName = "Joker/TorreV";
+
+            }
+            break;
+
+            case 6 : {
+
+                super.typeName = "Joker/Lebre";
+
+            }
+
+        }
 
     }
 

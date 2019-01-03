@@ -157,9 +157,6 @@ public class Simulador {
 
     }//**********************************************************************
 
-
-
-
     public List<String> obterSugestoesJogada(int xO, int yO) {
 
         List<Position> possiblesPositions;
@@ -250,6 +247,8 @@ public class Simulador {
                         }
 
                     }
+
+                    crazyPieceRemovedFromTheGame.isInGame();
 
 //                  Re-add the piece removed from game back to it
                     crazyPiecesInGame.add(crazyPieceRemovedFromTheGame);
@@ -407,6 +406,8 @@ public class Simulador {
     }//*************************************************************
 
     public boolean iniciaJogo(File ficheiroInicial) {
+
+        reset();
 
         try {
 
@@ -907,6 +908,7 @@ public class Simulador {
 //      set nWhiteKing and nBlackKing as 0
         int nWhiteKing = 0;
         int nBlackKing = 0;
+        int piecesInGame = 0;
 
         if (crazyPiecesInGame.size() == 0) {
 
@@ -941,29 +943,15 @@ public class Simulador {
 
                     }
 
+                    piecesInGame++;
+
                 }
 
             }
 
-//            if (crazyPiecesInGame.size() <= 2) {
+            if (piecesInGame <= 2) {
 
-                if (nBlackKing == 0) {
-
-                    System.out.println("VENCERAM AS BRANCAS");
-
-                    addScoreStatsToPrint("VENCERAM AS BRANCAS");
-
-                    return true;
-
-                } else if (nWhiteKing == 0) {
-
-                    System.out.println("VENCERAM AS PRETAS");
-
-                    addScoreStatsToPrint("VENCERAM AS PRETAS");
-
-                    return true;
-
-                } else if (nBlackKing == 1 && nWhiteKing == 1) {
+                if (nBlackKing == 1 && nWhiteKing == 1 || nBlackKing == 0 && nWhiteKing == 0) {
 
                     addScoreStatsToPrint("EMPATE");
 
@@ -971,7 +959,25 @@ public class Simulador {
 
                 }
 
-//            }
+            }
+
+            if (nBlackKing == 0) {
+
+                System.out.println("VENCERAM AS BRANCAS");
+
+                addScoreStatsToPrint("VENCERAM AS BRANCAS");
+
+                return true;
+
+            } else if (nWhiteKing == 0) {
+
+                System.out.println("VENCERAM AS PRETAS");
+
+                addScoreStatsToPrint("VENCERAM AS PRETAS");
+
+                return true;
+
+            }
 
             return false;
 
@@ -1037,6 +1043,8 @@ public class Simulador {
 
     private void addScoreStatsToPrint(String s) {
 
+        scores.clear();
+
         scores.add("JOGO DE CRAZY CHESS");
         scores.add("Resultado: " + s);
         scores.add("---");
@@ -1058,5 +1066,32 @@ public class Simulador {
                 ":" + numberOfInvalidPlays;
 
     }//***
+
+    private void reset() {
+
+        boardSize = 0;
+        numberOfBlackPiecesCaptured = 0;
+        numberOfWhitePiecesCaptured = 0;
+        numberOfValidPlaysByBlackTeam = 0;
+        numberOfValidPlaysByWhiteTeam = 0;
+        numberOfInvalidPlaysByBlackTeam = 0;
+        numberOfInvalidPlaysByWhiteTeam = 0;
+        hasCaughtAPiece = 0;
+        crazyPiecesInGame = new ArrayList<>();
+        crazyPieceRemovedFromTheGameAux = new ArrayList<>();
+        allCrazyPieces = new ArrayList<>();
+        authors = new ArrayList<>();
+        suggestedPlay = new ArrayList<>();
+        scores = new ArrayList<>();
+        shift = new Shift();
+        firstCapture = false;
+        hasMadeUndo = false;
+        previousPosition = null;
+        previousCrazyPiece = null;
+        crazyPieceRemovedFromTheGame = null;
+        previousCountNoCapture = -1;
+
+
+    }//****************************************************************************************
 
 }

@@ -184,11 +184,11 @@ public class CrazyPiece {
 //                      set CRAZYPIECE_REVOMED_FROM_THE_GAME as thisPiece
                         crazyPiece_Removed_From_The_Game_Aux.add(thisPiece);
 
-//                      remove thisPiece from crazyPiecesInGame
-                        crazyPiecesInGame.remove(thisPiece);
-
 //                      remove thisPiece from the game
                         thisPiece.isOutOfGame();
+
+//                      remove thisPiece from crazyPiecesInGame
+                        crazyPiecesInGame.remove(thisPiece);
 
 //                      set haveScore as true
                         haveScore = true;
