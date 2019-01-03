@@ -25,7 +25,7 @@ public class Simulador {
     private List<CrazyPiece> allCrazyPieces = new ArrayList<>();
     private List<String> authors = new ArrayList<>();
     private List<String> suggestedPlay = new ArrayList<>();
-    List<String> scores = new ArrayList<>();
+    private List<String> scores = new ArrayList<>();
     Shift shift = new Shift();
     public boolean firstCapture = false;
     private Position previousPosition;
@@ -196,7 +196,7 @@ public class Simulador {
 
                     for (Position thisPosition : possiblesPositions) {
 
-                        suggestedPlay.add("\"" + thisPosition.getxActual() + ",  " + thisPosition.getyActual() + "\"");
+                        suggestedPlay.add("\"" + thisPosition.getxActual() + ", " + thisPosition.getyActual() + "\"");
 
                     }
 
