@@ -200,18 +200,20 @@ public class Simulador {
 
                     }
 
+                    return suggestedPlay;
+
                 }
 
             }
 
         }
 
-        if (suggestedPlay.isEmpty()) {
+//        if (suggestedPlay.isEmpty()) {
 
 //          Add to the list
             suggestedPlay.add("Pedido inválido");
 
-        }
+//        }
 
 //      return the list
         return suggestedPlay;
