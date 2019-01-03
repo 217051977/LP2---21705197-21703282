@@ -23,6 +23,12 @@ public class Joker extends CrazyPiece {
 
     }
 
+    public String getTypeName() {
+
+        return typeName;
+
+    }
+
     public void nextType() {
 
         if (super.pieceId == 6) {

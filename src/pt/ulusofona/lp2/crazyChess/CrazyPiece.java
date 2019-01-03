@@ -99,15 +99,15 @@ public class CrazyPiece {
 
     }
 
-    public int getIdTeam() {
-
-        return idTeam;
-
-    }
-
     public byte getPieceId(){
 
         return pieceId;
+
+    }
+
+    public String getTypeName() {
+
+        return typeName;
 
     }
 

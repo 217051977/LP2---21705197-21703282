@@ -427,6 +427,12 @@ public class TestSimulador {
         assertEquals("The number of valid plays by white team should be 0", 0, simulador.getNumberOfValidPlaysByWhiteTeam());
         assertEquals("The number of black pieces captured should be 0", 0, simulador.getNumberOfBlackPiecesCaptured());
         assertEquals("The number of invalid plays by white team should be 0", 0, simulador.getNumberOfInvalidPlaysByWhiteTeam());
+        for (CrazyPiece thisPiece : simulador.crazyPiecesInGame) {
+            if (thisPiece.getType() == 7) {
+                assertEquals("Should be 2", 2, thisPiece.getPieceId());
+                assertEquals("Should be Joker/Ponei Mágico", "Joker/Ponei Mágico", thisPiece.getTypeName());
+            }
+        }
     }
 
     @Test

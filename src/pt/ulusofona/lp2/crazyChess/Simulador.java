@@ -726,7 +726,7 @@ public class Simulador {
 
                         shift.changeCount(shiftCount);
 
-                        for (int i = shiftCount; i > 0; i -= 7) {
+                        for (int i = shiftCount; i > 0; i -= 6) {
 
                             jokerPieceType = i;
 
@@ -1048,14 +1048,14 @@ public class Simulador {
         scores.add("JOGO DE CRAZY CHESS");
         scores.add("Resultado: " + s);
         scores.add("---");
-        scores.add("Team das Pretas");
-        scores.add("Capturas: " + numberOfWhitePiecesCaptured);
-        scores.add("Jogadas válidas: " + numberOfValidPlaysByBlackTeam);
-        scores.add("Tentativas inválidas: " + numberOfInvalidPlaysByBlackTeam);
-        scores.add("Team das Brancas");
-        scores.add("Capturas: " + numberOfBlackPiecesCaptured);
-        scores.add("Jogadas válidas: " + numberOfValidPlaysByWhiteTeam);
-        scores.add("Tentativas inválidas: " + numberOfInvalidPlaysByWhiteTeam);
+        scores.add("Equipa das Pretas");
+        scores.add(" Capturas: " + numberOfWhitePiecesCaptured);
+        scores.add(" Jogadas válidas: " + numberOfValidPlaysByBlackTeam);
+        scores.add(" Tentativas inválidas: " + numberOfInvalidPlaysByBlackTeam);
+        scores.add("Equipa das Brancas");
+        scores.add(" Capturas: " + numberOfBlackPiecesCaptured);
+        scores.add(" Jogadas válidas: " + numberOfValidPlaysByWhiteTeam);
+        scores.add(" Tentativas inválidas: " + numberOfInvalidPlaysByWhiteTeam);
 
     }//*****************************************************************
 
