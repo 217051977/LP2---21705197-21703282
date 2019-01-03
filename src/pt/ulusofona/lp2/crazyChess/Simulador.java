@@ -35,6 +35,7 @@ public class Simulador {
     private int hasCaughtAPiece = 0;
     private int previousCountNoCapture = -1;
     private boolean hasMadeUndo = false;
+    private String s = "EMPATE";
 
     //    Constructor
     public Simulador() {}//*********************************************************************************************
@@ -72,6 +73,20 @@ public class Simulador {
     }//****************************************************************************
 
     public List<String> getResultados() {
+
+        scores.clear();
+
+        scores.add("JOGO DE CRAZY CHESS");
+        scores.add("Resultado: " + s);
+        scores.add("---");
+        scores.add("Equipa das Pretas");
+        scores.add(" Capturas: " + numberOfWhitePiecesCaptured);
+        scores.add(" Jogadas válidas: " + numberOfValidPlaysByBlackTeam);
+        scores.add(" Tentativas inválidas: " + numberOfInvalidPlaysByBlackTeam);
+        scores.add("Equipa das Brancas");
+        scores.add(" Capturas: " + numberOfBlackPiecesCaptured);
+        scores.add(" Jogadas válidas: " + numberOfValidPlaysByWhiteTeam);
+        scores.add(" Tentativas inválidas: " + numberOfInvalidPlaysByWhiteTeam);
 
         return scores;
 
@@ -181,7 +196,7 @@ public class Simulador {
 
                     for (Position thisPosition : possiblesPositions) {
 
-                        suggestedPlay.add("\"" + thisPosition.getxActual() + ", " + thisPosition.getyActual() + "\"");
+                        suggestedPlay.add("\"" + thisPosition.getxActual() + ",  " + thisPosition.getyActual() + "\"");
 
                     }
 
@@ -269,6 +284,8 @@ public class Simulador {
                         }
 
                     }
+
+                    s = "EMPATE";
 
                 }
 //              If there was no capture
@@ -726,7 +743,7 @@ public class Simulador {
 
                         shift.changeCount(shiftCount);
 
-                        for (int i = shiftCount; i > 0; i -= 6) {
+                        for (int i = shiftCount; i >= 0; i -= 6) {
 
                             jokerPieceType = i;
 
@@ -914,8 +931,6 @@ public class Simulador {
 
         } else if (shift.getCountNoCapture() == 10 && firstCapture) {
 
-            addScoreStatsToPrint("EMPATE");
-
             shift.resetCount();
             shift.resetCountNoCapture();
 
@@ -951,8 +966,6 @@ public class Simulador {
 
                 if (nBlackKing == 1 && nWhiteKing == 1 || nBlackKing == 0 && nWhiteKing == 0) {
 
-                    addScoreStatsToPrint("EMPATE");
-
                     return true;
 
                 }
@@ -963,7 +976,7 @@ public class Simulador {
 
                 System.out.println("VENCERAM AS BRANCAS");
 
-                addScoreStatsToPrint("VENCERAM AS BRANCAS");
+                s = "VENCERAM AS BRANCAS";
 
                 return true;
 
@@ -971,7 +984,7 @@ public class Simulador {
 
                 System.out.println("VENCERAM AS PRETAS");
 
-                addScoreStatsToPrint("VENCERAM AS PRETAS");
+                s = "VENCERAM AS PRETAS";
 
                 return true;
 
@@ -1023,24 +1036,6 @@ public class Simulador {
 
     }//************************************************************************
 
-    private void addScoreStatsToPrint(String s) {
-
-        scores.clear();
-
-        scores.add("JOGO DE CRAZY CHESS");
-        scores.add("Resultado: " + s);
-        scores.add("---");
-        scores.add("Equipa das Pretas");
-        scores.add(" Capturas: " + numberOfWhitePiecesCaptured);
-        scores.add(" Jogadas válidas: " + numberOfValidPlaysByBlackTeam);
-        scores.add(" Tentativas inválidas: " + numberOfInvalidPlaysByBlackTeam);
-        scores.add("Equipa das Brancas");
-        scores.add(" Capturas: " + numberOfBlackPiecesCaptured);
-        scores.add(" Jogadas válidas: " + numberOfValidPlaysByWhiteTeam);
-        scores.add(" Tentativas inválidas: " + numberOfInvalidPlaysByWhiteTeam);
-
-    }//*****************************************************************
-
     private String setTeamStats(int numberOfValidPlays, int numberOfPiecesCaptured, int numberOfInvalidPlays) {
 
         return ":" + numberOfValidPlays +
@@ -1072,6 +1067,7 @@ public class Simulador {
         previousCrazyPiece = null;
         crazyPieceRemovedFromTheGame = null;
         previousCountNoCapture = -1;
+        s = "EMPATE";
 
 
     }//****************************************************************************************

@@ -245,10 +245,30 @@ public class TestSimulador {
     @Test
     public void testGetScore() {
         Simulador simulador = new Simulador();
-        simulador.scores.add("ola");
         List<String> list = new ArrayList<>();
-        list.add("ola");
-        assertEquals("Should be \"ola\"!", list, simulador.getResultados());
+        list.add("JOGO DE CRAZY CHESS");
+        list.add("Resultado: " + "EMPATE");
+        list.add("---");
+        list.add("Equipa das Pretas");
+        list.add(" Capturas: " + 0);
+        list.add(" Jogadas válidas: " + 0);
+        list.add(" Tentativas inválidas: " + 0);
+        list.add("Equipa das Brancas");
+        list.add(" Capturas: " + 0);
+        list.add(" Jogadas válidas: " + 0);
+        list.add(" Tentativas inválidas: " + 0);
+        assertEquals("Should be" +
+                "\"JOGO DE CRAZY CHESS\n" +
+                "Resultado: \"EMPATE\"\n" +
+                "---\n" +
+                "Equipa das Pretas\n" +
+                "Capturas: 0\n" +
+                "Jogadas válidas: 0\n" +
+                "Tentativas inválidas : 0\n" +
+                "Equipa das Brancas\n" +
+                "Capturas: 0\n" +
+                "Jogadas válidas: 0\n" +
+                "Tentativas inválidas: 0\"!", list, simulador.getResultados());
     }
 
 //  ID Piece
@@ -420,19 +440,20 @@ public class TestSimulador {
         File file = new File("test-files/FILE_TEST_GAME_SAVED.txt");
         assertTrue("Should be able to run this saveFile!", simulador.iniciaJogo(file));
         assertEquals("The playing team should be 20", 20, simulador.shift.getIdTeam());
-        assertEquals("The shift count should be 1", 19, simulador.shift.getCount());
-        assertEquals("The number of valid plays by black team should be 1", 19, simulador.getNumberOfValidPlaysByBlackTeam());
-        assertEquals("The number of white pieces captured should be 0", 0, simulador.getNumberOfWhitePiecesCaptured());
-        assertEquals("The number of invalid plays by black team should be 0", 0, simulador.getNumberOfInvalidPlaysByBlackTeam());
-        assertEquals("The number of valid plays by white team should be 0", 0, simulador.getNumberOfValidPlaysByWhiteTeam());
-        assertEquals("The number of black pieces captured should be 0", 0, simulador.getNumberOfBlackPiecesCaptured());
-        assertEquals("The number of invalid plays by white team should be 0", 0, simulador.getNumberOfInvalidPlaysByWhiteTeam());
+        assertEquals("The shift count should be 30", 30, simulador.shift.getCount());
+        assertEquals("The number of valid plays by black team should be 15", 15, simulador.getNumberOfValidPlaysByBlackTeam());
+        assertEquals("The number of white pieces captured should be 2", 2, simulador.getNumberOfWhitePiecesCaptured());
+        assertEquals("The number of invalid plays by black team should be 1", 1, simulador.getNumberOfInvalidPlaysByBlackTeam());
+        assertEquals("The number of valid plays by white team should be 15", 15, simulador.getNumberOfValidPlaysByWhiteTeam());
+        assertEquals("The number of black pieces captured should be 2", 2, simulador.getNumberOfBlackPiecesCaptured());
+        assertEquals("The number of invalid plays by white team should be 3", 3, simulador.getNumberOfInvalidPlaysByWhiteTeam());
         for (CrazyPiece thisPiece : simulador.crazyPiecesInGame) {
             if (thisPiece.getType() == 7) {
-                assertEquals("Should be 2", 2, thisPiece.getPieceId());
-                assertEquals("Should be Joker/Ponei Mágico", "Joker/Ponei Mágico", thisPiece.getTypeName());
+                assertEquals("Should be 1", 1, thisPiece.getPieceId());
+                assertEquals("Should be Joker/Rainha", "Joker/Rainha", thisPiece.getTypeName());
             }
         }
+        System.out.println(String.valueOf(simulador.getResultados()));
     }
 
     @Test
@@ -734,11 +755,11 @@ public class TestSimulador {
         Simulador simulador = createSimulator(5);
         createCrazyPiece_King_Black_PresentInGame(1, 0, 2, simulador);
         List<String> result = new ArrayList<>();
-        result.add("\"" + 1 + "," + 2 + "\"");
-        result.add("\"" + 0 + "," + 1 + "\"");
-        result.add("\"" + 0 + "," + 3 + "\"");
-        result.add("\"" + 1 + "," + 3 + "\"");
-        result.add("\"" + 1 + "," + 1 + "\"");
+        result.add("\"" + 1 + ", " + 2 + "\"");
+        result.add("\"" + 0 + ", " + 1 + "\"");
+        result.add("\"" + 0 + ", " + 3 + "\"");
+        result.add("\"" + 1 + ", " + 3 + "\"");
+        result.add("\"" + 1 + ", " + 1 + "\"");
         assertEquals("Not the the right suggestions!", result, simulador.obterSugestoesJogada(0, 2));
 
     }
@@ -769,11 +790,11 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Queen_Black(0, simulador);
         List<String> result_queen = new ArrayList<>();
-        result_queen.add("\"" + 1 + "," + 5 + "\"");
-        result_queen.add("\"" + 2 + "," + 5 + "\"");
-        result_queen.add("\"" + 3 + "," + 5 + "\"");
-        result_queen.add("\"" + 4 + "," + 5 + "\"");
-        result_queen.add("\"" + 5 + "," + 5 + "\"");
+        result_queen.add("\"" + 1 + ", " + 5 + "\"");
+        result_queen.add("\"" + 2 + ", " + 5 + "\"");
+        result_queen.add("\"" + 3 + ", " + 5 + "\"");
+        result_queen.add("\"" + 4 + ", " + 5 + "\"");
+        result_queen.add("\"" + 5 + ", " + 5 + "\"");
         result_queen.addAll(set__0_0__TO__0_4());
         result_queen.addAll(set__0_6__TO__0_10());
         result_queen.addAll(setQueenResult_NotCentered());
@@ -787,8 +808,8 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         createCrazyPiecePresentInGame_Queen_White(1, 5, simulador);
         List<String> result_queen = setQueenResult();
-        result_queen.remove("\"" + 0 + "," + 5 + "\"");
-        result_queen.remove("\"" + 1 + "," + 5 + "\"");
+        result_queen.remove("\"" + 0 + ", " + 5 + "\"");
+        result_queen.remove("\"" + 1 + ", " + 5 + "\"");
         assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
 
     }
@@ -799,9 +820,9 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         createCrazyPiecePresentInGame_Priest_White(1, 5, simulador);
         List<String> result_queen = setQueenResult();
-        result_queen.remove("\"" + 0 + "," + 5 + "\"");
-        result_queen.remove("\"" + 1 + "," + 5 + "\"");
-        result_queen.remove("\"" + 2 + "," + 5 + "\"");
+        result_queen.remove("\"" + 0 + ", " + 5 + "\"");
+        result_queen.remove("\"" + 1 + ", " + 5 + "\"");
+        result_queen.remove("\"" + 2 + ", " + 5 + "\"");
         assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
 
     }
@@ -812,10 +833,10 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         createCrazyPiecePresentInGame_Pony_White(simulador);
         List<String> result_queen = setQueenResult();
-        result_queen.remove("\"" + 0 + "," + 0 + "\"");
-        result_queen.remove("\"" + 1 + "," + 1 + "\"");
-        result_queen.remove("\"" + 2 + "," + 2 + "\"");
-        result_queen.remove("\"" + 3 + "," + 3 + "\"");
+        result_queen.remove("\"" + 0 + ", " + 0 + "\"");
+        result_queen.remove("\"" + 1 + ", " + 1 + "\"");
+        result_queen.remove("\"" + 2 + ", " + 2 + "\"");
+        result_queen.remove("\"" + 3 + ", " + 3 + "\"");
         assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
 
     }
@@ -846,10 +867,10 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Pony_Black(5, 3, simulador);
         List<String> result_pony = new ArrayList<>();
-        result_pony.add("\"" + 7 + "," + 5 + "\"");
-        result_pony.add("\"" + 3 + "," + 5 + "\"");
-        result_pony.add("\"" + 3 + "," + 1 + "\"");
-        result_pony.add("\"" + 7 + "," + 1 + "\"");
+        result_pony.add("\"" + 7 + ", " + 5 + "\"");
+        result_pony.add("\"" + 3 + ", " + 5 + "\"");
+        result_pony.add("\"" + 3 + ", " + 1 + "\"");
+        result_pony.add("\"" + 7 + ", " + 1 + "\"");
         assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 3));
 
     }
@@ -859,8 +880,8 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Pony_Black(5, 0, simulador);
         List<String> result_pony = new ArrayList<>();
-        result_pony.add("\"" + 7 + "," + 2 + "\"");
-        result_pony.add("\"" + 3 + "," + 2 + "\"");
+        result_pony.add("\"" + 7 + ", " + 2 + "\"");
+        result_pony.add("\"" + 3 + ", " + 2 + "\"");
         assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 0));
 
     }
@@ -882,9 +903,9 @@ public class TestSimulador {
         createCrazyPiece_King_White_PresentInGame(1, 5, 3, simulador);
         createCrazyPiece_King_Black_PresentInGame(1, 3, 5, simulador);
         List<String> result_pony = new ArrayList<>();
-        result_pony.add("\"" + 7 + "," + 7 + "\"");
-        result_pony.add("\"" + 3 + "," + 7 + "\"");
-        result_pony.add("\"" + 7 + "," + 3 + "\"");
+        result_pony.add("\"" + 7 + ", " + 7 + "\"");
+        result_pony.add("\"" + 3 + ", " + 7 + "\"");
+        result_pony.add("\"" + 7 + ", " + 3 + "\"");
         assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 5));
 
     }
@@ -909,8 +930,8 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Priest_Black(5, 5, simulador);
         List<String> result_priest = set__0_0__TO__4_4();
-        result_priest.remove("\"" + 1 + "," + 1 + "\"");
-        result_priest.remove("\"" + 0 + "," + 0 + "\"");
+        result_priest.remove("\"" + 1 + ", " + 1 + "\"");
+        result_priest.remove("\"" + 0 + ", " + 0 + "\"");
         result_priest.addAll(setPriestResult());
         assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
 
@@ -921,10 +942,10 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Priest_Black(0, 5, simulador);
         List<String> result_priest = setQueenResult_NotCentered();
-        result_priest.remove("\"" + 4 + "," + 9 + "\"");
-        result_priest.remove("\"" + 5 + "," + 10 + "\"");
-        result_priest.remove("\"" + 4 + "," + 1 + "\"");
-        result_priest.remove("\"" + 5 + "," + 0 + "\"");
+        result_priest.remove("\"" + 4 + ", " + 9 + "\"");
+        result_priest.remove("\"" + 5 + ", " + 10 + "\"");
+        result_priest.remove("\"" + 4 + ", " + 1 + "\"");
+        result_priest.remove("\"" + 5 + ", " + 0 + "\"");
         assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(0, 5));
 
     }
@@ -945,7 +966,7 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_Priest_Black(5, 5, simulador);
         createCrazyPiecePresentInGame_TowerH_White(simulador);
         List<String> result_priest = new ArrayList<>();
-        result_priest.add("\"" + 4 + "," + 4 + "\"");
+        result_priest.add("\"" + 4 + ", " + 4 + "\"");
         result_priest.addAll(setPriestResult());
         assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
 
@@ -987,7 +1008,7 @@ public class TestSimulador {
             result_towerH.add(aux.get(i));
 
         }
-        result_towerH.add("\"" + 5 + "," + 5 + "\"");
+        result_towerH.add("\"" + 5 + ", " + 5 + "\"");
         result_towerH.addAll(set__6_5__TO__10_5());
         assertEquals("Not the the right suggestions!", result_towerH, simulador.obterSugestoesJogada(0, 5));
 
@@ -999,7 +1020,7 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_TowerH_Black(5, 5, simulador);
         createCrazyPiecePresentInGame_Priest_White(6, 5, simulador);
         List<String> result_towerH = set__0_5__TO__4_5();
-        result_towerH.add("\"" + 6 + "," + 5 + "\"");
+        result_towerH.add("\"" + 6 + ", " + 5 + "\"");
         assertEquals("Not the the right suggestions!", result_towerH, simulador.obterSugestoesJogada(5, 5));
 
     }
@@ -1042,7 +1063,7 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_TowerV_Black(5, simulador);
         createCrazyPiecePresentInGame_Priest_White(5, 4, simulador);
         List<String> result_towerV = new ArrayList<>();
-        result_towerV.add("\"" + 5 + "," + 4 + "\"");
+        result_towerV.add("\"" + 5 + ", " + 4 + "\"");
         result_towerV.addAll(set__5_6__TO__5_10());
         assertEquals("Not the the right suggestions!", result_towerV, simulador.obterSugestoesJogada(5, 5));
     }
@@ -1085,8 +1106,8 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Bunny_Black(0, 5, simulador);
         List<String> result_bunny = new ArrayList<>();
-        result_bunny.add("\"" + 1 + "," + 6 + "\"");
-        result_bunny.add("\"" + 1 + "," + 4 + "\"");
+        result_bunny.add("\"" + 1 + ", " + 6 + "\"");
+        result_bunny.add("\"" + 1 + ", " + 4 + "\"");
         assertEquals("Not the the right suggestions!", result_bunny, simulador.obterSugestoesJogada(0, 5));
 
     }
@@ -1370,14 +1391,14 @@ public class TestSimulador {
     private List<String> setKingResult() {
 
         List<String> result = new ArrayList<>();
-        result.add("\"" + 1 + "," + 2 + "\"");
-        result.add("\"" + 3 + "," + 2 + "\"");
-        result.add("\"" + 2 + "," + 1 + "\"");
-        result.add("\"" + 2 + "," + 3 + "\"");
-        result.add("\"" + 1 + "," + 1 + "\"");
-        result.add("\"" + 3 + "," + 3 + "\"");
-        result.add("\"" + 1 + "," + 3 + "\"");
-        result.add("\"" + 3 + "," + 1 + "\"");
+        result.add("\"" + 1 + ", " + 2 + "\"");
+        result.add("\"" + 3 + ", " + 2 + "\"");
+        result.add("\"" + 2 + ", " + 1 + "\"");
+        result.add("\"" + 2 + ", " + 3 + "\"");
+        result.add("\"" + 1 + ", " + 1 + "\"");
+        result.add("\"" + 3 + ", " + 3 + "\"");
+        result.add("\"" + 1 + ", " + 3 + "\"");
+        result.add("\"" + 3 + ", " + 1 + "\"");
 
         return result;
 
@@ -1386,10 +1407,10 @@ public class TestSimulador {
     private List<String> setBunnyResult_ParShift() {
 
         List<String> result = new ArrayList<>();
-        result.add("\"" + 4 + "," + 4 + "\"");
-        result.add("\"" + 6 + "," + 6 + "\"");
-        result.add("\"" + 4 + "," + 6 + "\"");
-        result.add("\"" + 6 + "," + 4 + "\"");
+        result.add("\"" + 4 + ", " + 4 + "\"");
+        result.add("\"" + 6 + ", " + 6 + "\"");
+        result.add("\"" + 4 + ", " + 6 + "\"");
+        result.add("\"" + 6 + ", " + 4 + "\"");
 
         return result;
 
@@ -1398,14 +1419,14 @@ public class TestSimulador {
     private List<String> setPriestResult() {
 
         List<String> result = set__6_6__TO__10_10();
-        result.remove("\"" + 9 + "," + 9 + "\"");
-        result.remove("\"" + 10 + "," + 10 + "\"");
+        result.remove("\"" + 9 + ", " + 9 + "\"");
+        result.remove("\"" + 10 + ", " + 10 + "\"");
         result.addAll(set__0_10__TO__4_6());
-        result.remove("\"" + 1 + "," + 9 + "\"");
-        result.remove("\"" + 0 + "," + 10 + "\"");
+        result.remove("\"" + 1 + ", " + 9 + "\"");
+        result.remove("\"" + 0 + ", " + 10 + "\"");
         result.addAll(set__6_4__TO__10_0());
-        result.remove("\"" + 9 + "," + 1 + "\"");
-        result.remove("\"" + 10 + "," + 0 + "\"");
+        result.remove("\"" + 9 + ", " + 1 + "\"");
+        result.remove("\"" + 10 + ", " + 0 + "\"");
 
         return result;
 
@@ -1430,16 +1451,16 @@ public class TestSimulador {
 
         List<String> result = new ArrayList<>();
 
-        result.add("\"" + 1 + "," + 6 + "\"");
-        result.add("\"" + 2 + "," + 7 + "\"");
-        result.add("\"" + 3 + "," + 8 + "\"");
-        result.add("\"" + 4 + "," + 9 + "\"");
-        result.add("\"" + 5 + "," + 10 + "\"");
-        result.add("\"" + 1 + "," + 4 + "\"");
-        result.add("\"" + 2 + "," + 3 + "\"");
-        result.add("\"" + 3 + "," + 2 + "\"");
-        result.add("\"" + 4 + "," + 1 + "\"");
-        result.add("\"" + 5 + "," + 0 + "\"");
+        result.add("\"" + 1 + ", " + 6 + "\"");
+        result.add("\"" + 2 + ", " + 7 + "\"");
+        result.add("\"" + 3 + ", " + 8 + "\"");
+        result.add("\"" + 4 + ", " + 9 + "\"");
+        result.add("\"" + 5 + ", " + 10 + "\"");
+        result.add("\"" + 1 + ", " + 4 + "\"");
+        result.add("\"" + 2 + ", " + 3 + "\"");
+        result.add("\"" + 3 + ", " + 2 + "\"");
+        result.add("\"" + 4 + ", " + 1 + "\"");
+        result.add("\"" + 5 + ", " + 0 + "\"");
 
         return result;
 
@@ -1448,10 +1469,10 @@ public class TestSimulador {
     private List<String> setPonyResult() {
 
         List<String> result = new ArrayList<>();
-        result.add("\"" + 7 + "," + 7 + "\"");
-        result.add("\"" + 3 + "," + 7 + "\"");
-        result.add("\"" + 3 + "," + 3 + "\"");
-        result.add("\"" + 7 + "," + 3 + "\"");
+        result.add("\"" + 7 + ", " + 7 + "\"");
+        result.add("\"" + 3 + ", " + 7 + "\"");
+        result.add("\"" + 3 + ", " + 3 + "\"");
+        result.add("\"" + 7 + ", " + 3 + "\"");
 
         return result;
 
@@ -1461,11 +1482,11 @@ public class TestSimulador {
 
         List<String> result = new ArrayList<>();
 
-        result.add("\"" + 4 + "," + 4 + "\"");
-        result.add("\"" + 3 + "," + 3 + "\"");
-        result.add("\"" + 2 + "," + 2 + "\"");
-        result.add("\"" + 1 + "," + 1 + "\"");
-        result.add("\"" + 0 + "," + 0 + "\"");
+        result.add("\"" + 4 + ", " + 4 + "\"");
+        result.add("\"" + 3 + ", " + 3 + "\"");
+        result.add("\"" + 2 + ", " + 2 + "\"");
+        result.add("\"" + 1 + ", " + 1 + "\"");
+        result.add("\"" + 0 + ", " + 0 + "\"");
 
         return result;
 
@@ -1475,11 +1496,11 @@ public class TestSimulador {
 
         List<String> result = new ArrayList<>();
 
-        result.add("\"" + 6 + "," + 6 + "\"");
-        result.add("\"" + 7 + "," + 7 + "\"");
-        result.add("\"" + 8 + "," + 8 + "\"");
-        result.add("\"" + 9 + "," + 9 + "\"");
-        result.add("\"" + 10 + "," + 10 + "\"");
+        result.add("\"" + 6 + ", " + 6 + "\"");
+        result.add("\"" + 7 + ", " + 7 + "\"");
+        result.add("\"" + 8 + ", " + 8 + "\"");
+        result.add("\"" + 9 + ", " + 9 + "\"");
+        result.add("\"" + 10 + ", " + 10 + "\"");
 
         return result;
 
@@ -1489,11 +1510,11 @@ public class TestSimulador {
 
         List<String> result = new ArrayList<>();
 
-        result.add("\"" + 4 + "," + 6 + "\"");
-        result.add("\"" + 3 + "," + 7 + "\"");
-        result.add("\"" + 2 + "," + 8 + "\"");
-        result.add("\"" + 1 + "," + 9 + "\"");
-        result.add("\"" + 0 + "," + 10 + "\"");
+        result.add("\"" + 4 + ", " + 6 + "\"");
+        result.add("\"" + 3 + ", " + 7 + "\"");
+        result.add("\"" + 2 + ", " + 8 + "\"");
+        result.add("\"" + 1 + ", " + 9 + "\"");
+        result.add("\"" + 0 + ", " + 10 + "\"");
 
         return result;
 
@@ -1503,11 +1524,11 @@ public class TestSimulador {
 
         List<String> result = new ArrayList<>();
 
-        result.add("\"" + 6 + "," + 4 + "\"");
-        result.add("\"" + 7 + "," + 3 + "\"");
-        result.add("\"" + 8 + "," + 2 + "\"");
-        result.add("\"" + 9 + "," + 1 + "\"");
-        result.add("\"" + 10 + "," + 0 + "\"");
+        result.add("\"" + 6 + ", " + 4 + "\"");
+        result.add("\"" + 7 + ", " + 3 + "\"");
+        result.add("\"" + 8 + ", " + 2 + "\"");
+        result.add("\"" + 9 + ", " + 1 + "\"");
+        result.add("\"" + 10 + ", " + 0 + "\"");
 
         return result;
 
@@ -1517,11 +1538,11 @@ public class TestSimulador {
 
         List<String> result = new ArrayList<>();
 
-        result.add("\"" + 5 + "," + 4 + "\"");
-        result.add("\"" + 5 + "," + 3 + "\"");
-        result.add("\"" + 5 + "," + 2 + "\"");
-        result.add("\"" + 5 + "," + 1 + "\"");
-        result.add("\"" + 5 + "," + 0 + "\"");
+        result.add("\"" + 5 + ", " + 4 + "\"");
+        result.add("\"" + 5 + ", " + 3 + "\"");
+        result.add("\"" + 5 + ", " + 2 + "\"");
+        result.add("\"" + 5 + ", " + 1 + "\"");
+        result.add("\"" + 5 + ", " + 0 + "\"");
 
         return result;
 
@@ -1531,11 +1552,11 @@ public class TestSimulador {
 
         List<String> result = new ArrayList<>();
 
-        result.add("\"" + 5 + "," + 6 + "\"");
-        result.add("\"" + 5 + "," + 7 + "\"");
-        result.add("\"" + 5 + "," + 8 + "\"");
-        result.add("\"" + 5 + "," + 9 + "\"");
-        result.add("\"" + 5 + "," + 10 + "\"");
+        result.add("\"" + 5 + ", " + 6 + "\"");
+        result.add("\"" + 5 + ", " + 7 + "\"");
+        result.add("\"" + 5 + ", " + 8 + "\"");
+        result.add("\"" + 5 + ", " + 9 + "\"");
+        result.add("\"" + 5 + ", " + 10 + "\"");
 
         return result;
 
@@ -1545,11 +1566,11 @@ public class TestSimulador {
 
         List<String> result = new ArrayList<>();
 
-        result.add("\"" + 0 + "," + 4 + "\"");
-        result.add("\"" + 0 + "," + 3 + "\"");
-        result.add("\"" + 0 + "," + 2 + "\"");
-        result.add("\"" + 0 + "," + 1 + "\"");
-        result.add("\"" + 0 + "," + 0 + "\"");
+        result.add("\"" + 0 + ", " + 4 + "\"");
+        result.add("\"" + 0 + ", " + 3 + "\"");
+        result.add("\"" + 0 + ", " + 2 + "\"");
+        result.add("\"" + 0 + ", " + 1 + "\"");
+        result.add("\"" + 0 + ", " + 0 + "\"");
 
         return result;
 
@@ -1559,11 +1580,11 @@ public class TestSimulador {
 
         List<String> result = new ArrayList<>();
 
-        result.add("\"" + 0 + "," + 6 + "\"");
-        result.add("\"" + 0 + "," + 7 + "\"");
-        result.add("\"" + 0 + "," + 8 + "\"");
-        result.add("\"" + 0 + "," + 9 + "\"");
-        result.add("\"" + 0 + "," + 10 + "\"");
+        result.add("\"" + 0 + ", " + 6 + "\"");
+        result.add("\"" + 0 + ", " + 7 + "\"");
+        result.add("\"" + 0 + ", " + 8 + "\"");
+        result.add("\"" + 0 + ", " + 9 + "\"");
+        result.add("\"" + 0 + ", " + 10 + "\"");
 
         return result;
 
@@ -1573,11 +1594,11 @@ public class TestSimulador {
 
         List<String> result = new ArrayList<>();
 
-        result.add("\"" + 4 + "," + 5 + "\"");
-        result.add("\"" + 3 + "," + 5 + "\"");
-        result.add("\"" + 2 + "," + 5 + "\"");
-        result.add("\"" + 1 + "," + 5 + "\"");
-        result.add("\"" + 0 + "," + 5 + "\"");
+        result.add("\"" + 4 + ", " + 5 + "\"");
+        result.add("\"" + 3 + ", " + 5 + "\"");
+        result.add("\"" + 2 + ", " + 5 + "\"");
+        result.add("\"" + 1 + ", " + 5 + "\"");
+        result.add("\"" + 0 + ", " + 5 + "\"");
 
         return result;
 
@@ -1587,11 +1608,11 @@ public class TestSimulador {
 
         List<String> result = new ArrayList<>();
 
-        result.add("\"" + 6 + "," + 5 + "\"");
-        result.add("\"" + 7 + "," + 5 + "\"");
-        result.add("\"" + 8 + "," + 5 + "\"");
-        result.add("\"" + 9 + "," + 5 + "\"");
-        result.add("\"" + 10 + "," + 5 + "\"");
+        result.add("\"" + 6 + ", " + 5 + "\"");
+        result.add("\"" + 7 + ", " + 5 + "\"");
+        result.add("\"" + 8 + ", " + 5 + "\"");
+        result.add("\"" + 9 + ", " + 5 + "\"");
+        result.add("\"" + 10 + ", " + 5 + "\"");
 
         return result;
 
