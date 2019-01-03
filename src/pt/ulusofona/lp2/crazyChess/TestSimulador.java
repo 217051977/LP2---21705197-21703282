@@ -109,7 +109,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfBlackPiecesCaptured() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
+        simulador.shift.addCount(simulador.crazyPiecesInGame);
         createCrazyPiece_King_Black(7, 0, 0, simulador);
         createCrazyPiece_King_White(8, 0, 1, simulador);
         simulador.processaJogada(0,1,0,0);
@@ -121,7 +121,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByWhiteTeam_MoveEnemyPieces() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
+        simulador.shift.addCount(simulador.crazyPiecesInGame);
         createCrazyPiece_King_White(1, 0, 0, simulador);
         simulador.processaJogada(0,0,0,2);
         assertEquals("You can't move the enemy pieces!", 1, simulador.getNumberOfInvalidPlaysByWhiteTeam());
@@ -130,7 +130,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByWhiteTeam_MoveToTheSamePosition() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
+        simulador.shift.addCount(simulador.crazyPiecesInGame);
         createCrazyPiece_King_White( 1, 0, 1, simulador);
         simulador.processaJogada(0,1,0,1);
         assertEquals("You can't move the to the same position!", 1, simulador.getNumberOfInvalidPlaysByWhiteTeam());
@@ -139,7 +139,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByWhiteTeam_MoveFromAnEmptyPosition() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
+        simulador.shift.addCount(simulador.crazyPiecesInGame);
         createCrazyPiece_King_White( 1, 0, 4, simulador);
         simulador.processaJogada(0,1,0,0);
         assertEquals("You can't move an not existent piece!", 1, simulador.getNumberOfInvalidPlaysByWhiteTeam());
@@ -148,7 +148,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByWhiteTeam_MoveMoreThanItCan() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
+        simulador.shift.addCount(simulador.crazyPiecesInGame);
         createCrazyPiece_King_White( 1, 0, 4, simulador);
         simulador.processaJogada(0,4,0,0);
         assertEquals("You can't move more than what the piece allow you to!", 1, simulador.getNumberOfInvalidPlaysByWhiteTeam());
@@ -157,7 +157,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfInvalidPlaysByWhiteTeam_Correct() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
+        simulador.shift.addCount(simulador.crazyPiecesInGame);
         createCrazyPiece_King_White( 1, 0, 1, simulador);
         simulador.processaJogada(0,1,0,0);
         assertEquals("You can move more the piece!", 0, simulador.getNumberOfInvalidPlaysByWhiteTeam());
@@ -209,7 +209,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfValidPlaysByWhiteTeam_InvalidPlayAsWhiteTeam() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
+        simulador.shift.addCount(simulador.crazyPiecesInGame);
         createCrazyPiece_King_White( 1, 0, 0, simulador);
         simulador.processaJogada(0,1,0,0);
         assertEquals("Shouldn't be considered as a valid play!", 0, simulador.getNumberOfValidPlaysByWhiteTeam());
@@ -218,7 +218,7 @@ public class TestSimulador {
     @Test
     public void testGetNumberOfValidPlaysByWhiteTeam_CorrectAsWhiteTeam() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
+        simulador.shift.addCount(simulador.crazyPiecesInGame);
         createCrazyPiece_King_White( 1, 0, 2, simulador);
         simulador.processaJogada(0,2,0,3);
         assertEquals("Shouldn't be considered as a valid play!", 1, simulador.getNumberOfValidPlaysByWhiteTeam());
@@ -286,7 +286,7 @@ public class TestSimulador {
     @Test
     public void testGetFirstCapture_True_AsWhite() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
+        simulador.shift.addCount(simulador.crazyPiecesInGame);
         createCrazyPiece_King_White( 1, 1, 1, simulador);
         createCrazyPiece_King_Black( 2, 0, 0, simulador);
         simulador.processaJogada(1,1,0,0);
@@ -296,7 +296,7 @@ public class TestSimulador {
     @Test
     public void testGetFirstCapture_False_AsWhite() {
         Simulador simulador = new Simulador(4);
-        simulador.shift.addCount();
+        simulador.shift.addCount(simulador.crazyPiecesInGame);
         createCrazyPiece_King_White( 1, 0, 0, simulador);
         createCrazyPiece_King_Black( 3, 1, 1, simulador);
         simulador.processaJogada(1,1,1,0);
@@ -420,8 +420,8 @@ public class TestSimulador {
         File file = new File("test-files/FILE_TEST_GAME_SAVED.txt");
         assertTrue("Should be able to run this saveFile!", simulador.iniciaJogo(file));
         assertEquals("The playing team should be 20", 20, simulador.shift.getIdTeam());
-        assertEquals("The shift count should be 1", 1, simulador.shift.getCount());
-        assertEquals("The number of valid plays by black team should be 1", 1, simulador.getNumberOfValidPlaysByBlackTeam());
+        assertEquals("The shift count should be 1", 19, simulador.shift.getCount());
+        assertEquals("The number of valid plays by black team should be 1", 19, simulador.getNumberOfValidPlaysByBlackTeam());
         assertEquals("The number of white pieces captured should be 0", 0, simulador.getNumberOfWhitePiecesCaptured());
         assertEquals("The number of invalid plays by black team should be 0", 0, simulador.getNumberOfInvalidPlaysByBlackTeam());
         assertEquals("The number of valid plays by white team should be 0", 0, simulador.getNumberOfValidPlaysByWhiteTeam());
@@ -440,6 +440,12 @@ public class TestSimulador {
         Simulador simulador = new Simulador();
         File file = new File("test-files/RUN_FILE.txt");
         assertTrue("Should work!", simulador.iniciaJogo(file));
+        for (CrazyPiece thisPiece : simulador.crazyPiecesInGame) {
+            if (thisPiece.getType() == 7) {
+                assertEquals("Should be 1", 1, thisPiece.getPieceId());
+                assertEquals("Should be Joker/Rainha", "Joker/Rainha", thisPiece.getTypeName());
+            }
+        }
     }
 
     @Test
@@ -1067,7 +1073,7 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Bunny_OddShift() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Bunny_White(simulador);
-        simulador.shift.addCount();
+        simulador.shift.addCount(simulador.crazyPiecesInGame);
         List<String> result_bunny = new ArrayList<>();
         result_bunny.add("Pedido inválido");
         assertEquals("Not the the right suggestions!", result_bunny, simulador.obterSugestoesJogada(5, 5));
@@ -1113,7 +1119,7 @@ public class TestSimulador {
     public void testGetSuggestedPlay_BunnyJoker_OddShift() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Joker_White(simulador);
-        simulador.shift.addCount();
+        simulador.shift.addCount(simulador.crazyPiecesInGame);
         List<String> result_BunnyJoker= new ArrayList<>();
         result_BunnyJoker.add("Pedido inválido");
         assertEquals("Not the the right suggestions!", result_BunnyJoker, simulador.obterSugestoesJogada(5, 5));

@@ -865,9 +865,7 @@ public class Simulador {
 
                                     }
 
-                                    shift.addCount();
-
-                                    changeJokerType();
+                                    shift.addCount(crazyPiecesInGame);
 
                                     previousCrazyPiece = thiPiece;
 
@@ -980,22 +978,6 @@ public class Simulador {
             }
 
             return false;
-
-        }
-
-    }//******************************************************************************
-
-    private void changeJokerType() {
-
-        for (CrazyPiece piece : crazyPiecesInGame) {
-
-            if (piece.getType() == 7) {
-
-                piece.nextType();
-
-                break;
-
-            }
 
         }
 

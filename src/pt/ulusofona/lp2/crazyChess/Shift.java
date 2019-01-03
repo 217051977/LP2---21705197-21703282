@@ -1,6 +1,8 @@
 
 package pt.ulusofona.lp2.crazyChess;
 
+import java.util.List;
+
 public class Shift {
 
     int count = 0, countNoCapture = 0;
@@ -26,7 +28,7 @@ public class Shift {
 
     }
 
-    public void addCount() {
+    public void addCount(List<CrazyPiece> crazyPiecesInGame) {
 
         count++;
 
@@ -39,6 +41,17 @@ public class Shift {
             idTeam = 20;
 
         }
+
+        for (CrazyPiece piece : crazyPiecesInGame) {
+
+            if (piece.getType() == 7) {
+
+                piece.nextType();
+
+            }
+
+        }
+
 
     }
 
