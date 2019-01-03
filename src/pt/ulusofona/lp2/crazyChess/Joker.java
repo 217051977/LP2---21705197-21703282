@@ -23,7 +23,7 @@ public class Joker extends CrazyPiece {
 
     }
 
-    public void changePieceType() {
+    public void nextType() {
 
         if (super.pieceId == 6) {
 
@@ -74,6 +74,12 @@ public class Joker extends CrazyPiece {
             }
 
         }
+
+    }
+
+    public void changePieceType(int pieceType) {
+
+        pieceId = (byte) pieceType;
 
     }
 

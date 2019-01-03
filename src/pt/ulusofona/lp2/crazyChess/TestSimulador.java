@@ -415,6 +415,21 @@ public class TestSimulador {
     }
 
     @Test
+    public void testStartGame_Saved_Game() {
+        Simulador simulador = new Simulador();
+        File file = new File("test-files/FILE_TEST_GAME_SAVED.txt");
+        assertTrue("Should be able to run this saveFile!", simulador.iniciaJogo(file));
+        assertEquals("The playing team should be 20", 20, simulador.shift.getIdTeam());
+        assertEquals("The shift count should be 1", 1, simulador.shift.getCount());
+        assertEquals("The number of valid plays by black team should be 1", 1, simulador.getNumberOfValidPlaysByBlackTeam());
+        assertEquals("The number of white pieces captured should be 0", 0, simulador.getNumberOfWhitePiecesCaptured());
+        assertEquals("The number of invalid plays by black team should be 0", 0, simulador.getNumberOfInvalidPlaysByBlackTeam());
+        assertEquals("The number of valid plays by white team should be 0", 0, simulador.getNumberOfValidPlaysByWhiteTeam());
+        assertEquals("The number of black pieces captured should be 0", 0, simulador.getNumberOfBlackPiecesCaptured());
+        assertEquals("The number of invalid plays by white team should be 0", 0, simulador.getNumberOfInvalidPlaysByWhiteTeam());
+    }
+
+    @Test
     public void testStartGame_Correct() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/RUN_FILE.txt");
@@ -615,8 +630,17 @@ public class TestSimulador {
     public void testGameOver_10ShiftsWithoutAnyCapture_And_NoFirstCapture() {
         Simulador simulador = new Simulador(4);
         simulador.shift.countNoCapture = 10;
-        createCrazyPiece_King_White( 3, 0, 0, simulador);
-        createCrazyPiece_King_Black( 4, 0, 0, simulador);
+        createCrazyPiece_King_White_PresentInGame( 3, 0, 0, simulador);
+        createCrazyPiece_King_Black_PresentInGame( 4, 1, 0, simulador);
+        assertTrue("One white king and one black king is a draw!", simulador.jogoTerminado());
+    }
+
+    @Test
+    public void testGameOver_2KingsInGame_And_1OutOfGame() {
+        Simulador simulador = new Simulador(4);
+        createCrazyPiece_King_White( 2, 3, 4, simulador);
+        createCrazyPiece_King_White_PresentInGame( 3, 0, 0, simulador);
+        createCrazyPiece_King_Black_PresentInGame( 4, 1, 0, simulador);
         assertTrue("One white king and one black king is a draw!", simulador.jogoTerminado());
     }
 

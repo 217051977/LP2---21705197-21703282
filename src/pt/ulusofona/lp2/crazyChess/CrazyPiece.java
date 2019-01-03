@@ -111,23 +111,13 @@ public class CrazyPiece {
 
     }
 
-    public void changePieceType() {
+    public void nextType() {}
 
-        if (pieceId == 6) {
-
-            pieceId = 1;
-
-        } else {
-
-            pieceId++;
-
-        }
-
-    }
+    public void changePieceType(int pieceType) {}
 
     public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
-        possiblesPositions.removeAll(possiblesPositions);
+        possiblesPositions.clear();
 
         possiblesPositions_Horizontal(boardSize);
 

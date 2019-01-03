@@ -88,6 +88,18 @@ public class Shift {
 
     }
 
+    public void changeIdTeam(int idTeam) {
+
+        this.idTeam = (byte) idTeam;
+
+    }
+
+    public void changeCount(int count) {
+
+        this.count = count;
+
+    }
+
     @Override
     public String toString() {
 

@@ -425,6 +425,7 @@ public class Simulador {
                     yPosition = 0;
             String[] piecesInfo;
             String[] boardInfo;
+            String[] saveInfo;
 
             while (scan.hasNextLine()) {
 
@@ -514,142 +515,155 @@ public class Simulador {
 
                     CrazyPiece piece;
 
+                    switch (Integer.parseInt(piecesInfo[2])) {
 
-                    if (Integer.parseInt(piecesInfo[1]) == 0) {
+                        case 10: {
 
-                        if (Integer.parseInt(piecesInfo[2]) == 10) {
+                            switch (Integer.parseInt(piecesInfo[1])) {
 
-                            piece = new ReiPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+                                case 0: {
 
-                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
+                                    piece = new ReiPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
-                            piece = new ReiBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+                                }
+                                break;
 
-                        } else {
+                                case 1: {
+
+                                    piece = new RainhaPreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 2: {
+
+                                    piece = new PoneiMagicoPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 3: {
+
+                                    piece = new PadreDaVilaPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 4: {
+
+                                    piece = new TorreHPreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 5: {
+
+                                    piece = new TorreVPreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 6: {
+
+                                    piece = new LebrePreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 7: {
+
+                                    piece = new JokerPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                default: {
+
+                                    throw new NumberFormatException();
+
+                                }
+
+                            }
+
+                        }
+                        break;
+
+                        case 20: {
+
+                            switch (Integer.parseInt(piecesInfo[1])) {
+
+                                case 0: {
+
+                                    piece = new ReiBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 1: {
+
+                                    piece = new RainhaBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 2: {
+
+                                    piece = new PoneiMagicoBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 3: {
+
+                                    piece = new PadreDaVilaBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 4: {
+
+                                    piece = new TorreHBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 5: {
+
+                                    piece = new TorreVBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 6: {
+
+                                    piece = new LebreBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                case 7: {
+
+                                    piece = new JokerBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
+
+                                }
+                                break;
+
+                                default: {
+
+                                    throw new NumberFormatException();
+
+                                }
+
+                            }
+
+                        }
+                        break;
+
+                        default: {
 
                             throw new NumberFormatException();
 
                         }
-
-                    } else if (Integer.parseInt(piecesInfo[1]) == 1) {
-
-                        if (Integer.parseInt(piecesInfo[2]) == 10) {
-
-                            piece = new RainhaPreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
-
-                            piece = new RainhaBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else {
-
-                            throw new NumberFormatException();
-
-                        }
-
-                    } else if (Integer.parseInt(piecesInfo[1]) == 2) {
-
-                        if (Integer.parseInt(piecesInfo[2]) == 10) {
-
-                            piece = new PoneiMagicoPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
-
-                            piece = new PoneiMagicoBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else {
-
-                            throw new NumberFormatException();
-
-                        }
-
-                    } else if (Integer.parseInt(piecesInfo[1]) == 3) {
-
-                        if (Integer.parseInt(piecesInfo[2]) == 10) {
-
-                            piece = new PadreDaVilaPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
-
-                            piece = new PadreDaVilaBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else {
-
-                            throw new NumberFormatException();
-
-                        }
-
-                    } else if (Integer.parseInt(piecesInfo[1]) == 4) {
-
-                        if (Integer.parseInt(piecesInfo[2]) == 10) {
-
-                            piece = new TorreHPreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
-
-                            piece = new TorreHBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else {
-
-                            throw new NumberFormatException();
-
-                        }
-
-                    } else if (Integer.parseInt(piecesInfo[1]) == 5) {
-
-                        if (Integer.parseInt(piecesInfo[2]) == 10) {
-
-                            piece = new TorreVPreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
-
-                            piece = new TorreVBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else {
-
-                            throw new NumberFormatException();
-
-                        }
-
-                    } else if (Integer.parseInt(piecesInfo[1]) == 6) {
-
-                        if (Integer.parseInt(piecesInfo[2]) == 10) {
-
-                            piece = new LebrePreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
-
-                            piece = new LebreBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else {
-
-                            throw new NumberFormatException();
-
-                        }
-
-                    } else if (Integer.parseInt(piecesInfo[1]) == 7) {
-
-                        if (Integer.parseInt(piecesInfo[2]) == 10) {
-
-                            piece = new JokerPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else if (Integer.parseInt(piecesInfo[2]) == 20) {
-
-                            piece = new JokerBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                        } else {
-
-                            throw new NumberFormatException();
-
-                        }
-//
-//                    } else if (Integer.parseInt(piecesInfo[1]) == 8) {
-//
-//                        piece = new Rei();
-//
-                    } else {
-
-                        throw new NumberFormatException();
 
                     }
 
@@ -689,7 +703,53 @@ public class Simulador {
 
                     yPosition++;
 
-                } else {
+                } else if (nLines < boardSizeMaxIndex + 1) {
+
+                    saveInfo = line.split(":");
+
+                    if (Integer.parseInt(saveInfo[0]) == 10 || Integer.parseInt(saveInfo[0]) == 20 &&
+                            saveInfo.length == 7) {
+
+                        int shiftCount;
+                        int jokerPieceType = 0;
+
+                        shift.changeIdTeam(Integer.parseInt(saveInfo[0]));
+                        numberOfValidPlaysByBlackTeam = Integer.parseInt(saveInfo[1]);
+                        numberOfWhitePiecesCaptured = Integer.parseInt(saveInfo[2]);
+                        numberOfInvalidPlaysByBlackTeam = Integer.parseInt(saveInfo[3]);
+                        numberOfValidPlaysByWhiteTeam = Integer.parseInt(saveInfo[4]);
+                        numberOfBlackPiecesCaptured = Integer.parseInt(saveInfo[5]);
+                        numberOfInvalidPlaysByWhiteTeam = Integer.parseInt(saveInfo[6]);
+
+                        shiftCount = numberOfValidPlaysByBlackTeam + numberOfValidPlaysByWhiteTeam;
+
+                        shift.changeCount(shiftCount);
+
+                        for (int i = shiftCount; i > 0; i -= 7) {
+
+                            jokerPieceType = i;
+
+                        }
+
+                        for (CrazyPiece thisPiece : crazyPiecesInGame) {
+
+                            if (thisPiece.getType() == 7) {
+
+                                thisPiece.changePieceType(jokerPieceType + 1);
+
+                            }
+
+                        }
+
+                        nLines = boardSizeMaxIndex - 1;
+
+                    } else {
+
+                        throw new NumberFormatException();
+
+                    }
+
+                }else {
 
                     System.out.println("There's too much info!");
                     return false;
@@ -865,9 +925,9 @@ public class Simulador {
 
             for (CrazyPiece piece : crazyPiecesInGame) {
 
-                if (piece.getType() == 0) {
+                if (piece.getInGame()) {
 
-                    if (piece.getInGame()) {
+                    if (piece.getType() == 0) {
 
                         if (piece.getIDTeam() == 10) {
 
@@ -885,7 +945,7 @@ public class Simulador {
 
             }
 
-            if (crazyPiecesInGame.size() <= 2) {
+//            if (crazyPiecesInGame.size() <= 2) {
 
                 if (nBlackKing == 0) {
 
@@ -911,7 +971,7 @@ public class Simulador {
 
                 }
 
-            }
+//            }
 
             return false;
 
@@ -925,7 +985,7 @@ public class Simulador {
 
             if (piece.getType() == 7) {
 
-                piece.changePieceType();
+                piece.nextType();
 
                 break;
 
@@ -981,13 +1041,13 @@ public class Simulador {
         scores.add("Resultado: " + s);
         scores.add("---");
         scores.add("Team das Pretas");
-        scores.add(String.valueOf(numberOfWhitePiecesCaptured));
-        scores.add(String.valueOf(numberOfValidPlaysByBlackTeam));
-        scores.add(String.valueOf(numberOfInvalidPlaysByBlackTeam));
+        scores.add("Capturas: " + numberOfWhitePiecesCaptured);
+        scores.add("Jogadas válidas: " + numberOfValidPlaysByBlackTeam);
+        scores.add("Tentativas inválidas: " + numberOfInvalidPlaysByBlackTeam);
         scores.add("Team das Brancas");
-        scores.add(String.valueOf(numberOfBlackPiecesCaptured));
-        scores.add(String.valueOf(numberOfValidPlaysByWhiteTeam));
-        scores.add(String.valueOf(numberOfInvalidPlaysByWhiteTeam));
+        scores.add("Capturas: " + numberOfBlackPiecesCaptured);
+        scores.add("Jogadas válidas: " + numberOfValidPlaysByWhiteTeam);
+        scores.add("Tentativas inválidas: " + numberOfInvalidPlaysByWhiteTeam);
 
     }//*****************************************************************
 
