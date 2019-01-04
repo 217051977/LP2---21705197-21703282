@@ -190,7 +190,7 @@ public class CrazyPiece {
                         thisPiece.isOutOfGame();
 
 //                      remove thisPiece from crazyPiecesInGame
-                        crazyPiecesInGame.remove(thisPiece);
+//                        crazyPiecesInGame.remove(thisPiece);
 
 //                      set haveScore as true
                         haveScore = true;
@@ -354,6 +354,8 @@ public class CrazyPiece {
     public void isOutOfGame() {
 
         inGame = false;
+        Position destiny = new Position(-1, -1);
+        this.position.changePosition(destiny);
 
     }
 
