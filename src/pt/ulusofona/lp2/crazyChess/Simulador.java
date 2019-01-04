@@ -265,6 +265,8 @@ public class Simulador {
 
                     }
 
+                    s = "EMPATE";
+
                     crazyPieceRemovedFromTheGame.isInGame();
 
 //                  Re-add the piece removed from game back to it
