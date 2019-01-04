@@ -1173,6 +1173,19 @@ public class TestSimulador {
         assertEquals("Shouldn't be any change!", -1, simulator.getPreviousCountNoCapture());
     }
 
+    @Test
+    public void testGetFirstCapture_True_AsBlack_After_Undo() {
+        Simulador simulador = new Simulador(4);
+        createCrazyPiece_King_White_PresentInGame( 1, 1, 0, simulador);
+        createCrazyPiece_King_Black_PresentInGame( 2, 0, 0, simulador);
+        simulador.processaJogada(0,0,1,0);
+        assertTrue("First Capture should be true!", simulador.getFirstCapture());
+        simulador.anularJogadaAnterior();
+        assertFalse("First Capture should be false!", simulador.getFirstCapture());
+        simulador.processaJogada(0,0,1,0);
+        assertTrue("First Capture should be true!", simulador.getFirstCapture());
+    }
+
 //    @Test_Aux
     private void testUndoPieces_Aux(Simulador simulator) {
         createCrazyPiece_King_White_PresentInGame(1, 0, 0, simulator);

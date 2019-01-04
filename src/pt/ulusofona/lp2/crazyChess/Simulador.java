@@ -36,6 +36,7 @@ public class Simulador {
     private int previousCountNoCapture = -1;
     private boolean hasMadeUndo = false;
     private String s = "EMPATE";
+    private Position position_erased;
 
     //    Constructor
     public Simulador() {}//*********************************************************************************************
@@ -267,10 +268,19 @@ public class Simulador {
 
                     s = "EMPATE";
 
-                    crazyPieceRemovedFromTheGame.isInGame();
+                    for (CrazyPiece crazyPiece_Eaten : crazyPiecesInGame) {
 
-//                  Re-add the piece removed from game back to it
-                    crazyPiecesInGame.add(crazyPieceRemovedFromTheGame);
+                        if (crazyPieceRemovedFromTheGame.equals(crazyPiece_Eaten)) {
+
+                            crazyPiece_Eaten.isInGame();
+                            crazyPiece_Eaten.setPosition(position_erased);
+                            break;
+
+                        }
+
+                    }
+
+                    crazyPieceRemovedFromTheGame.isInGame();
 
                     switch (shift.idTeam) {
 
@@ -879,6 +889,19 @@ public class Simulador {
                                         crazyPieceRemovedFromTheGame = crazyPieceRemovedFromTheGameAux.get(0);
 
                                         crazyPieceRemovedFromTheGameAux.remove(crazyPieceRemovedFromTheGame);
+
+                                        position_erased = thiPiece.getPosition();
+
+                                        for (CrazyPiece crazyPiece_Eaten : crazyPiecesInGame) {
+
+                                            if (crazyPieceRemovedFromTheGame.equals(crazyPiece_Eaten)) {
+
+                                                crazyPiece_Eaten.isOutOfGame();
+                                                break;
+
+                                            }
+
+                                        }
 
                                     } else {
 

@@ -17,6 +17,30 @@ public class CrazyPiece {
     protected List<Position> possiblesPositions = new ArrayList<>();
 
 
+    public boolean equals(CrazyPiece thisPiece) {
+
+        if (imagePNG.equals(thisPiece.getImagePNG())) {
+
+            if (name.equals(thisPiece.getName())) {
+
+                if (id == thisPiece.getId()) {
+
+                    if (type == thisPiece.getType()) {
+
+                        return idTeam == thisPiece.getIDTeam();
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return false;
+
+    }
+
 //  Constructor
     public CrazyPiece() {
 
@@ -185,9 +209,6 @@ public class CrazyPiece {
 
 //                      set CRAZYPIECE_REVOMED_FROM_THE_GAME as thisPiece
                         crazyPiece_Removed_From_The_Game_Aux.add(thisPiece);
-
-//                      remove thisPiece from the game
-                        thisPiece.isOutOfGame();
 
 //                      remove thisPiece from crazyPiecesInGame
 //                        crazyPiecesInGame.remove(thisPiece);
