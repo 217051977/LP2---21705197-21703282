@@ -389,9 +389,10 @@ public class CrazyPiece {
     protected String checkPosition() {
 
         String string;
+        Position isOutOfTheGame = new Position(-1, -1);
 
 //      if actual position in x axis as the value of null OR actual position in y axis as the value of null
-        if(this.position.getxActual() == null || this.position.getyActual() == null){
+        if(this.position.equals(isOutOfTheGame)){
 
 //          add this to the variable string
             string = "(n/a)";
