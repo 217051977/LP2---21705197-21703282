@@ -104,6 +104,12 @@ public class Position {
 
             for (int vertical = yActual - 1; vertical <= yActual +1; vertical++) {
 
+                if (horizontal == xActual && vertical == yActual) {
+
+                    continue;
+
+                }
+
                 if (horizontal >= 0 && horizontal < boardSize && vertical >= 0 && vertical < boardSize) {
 
                     barrierPosition = new Position(horizontal, vertical);

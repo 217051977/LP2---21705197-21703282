@@ -821,7 +821,6 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_Priest_White(1, 5, simulador);
         List<String> result_queen = setQueenResult();
         result_queen.remove(0 + ", " + 5);
-        result_queen.remove(1 + ", " + 5);
         result_queen.remove(2 + ", " + 5);
         assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
 
@@ -955,7 +954,9 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Priest_Black(5, 5, simulador);
         createCrazyPiecePresentInGame_Queen_White(3, 3, simulador);
-        List<String> result_priest = setPriestResult();
+        List<String> result_priest = new ArrayList<>();
+        result_priest.add(3 + ", " + 3);
+        result_priest.addAll(setPriestResult());
         assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
 
     }
