@@ -73,7 +73,74 @@ public class Simulador {
 
     }//****************************************************************************
 
+    private List<Integer> checkNumberOfBlackKings_WhiteKings_PiecesInGame() {
+
+        s = "EMPATE";
+
+//      set nWhiteKing and nBlackKing as 0
+        int nBlackKing = 0;
+        int nWhiteKing = 0;
+        int piecesInGame = 0;
+        List<Integer> blackKings_WhiteKings_PiecesInGame = new ArrayList<>();
+
+        for (CrazyPiece piece : crazyPiecesInGame) {
+
+            if (piece.getInGame()) {
+
+                if (piece.getType() == 0) {
+
+                    if (piece.getIDTeam() == 10) {
+
+                        nBlackKing++;
+
+                    } else if (piece.getIDTeam() == 20) {
+
+                        nWhiteKing++;
+
+                    }
+
+                }
+
+                piecesInGame++;
+
+            }
+
+        }
+
+        blackKings_WhiteKings_PiecesInGame.add(nBlackKing);
+        blackKings_WhiteKings_PiecesInGame.add(nWhiteKing);
+        blackKings_WhiteKings_PiecesInGame.add(piecesInGame);
+
+        return blackKings_WhiteKings_PiecesInGame;
+
+    }
+
     public List<String> getResultados() {
+
+        List<Integer> kingsAndPieces = checkNumberOfBlackKings_WhiteKings_PiecesInGame();
+
+//      set nWhiteKing and nBlackKing as the values returned from the previous function
+        int piecesInGame = kingsAndPieces.get(2);
+        int nWhiteKing = kingsAndPieces.get(1);
+        int nBlackKing = kingsAndPieces.get(0);
+
+        if (piecesInGame <= 2 && nBlackKing != nWhiteKing) {
+
+            if (nBlackKing == 0) {
+
+                System.out.println("VENCERAM AS BRANCAS");
+
+                s = "VENCERAM AS BRANCAS";
+
+            } else if (nWhiteKing == 0) {
+
+                System.out.println("VENCERAM AS PRETAS");
+
+                s = "VENCERAM AS PRETAS";
+
+            }
+
+        }
 
         scores.clear();
 
@@ -947,11 +1014,6 @@ public class Simulador {
 //  falta a pontuacao
     public boolean jogoTerminado() {
 
-//      set nWhiteKing and nBlackKing as 0
-        int nWhiteKing = 0;
-        int nBlackKing = 0;
-        int piecesInGame = 0;
-
         if (crazyPiecesInGame.size() == 0) {
 
             return true;
@@ -965,29 +1027,12 @@ public class Simulador {
 
         } else {
 
-            for (CrazyPiece piece : crazyPiecesInGame) {
+            List<Integer> kingsAndPieces = checkNumberOfBlackKings_WhiteKings_PiecesInGame();
 
-                if (piece.getInGame()) {
-
-                    if (piece.getType() == 0) {
-
-                        if (piece.getIDTeam() == 10) {
-
-                            nBlackKing++;
-
-                        } else if (piece.getIDTeam() == 20) {
-
-                            nWhiteKing++;
-
-                        }
-
-                    }
-
-                    piecesInGame++;
-
-                }
-
-            }
+//          set nWhiteKing and nBlackKing as the values returned from the previous function
+            int nBlackKing = kingsAndPieces.get(0);
+            int nWhiteKing = kingsAndPieces.get(1);
+            int piecesInGame = kingsAndPieces.get(2);
 
             if (piecesInGame <= 2) {
 
@@ -1001,23 +1046,9 @@ public class Simulador {
 
             if (nBlackKing == 0) {
 
-                System.out.println("VENCERAM AS BRANCAS");
-
-                s = "VENCERAM AS BRANCAS";
-
                 return true;
 
-            } else if (nWhiteKing == 0) {
-
-                System.out.println("VENCERAM AS PRETAS");
-
-                s = "VENCERAM AS PRETAS";
-
-                return true;
-
-            }
-
-            return false;
+            } else return nWhiteKing == 0;
 
         }
 
