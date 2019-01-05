@@ -435,6 +435,13 @@ public class TestSimulador {
     }
 
     @Test
+    public void testStartGame_2_Pieces_With_The_Same_Id() {
+        Simulador simulador = new Simulador();
+        File file = new File("test-files/FILE_TEST_2_PIECES_WITH_THE_SAME_ID.txt");
+        assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
+    }
+
+    @Test
     public void testStartGame_Saved_Game() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_GAME_SAVED.txt");
@@ -953,12 +960,12 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Priest_LessThan2HousesFromAQueen() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Priest_Black(5, 5, simulador);
-        createCrazyPiecePresentInGame_Queen_White(3, 3, simulador);
+        createCrazyPiecePresentInGame_Queen_White(2, 2, simulador);
         List<String> result_priest = new ArrayList<>();
-        result_priest.add(3 + ", " + 3);
+        result_priest.add(4 + ", " + 4);
+        result_priest.add(2 + ", " + 2);
         result_priest.addAll(setPriestResult());
         assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
-
     }
 
     @Test

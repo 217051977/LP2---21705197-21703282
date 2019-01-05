@@ -32,6 +32,7 @@ public class Simulador {
     private CrazyPiece previousCrazyPiece;
     private CrazyPiece crazyPieceRemovedFromTheGame;
     private List<CrazyPiece> crazyPieceRemovedFromTheGameAux = new ArrayList<>();
+    private List<Integer> piecesIds = new ArrayList<>();
     private int hasCaughtAPiece = 0;
     private int previousCountNoCapture = -1;
     private boolean hasMadeUndo = false;
@@ -621,6 +622,18 @@ public class Simulador {
 
                     }
 
+                    for (Integer thisPieceId : piecesIds) {
+
+                        if (thisPieceId == Integer.parseInt(piecesInfo[1])) {
+
+                            throw new NumberFormatException();
+
+                        }
+
+                    }
+
+                    piecesIds.add(Integer.parseInt(piecesInfo[1]));
+
                     CrazyPiece piece;
 
                     switch (Integer.parseInt(piecesInfo[2])) {
@@ -1133,6 +1146,7 @@ public class Simulador {
         authors.clear();
         suggestedPlay.clear();
         scores.clear();
+        piecesIds.clear();
         shift.reset();
         firstCapture = false;
         hasMadeUndo = false;

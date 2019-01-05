@@ -102,18 +102,16 @@ public class Position {
 
         for (int horizontal = xActual - 1; horizontal <= xActual + 1; horizontal++) {
 
-            for (int vertical = yActual - 1; vertical <= yActual +1; vertical++) {
+            for (int vertical = yActual - 1; vertical <= yActual + 1; vertical++) {
 
-                if (horizontal == xActual && vertical == yActual) {
+                if (horizontal != xActual && vertical == yActual) {
 
-                    continue;
+                    if (horizontal >= 0 && horizontal < boardSize && vertical >= 0 && vertical < boardSize) {
 
-                }
+                        barrierPosition = new Position(horizontal, vertical);
+                        squareBarrier.add(barrierPosition);
 
-                if (horizontal >= 0 && horizontal < boardSize && vertical >= 0 && vertical < boardSize) {
-
-                    barrierPosition = new Position(horizontal, vertical);
-                    squareBarrier.add(barrierPosition);
+                    }
 
                 }
 

@@ -25,15 +25,7 @@ public class Rainha extends CrazyPiece {
     @Override
     public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
-        possiblesPositions.clear();
-
-        super.possiblesPositions_Horizontal(boardSize);
-
-        super.possiblesPositions_Vertical(boardSize);
-
-        super.possiblesPositions_Diagonal(boardSize);
-
-        super.possiblesPositions_RemovePosition(crazyPiecesInGame);
+        super.possiblesPositions(boardSize, crazyPiecesInGame, shift);
 
         List<Position> positionsBarrier = new ArrayList<>();
 
@@ -43,7 +35,7 @@ public class Rainha extends CrazyPiece {
 
                 positionsBarrier.add(thisPiece.getPosition());
 
-            } else if (thisPiece.getType() == 3|| (thisPiece.getType() == 7 && thisPiece.getPieceId() == 3)) {
+            } else if (thisPiece.getType() == 3 || (thisPiece.getType() == 7 && thisPiece.getPieceId() == 3)) {
 
                 if (thisPiece.getIDTeam() != shift.getIdTeam()) {
 
