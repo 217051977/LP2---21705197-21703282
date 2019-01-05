@@ -37,7 +37,7 @@ public class PadreDaVila extends CrazyPiece {
 
         for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
-            if (thisPiece.getType() == 1) {
+            if (thisPiece.getType() == 1 || (thisPiece.getType() == 7 && thisPiece.getPieceId() == 1)) {
 
                 if (thisPiece.getIDTeam() != shift.getIdTeam()) {
 
