@@ -1276,8 +1276,8 @@ public class TestSimulador {
 
         Position piecePosition = new Position(0, 2);
         CrazyPiece piece = new RainhaBranca(0, "White");
-        piece.isOutOfGame();
         piece.setPosition(piecePosition);
+        piece.isOutOfGame();
         simulador.crazyPiecesInGame.add(piece);
 
     }

@@ -379,7 +379,7 @@ public class CrazyPiece {
     public void isOutOfGame() {
 
         inGame = false;
-        Position destiny = new Position(-1, -1);
+        Position destiny = new Position(-100, -100);
         this.position.changePosition(destiny);
 
     }
@@ -414,7 +414,7 @@ public class CrazyPiece {
     protected String checkPosition() {
 
         String string;
-        Position isOutOfTheGame = new Position(-1, -1);
+        Position isOutOfTheGame = new Position(-100, -100);
 
 //      if actual position in x axis as the value of null OR actual position in y axis as the value of null
         if(this.position.equals(isOutOfTheGame)){
