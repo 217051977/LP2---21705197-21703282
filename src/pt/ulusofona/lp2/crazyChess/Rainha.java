@@ -31,15 +31,19 @@ public class Rainha extends CrazyPiece {
 
         for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
-            if (thisPiece.getType() == 1|| (thisPiece.getType() == 7 && thisPiece.getPieceId() == 1)) {
+            if (thisPiece.getInGame()) {
 
-                positionsBarrier.add(thisPiece.getPosition());
+                if (thisPiece.getType() == 1 || (thisPiece.getType() == 7 && thisPiece.getPieceId() == 1)) {
 
-            } else if (thisPiece.getType() == 3 || (thisPiece.getType() == 7 && thisPiece.getPieceId() == 3)) {
+                    positionsBarrier.add(thisPiece.getPosition());
 
-                if (thisPiece.getIDTeam() != shift.getIdTeam()) {
+                } else if (thisPiece.getType() == 3 || (thisPiece.getType() == 7 && thisPiece.getPieceId() == 3)) {
 
-                    positionsBarrier.addAll(thisPiece.getPosition().oneSquareBarrier(boardSize));
+                    if (thisPiece.getIDTeam() != shift.getIdTeam()) {
+
+                        positionsBarrier.addAll(thisPiece.getPosition().oneSquareBarrier(boardSize));
+
+                    }
 
                 }
 

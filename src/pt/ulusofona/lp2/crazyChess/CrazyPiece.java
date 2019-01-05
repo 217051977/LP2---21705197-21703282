@@ -180,44 +180,48 @@ public class CrazyPiece {
 //              search in the game pieces
                 for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
-//                  if there is one in the destiny
-                    if (thisPiece.getPosition().equals(destiny)) {
+                    if (thisPiece.getInGame()) {
 
-//                      if the team playing is
-                        switch (shift.getIdTeam()) {
+//                      if there is one in the destiny
+                        if (thisPiece.getPosition().equals(destiny)) {
 
-                            case 10 : {
+//                          if the team playing is
+                            switch (shift.getIdTeam()) {
 
-                                score = "0,1,0,1";
+                                case 10: {
+
+                                    score = "0,1,0,1";
 
 ////                              add to black team 1 white piece eaten and 1 valid play
 //                                Simulador.addScoresStats(0, 1, 0, 1);
 
-                            }
-                            break;
+                                }
+                                break;
 
-                            case 20 : {
+                                case 20: {
 
-                                score = "1,0,1,0";
+                                    score = "1,0,1,0";
 
 ////                              add to white team 1 black piece eaten and 1 valid play
 //                                Simulador.addScoresStats(1, 0, 1, 0);
 
+                                }
+
                             }
 
-                        }
-
-//                      set CRAZYPIECE_REVOMED_FROM_THE_GAME as thisPiece
-                        crazyPiece_Removed_From_The_Game_Aux.add(thisPiece);
+//                          set CRAZYPIECE_REVOMED_FROM_THE_GAME as thisPiece
+                            crazyPiece_Removed_From_The_Game_Aux.add(thisPiece);
 
 //                      remove thisPiece from crazyPiecesInGame
 //                        crazyPiecesInGame.remove(thisPiece);
 
 //                      set haveScore as true
-                        haveScore = true;
+                            haveScore = true;
 
-//                      leave the cycle
-                        break;
+//                          leave the cycle
+                            break;
+
+                        }
 
                     }
 
