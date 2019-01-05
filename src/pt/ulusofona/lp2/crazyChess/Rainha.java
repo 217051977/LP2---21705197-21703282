@@ -39,11 +39,11 @@ public class Rainha extends CrazyPiece {
 
         for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
-            if (thisPiece.getType() == 1) {
+            if (thisPiece.getType() == 1|| (thisPiece.getType() == 7 && thisPiece.getPieceId() == 1)) {
 
                 positionsBarrier.add(thisPiece.getPosition());
 
-            } else if (thisPiece.getType() == 3) {
+            } else if (thisPiece.getType() == 3|| (thisPiece.getType() == 7 && thisPiece.getPieceId() == 3)) {
 
                 if (thisPiece.getIDTeam() != shift.getIdTeam()) {
 
