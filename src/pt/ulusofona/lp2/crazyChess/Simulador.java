@@ -123,18 +123,27 @@ public class Simulador {
         int piecesInGame = kingsAndPieces.get(2);
         int nWhiteKing = kingsAndPieces.get(1);
         int nBlackKing = kingsAndPieces.get(0);
+        boolean hasScore = false;
 
-        if (piecesInGame <= 2 && nBlackKing != nWhiteKing) {
+        if (piecesInGame <= 2) {
+
+            if (nBlackKing == 1 && nWhiteKing == 1 || nBlackKing == 0 && nWhiteKing == 0) {
+
+                s = "EMPATE";
+
+                hasScore = true;
+
+            }
+
+        }
+
+        if (!hasScore) {
 
             if (nBlackKing == 0) {
-
-                System.out.println("VENCERAM AS BRANCAS");
 
                 s = "VENCERAM AS BRANCAS";
 
             } else if (nWhiteKing == 0) {
-
-                System.out.println("VENCERAM AS PRETAS");
 
                 s = "VENCERAM AS PRETAS";
 
@@ -1048,7 +1057,13 @@ public class Simulador {
 
                 return true;
 
-            } else return nWhiteKing == 0;
+            } else if (nWhiteKing == 0) {
+
+                return true;
+
+            }
+
+            return false;
 
         }
 
