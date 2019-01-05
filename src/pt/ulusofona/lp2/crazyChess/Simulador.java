@@ -32,7 +32,6 @@ public class Simulador {
     private CrazyPiece previousCrazyPiece;
     private CrazyPiece crazyPieceRemovedFromTheGame;
     private List<CrazyPiece> crazyPieceRemovedFromTheGameAux = new ArrayList<>();
-    private List<Integer> piecesIds = new ArrayList<>();
     private int hasCaughtAPiece = 0;
     private int previousCountNoCapture = -1;
     private boolean hasMadeUndo = false;
@@ -516,6 +515,7 @@ public class Simulador {
     public boolean iniciaJogo(File ficheiroInicial) {
 
         reset();
+        List<String> piecesIds = new ArrayList<>();
 
         try {
 
@@ -622,9 +622,9 @@ public class Simulador {
 
                     }
 
-                    for (Integer thisPieceId : piecesIds) {
+                    for (String thisPieceId : piecesIds) {
 
-                        if (thisPieceId == Integer.parseInt(piecesInfo[1])) {
+                        if (thisPieceId.equals(piecesInfo[0])) {
 
                             throw new NumberFormatException();
 
@@ -632,7 +632,7 @@ public class Simulador {
 
                     }
 
-                    piecesIds.add(Integer.parseInt(piecesInfo[1]));
+                    piecesIds.add(piecesInfo[0]);
 
                     CrazyPiece piece;
 
@@ -1146,7 +1146,6 @@ public class Simulador {
         authors.clear();
         suggestedPlay.clear();
         scores.clear();
-        piecesIds.clear();
         shift.reset();
         firstCapture = false;
         hasMadeUndo = false;
