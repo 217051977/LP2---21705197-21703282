@@ -36,7 +36,7 @@ public class Simulador {
     private int previousCountNoCapture = -1;
     private boolean hasMadeUndo = false;
     private String s = "EMPATE";
-    private Position positionErased;
+    private Position position_erased;
 
     //    Constructor
     public Simulador() {}//*********************************************************************************************
@@ -273,7 +273,7 @@ public class Simulador {
                         if (crazyPieceRemovedFromTheGame.equals(crazyPiece_Eaten)) {
 
                             crazyPiece_Eaten.isInGame();
-                            crazyPiece_Eaten.setPosition(positionErased);
+                            crazyPiece_Eaten.setPosition(position_erased);
                             break;
 
                         }
@@ -890,7 +890,7 @@ public class Simulador {
 
                                         crazyPieceRemovedFromTheGameAux.remove(crazyPieceRemovedFromTheGame);
 
-                                        positionErased = thiPiece.getPosition();
+                                        position_erased = thiPiece.getPosition();
 
                                         for (CrazyPiece crazyPiece_Eaten : crazyPiecesInGame) {
 
