@@ -384,24 +384,6 @@ public class CrazyPiece {
 
     }
 
-//  toString (por acabar)
-    public String toString() {
-
-//      set a string type variable called string as the toString settings
-        String string = this.id +
-                        " | " + this.typeName +
-                        " | " + this.relativeValue +
-                        " | " + this.idTeam +
-                        " | " + this.name +
-                        " @ ";
-
-        string += checkPosition();
-
-//      return the value of the variable string
-        return string;
-
-    }
-
     public String saveFile_ToString() {
 
         return this.id +
@@ -681,6 +663,24 @@ public class CrazyPiece {
     protected Position createPosition_Vertical(int vertical) {
 
         return new Position(position.getxActual(), vertical);
+
+    }
+
+    //  toString (por acabar)
+    public String toString() {
+
+//      set a string type variable called string as the toString settings
+        String string = this.id +
+                " | " + this.typeName +
+                " | " + this.relativeValue +
+                " | " + this.idTeam +
+                " | " + this.name +
+                " @ ";
+
+        string += checkPosition();
+
+//      return the value of the variable string
+        return string;
 
     }
 
