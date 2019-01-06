@@ -483,6 +483,13 @@ public class TestSimulador {
         assertTrue("Should work!", simulador.iniciaJogo(file));
     }
 
+    @Test
+    public void testStartGame_Priest_Next_To_Queen() {
+        Simulador simulador = new Simulador();
+        File file = new File("test-files/FILE_TEST_PRIS_NEXT_TO_QUEEN.txt");
+        assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
+    }
+
 //  Execute The Move
     @Test
     public void testExecuteTheMove_AbleToMoveThePiece_Up() {
@@ -661,11 +668,15 @@ public class TestSimulador {
 
     @Test
     public void testExecuteTheMove_MovePriest_CloseToAQueen_Valid() {
-        Simulador simulador = new Simulador(5);
-        createCrazyPiecePresentInGame_Priest_Black(2, 3, simulador);
-        createCrazyPiecePresentInGame_Queen_Black(1, 0, simulador);
-        createCrazyPiece_Queen_White(simulador);
-        assertTrue("You can't move the piece!", simulador.processaJogada(2,3,0,1));
+        Simulador simulador = new Simulador();
+        File file = new File("test-files/RUN_FILE_2.txt");
+        assertTrue("Should work!", simulador.iniciaJogo(file));
+        assertEquals(0, simulador.getNumberOfInvalidPlaysByBlackTeam());
+        assertFalse("You can't move the piece!", simulador.processaJogada(0,2,3,4));
+        assertEquals(1, simulador.getNumberOfInvalidPlaysByBlackTeam());
+        assertFalse("You can't move the piece!", simulador.processaJogada(1,2,3,4));
+        assertEquals(2, simulador.getNumberOfInvalidPlaysByBlackTeam());
+        assertTrue("You can't move the piece!", simulador.processaJogada(1,2,2,3));
     }
 
 //  Game Over
@@ -1265,7 +1276,7 @@ public class TestSimulador {
     private void createCrazyPiecePresentInGame_Queen_White(int x, int y, Simulador simulador) {
 
         Position piecePosition = new Position(x, y);
-        CrazyPiece piece = new RainhaBranca(0, "White");
+        CrazyPiece piece = new RainhaBranca(2, "White");
         piece.isInGame();
         piece.setPosition(piecePosition);
         simulador.crazyPiecesInGame.add(piece);

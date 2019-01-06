@@ -881,6 +881,71 @@ public class Simulador {
 
             }
 
+            List<Position> oneBarrierPiecePositions;
+            Position piecePositionToCheck;
+
+            for (CrazyPiece thisPiece : crazyPiecesInGame) {
+
+                if (thisPiece.getType() == 1) {
+
+                    oneBarrierPiecePositions = (thisPiece.getPosition().oneSquareBarrier(boardSize));
+
+                    for (CrazyPiece crazyPieceToCheck : crazyPiecesInGame) {
+
+                        if (crazyPieceToCheck.getIDTeam() != thisPiece.getIDTeam()) {
+
+                            if (crazyPieceToCheck.getType() == 3) {
+
+                                piecePositionToCheck = crazyPieceToCheck.getPosition();
+
+                                for (Position thisPosition : oneBarrierPiecePositions) {
+
+                                    if (thisPosition.equals(piecePositionToCheck)) {
+
+                                        throw new NumberFormatException();
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                } else if (thisPiece.getType() == 3) {
+
+                    oneBarrierPiecePositions = (thisPiece.getPosition().oneSquareBarrier(boardSize));
+
+                    for (CrazyPiece crazyPieceToCheck : crazyPiecesInGame) {
+
+                        if (crazyPieceToCheck.getIDTeam() != thisPiece.getIDTeam()) {
+
+                            if (crazyPieceToCheck.getType() == 1) {
+
+                                piecePositionToCheck = crazyPieceToCheck.getPosition();
+
+                                for (Position thisPosition : oneBarrierPiecePositions) {
+
+                                    if (thisPosition.equals(piecePositionToCheck)) {
+
+                                        throw new NumberFormatException();
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
             if (nLines == boardSizeMaxIndex) {
 
                 allCrazyPieces.addAll(crazyPiecesInGame);

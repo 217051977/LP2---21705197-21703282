@@ -44,7 +44,7 @@ public class CrazyPiece {
 //  Constructor
     public CrazyPiece() {
 
-        position = new Position(-1, -1);
+        position = new Position(-100, -100);
 
     }
 
