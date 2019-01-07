@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>pt.ulusofona.lp2.crazyChess</OriginalElement>
+  <nodes>
+    <node x="2163.0" y="1743.0">pt.ulusofona.lp2.crazyChess.TorreVBranca</node>
+    <node x="609.25" y="1465.0">pt.ulusofona.lp2.crazyChess.PoneiMagico</node>
+    <node x="839.0" y="1743.0">pt.ulusofona.lp2.crazyChess.PoneiMagicoPreto</node>
+    <node x="1950.0" y="1743.0">pt.ulusofona.lp2.crazyChess.TorreVPreta</node>
+    <node x="3315.0" y="1743.0">pt.ulusofona.lp2.crazyChess.JokerPreto</node>
+    <node x="2878.0" y="1743.0">pt.ulusofona.lp2.crazyChess.RainhaBranca</node>
+    <node x="581.0" y="1743.0">pt.ulusofona.lp2.crazyChess.PoneiMagicoBranco</node>
+    <node x="0.0" y="3572.0">pt.ulusofona.lp2.crazyChess.Shift</node>
+    <node x="292.0" y="3572.0">pt.ulusofona.lp2.crazyChess.Position</node>
+    <node x="2636.0" y="1743.0">pt.ulusofona.lp2.crazyChess.PadreDaVilaPreto</node>
+    <node x="2385.0" y="1743.0">pt.ulusofona.lp2.crazyChess.PadreDaVilaBranco</node>
+    <node x="2395.75" y="1531.0">pt.ulusofona.lp2.crazyChess.PadreDaVila</node>
+    <node x="1525.75" y="1531.0">pt.ulusofona.lp2.crazyChess.TorreH</node>
+    <node x="1090.25" y="1542.0">pt.ulusofona.lp2.crazyChess.Lebre</node>
+    <node x="4160.0" y="0.0">pt.ulusofona.lp2.crazyChess.Simulador</node>
+    <node x="3736.0" y="1743.0">pt.ulusofona.lp2.crazyChess.ReiPreto</node>
+    <node x="1511.0" y="1743.0">pt.ulusofona.lp2.crazyChess.TorreHBranca</node>
+    <node x="1088.0" y="1743.0">pt.ulusofona.lp2.crazyChess.LebrePreta</node>
+    <node x="3316.25" y="1498.0">pt.ulusofona.lp2.crazyChess.Joker</node>
+    <node x="3101.0" y="1743.0">pt.ulusofona.lp2.crazyChess.RainhaPreta</node>
+    <node x="2167.0" y="0.0">pt.ulusofona.lp2.crazyChess.CrazyPiece</node>
+    <node x="1958.25" y="1531.0">pt.ulusofona.lp2.crazyChess.TorreV</node>
+    <node x="1295.0" y="1743.0">pt.ulusofona.lp2.crazyChess.LebreBranca</node>
+    <node x="633.0" y="3572.0">pt.ulusofona.lp2.crazyChess.Main</node>
+    <node x="3931.0" y="1743.0">pt.ulusofona.lp2.crazyChess.ReiBranco</node>
+    <node x="2891.75" y="1542.0">pt.ulusofona.lp2.crazyChess.Rainha</node>
+    <node x="3521.0" y="1743.0">pt.ulusofona.lp2.crazyChess.JokerBranco</node>
+    <node x="1735.0" y="1743.0">pt.ulusofona.lp2.crazyChess.TorreHPreta</node>
+    <node x="3846.44" y="1542.0">pt.ulusofona.lp2.crazyChess.Rei</node>
+    <node x="0.0" y="0.0">pt.ulusofona.lp2.crazyChess.TestSimulador</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="pt.ulusofona.lp2.crazyChess.RainhaPreta" target="pt.ulusofona.lp2.crazyChess.Rainha">
+      <point x="0.0" y="-25.5" />
+      <point x="3198.0" y="1718.0" />
+      <point x="3187.25" y="1718.0" />
+      <point x="98.5" y="37.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.TorreHPreta" target="pt.ulusofona.lp2.crazyChess.TorreH">
+      <point x="0.0" y="-25.5" />
+      <point x="1832.5" y="1718.0" />
+      <point x="1821.25" y="1718.0" />
+      <point x="98.5" y="48.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.PoneiMagico" target="pt.ulusofona.lp2.crazyChess.CrazyPiece">
+      <point x="0.0" y="-114.0" />
+      <point x="826.75" y="1415.0" />
+      <point x="2194.75" y="1415.0" />
+      <point x="-194.25" y="697.5" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.ReiPreto" target="pt.ulusofona.lp2.crazyChess.Rei">
+      <point x="0.0" y="-25.5" />
+      <point x="3823.5" y="1718.0" />
+      <point x="3884.69" y="1718.0" />
+      <point x="-38.25" y="37.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.PadreDaVilaPreto" target="pt.ulusofona.lp2.crazyChess.PadreDaVila">
+      <point x="0.0" y="-25.5" />
+      <point x="2747.0" y="1718.0" />
+      <point x="2737.75" y="1718.0" />
+      <point x="114.0" y="48.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.Rei" target="pt.ulusofona.lp2.crazyChess.CrazyPiece">
+      <point x="0.0" y="-37.0" />
+      <point x="3922.94" y="1415.0" />
+      <point x="2583.25" y="1415.0" />
+      <point x="194.25" y="697.5" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.TorreV" target="pt.ulusofona.lp2.crazyChess.CrazyPiece">
+      <point x="0.0" y="-48.0" />
+      <point x="2155.25" y="1445.0" />
+      <point x="2361.25" y="1445.0" />
+      <point x="-27.75" y="697.5" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.JokerPreto" target="pt.ulusofona.lp2.crazyChess.Joker">
+      <point x="0.0" y="-25.5" />
+      <point x="3408.0" y="1718.0" />
+      <point x="3414.75" y="1718.0" />
+      <point x="-98.5" y="81.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.JokerBranco" target="pt.ulusofona.lp2.crazyChess.Joker">
+      <point x="0.0" y="-25.5" />
+      <point x="3618.5" y="1718.0" />
+      <point x="3611.75" y="1718.0" />
+      <point x="98.5" y="81.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.LebrePreta" target="pt.ulusofona.lp2.crazyChess.Lebre">
+      <point x="0.0" y="-25.5" />
+      <point x="1181.5" y="1718.0" />
+      <point x="1188.75" y="1718.0" />
+      <point x="-98.5" y="37.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.PadreDaVila" target="pt.ulusofona.lp2.crazyChess.CrazyPiece">
+      <point x="0.0" y="-48.0" />
+      <point x="2623.75" y="1445.0" />
+      <point x="2416.75" y="1445.0" />
+      <point x="27.75" y="697.5" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.Lebre" target="pt.ulusofona.lp2.crazyChess.CrazyPiece">
+      <point x="0.0" y="-37.0" />
+      <point x="1287.25" y="1425.0" />
+      <point x="2250.25" y="1425.0" />
+      <point x="-138.75" y="697.5" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.TorreHBranca" target="pt.ulusofona.lp2.crazyChess.TorreH">
+      <point x="0.0" y="-25.5" />
+      <point x="1613.0" y="1718.0" />
+      <point x="1624.25" y="1718.0" />
+      <point x="-98.5" y="48.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.TorreVPreta" target="pt.ulusofona.lp2.crazyChess.TorreV">
+      <point x="0.0" y="-25.5" />
+      <point x="2046.5" y="1718.0" />
+      <point x="2056.75" y="1718.0" />
+      <point x="-98.5" y="48.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.ReiBranco" target="pt.ulusofona.lp2.crazyChess.Rei">
+      <point x="0.0" y="-25.5" />
+      <point x="4023.0" y="1718.0" />
+      <point x="3961.19" y="1718.0" />
+      <point x="38.25" y="37.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.TorreVBranca" target="pt.ulusofona.lp2.crazyChess.TorreV">
+      <point x="0.0" y="-25.5" />
+      <point x="2264.0" y="1718.0" />
+      <point x="2253.75" y="1718.0" />
+      <point x="98.5" y="48.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.Rainha" target="pt.ulusofona.lp2.crazyChess.CrazyPiece">
+      <point x="0.0" y="-37.0" />
+      <point x="3088.75" y="1435.0" />
+      <point x="2472.25" y="1435.0" />
+      <point x="83.25" y="697.5" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.Joker" target="pt.ulusofona.lp2.crazyChess.CrazyPiece">
+      <point x="0.0" y="-81.0" />
+      <point x="3513.25" y="1425.0" />
+      <point x="2527.75" y="1425.0" />
+      <point x="138.75" y="697.5" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.PoneiMagicoPreto" target="pt.ulusofona.lp2.crazyChess.PoneiMagico">
+      <point x="0.0" y="-25.5" />
+      <point x="953.5" y="1718.0" />
+      <point x="935.5" y="1718.0" />
+      <point x="108.75" y="114.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.PadreDaVilaBranco" target="pt.ulusofona.lp2.crazyChess.PadreDaVila">
+      <point x="0.0" y="-25.5" />
+      <point x="2500.5" y="1718.0" />
+      <point x="2509.75" y="1718.0" />
+      <point x="-114.0" y="48.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.PoneiMagicoBranco" target="pt.ulusofona.lp2.crazyChess.PoneiMagico">
+      <point x="0.0" y="-25.5" />
+      <point x="700.0" y="1718.0" />
+      <point x="718.0" y="1718.0" />
+      <point x="-108.75" y="114.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.TorreH" target="pt.ulusofona.lp2.crazyChess.CrazyPiece">
+      <point x="0.0" y="-48.0" />
+      <point x="1722.75" y="1435.0" />
+      <point x="2305.75" y="1435.0" />
+      <point x="-83.25" y="697.5" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.LebreBranca" target="pt.ulusofona.lp2.crazyChess.Lebre">
+      <point x="0.0" y="-25.5" />
+      <point x="1393.0" y="1718.0" />
+      <point x="1385.75" y="1718.0" />
+      <point x="98.5" y="37.0" />
+    </edge>
+    <edge source="pt.ulusofona.lp2.crazyChess.RainhaBranca" target="pt.ulusofona.lp2.crazyChess.Rainha">
+      <point x="0.0" y="-25.5" />
+      <point x="2979.5" y="1718.0" />
+      <point x="2990.25" y="1718.0" />
+      <point x="-98.5" y="37.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.7083364393092307" x="2882.321787341244" y="1806.5267127372226" />
+  <SelectedNodes>
+    <node>pt.ulusofona.lp2.crazyChess.TestSimulador</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
