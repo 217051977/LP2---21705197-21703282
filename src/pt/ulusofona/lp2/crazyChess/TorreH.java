@@ -55,6 +55,8 @@ public class TorreH extends CrazyPiece {
     @Override
     public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
+        super.possiblesPositions.clear();
+
         possiblesPositions_Horizontal(boardSize);
 
         super.possiblesPositions_RemovePosition(crazyPiecesInGame);

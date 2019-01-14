@@ -671,12 +671,12 @@ public class TestSimulador {
         Simulador simulador = new Simulador();
         File file = new File("test-files/RUN_FILE_2.txt");
         assertTrue("Should work!", simulador.iniciaJogo(file));
-        assertEquals(0, simulador.getNumberOfInvalidPlaysByBlackTeam());
-        assertFalse("You can't move the piece!", simulador.processaJogada(0,2,3,4));
-        assertEquals(1, simulador.getNumberOfInvalidPlaysByBlackTeam());
-        assertFalse("You can't move the piece!", simulador.processaJogada(1,2,3,4));
-        assertEquals(2, simulador.getNumberOfInvalidPlaysByBlackTeam());
-        assertTrue("You can't move the piece!", simulador.processaJogada(1,2,2,3));
+        assertTrue("You can move the piece!", simulador.processaJogada(2,3,0,1));
+        assertTrue("You can move the piece!", simulador.processaJogada(4,5,4,0));
+        assertTrue("You can move the piece!", simulador.processaJogada(0,1, 1,2));
+        assertTrue("You can move the piece!", simulador.processaJogada(4,0, 4,5));
+        assertFalse("You can't move the piece!", simulador.processaJogada(1,2, 3,4));
+        assertTrue("You can move the piece!", simulador.processaJogada(1,2, 2,3));
     }
 
 //  Game Over

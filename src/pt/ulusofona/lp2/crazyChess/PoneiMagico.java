@@ -32,6 +32,8 @@ public class PoneiMagico extends CrazyPiece {
     @Override
     public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
+        super.possiblesPositions.clear();
+
         searchForAPiece_DownRight(boardSize, crazyPiecesInGame);
         searchForAPiece_DownLeft(boardSize, crazyPiecesInGame);
         searchForAPiece_UpLeft(crazyPiecesInGame);
