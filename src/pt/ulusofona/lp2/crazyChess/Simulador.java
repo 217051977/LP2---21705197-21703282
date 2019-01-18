@@ -27,7 +27,7 @@ public class Simulador {
     private List<String> suggestedPlay = new ArrayList<>();
     private List<String> scores = new ArrayList<>();
     Shift shift = new Shift();
-    public boolean firstCapture = false;
+    boolean firstCapture = false;
     private Position previousPosition;
     private CrazyPiece previousCrazyPiece;
     private CrazyPiece crazyPieceRemovedFromTheGame;
@@ -249,269 +249,16 @@ public class Simulador {
 
     }//**********************************************************************
 
-    public List<String> obterSugestoesJogada(int xO, int yO) {
+//  set
+    private String setTeamStats(int numberOfValidPlays, int numberOfPiecesCaptured, int numberOfInvalidPlays) {
 
-        List<Position> possiblesPositions;
+        return ":" + numberOfValidPlays +
+                ":" + numberOfPiecesCaptured +
+                ":" + numberOfInvalidPlays;
 
-//      clear the list
-        suggestedPlay.clear();
+    }//***
 
-//      Create a new position with the destination
-        Position origin = new Position(xO, yO);
-
-//      For each piece on crazyPiecesInGame variable
-        for (CrazyPiece thisPiece : crazyPiecesInGame) {
-
-//          Check if the this piece is in the position created
-            if (thisPiece.getPosition().equals(origin)) {
-
-//              Check if this piece belongs to the team that is playing
-                if (thisPiece.getIDTeam() == shift.getIdTeam()) {
-
-//                  Create a list with all the positions possibles for the piece moved
-                    possiblesPositions = thisPiece.possiblesPositions(boardSize, crazyPiecesInGame, shift);
-
-                    for (Position thisPosition : possiblesPositions) {
-
-                        suggestedPlay.add(thisPosition.getxActual() + ", " + thisPosition.getyActual());
-
-                    }
-
-                    return suggestedPlay;
-
-                }
-
-            }
-
-        }
-
-//        if (suggestedPlay.isEmpty()) {
-
-//          Add to the list
-            suggestedPlay.add("Pedido inválido");
-
-//        }
-
-//      return the list
-        return suggestedPlay;
-
-    }//****************************************************
-
-//  Undo Play
-    public void anularJogadaAnterior() {
-
-//      If there was already a move
-        if (shift.getCount() > 0) {
-
-//          If there wasn't an undo made
-            if (!hasMadeUndo) {
-
-//              undo shiftChange
-                shift.removeCount();
-
-//              If there was a capture
-                if (previousCountNoCapture != 0) {
-
-                    if (previousCountNoCapture != -1) {
-
-//                      Get the previous countNoCapture
-                        shift.undoCountNoCapture(previousCountNoCapture);
-
-                    }
-//                  Remove 1 unit from the number pieces captured
-                    hasCaughtAPiece--;
-
-//                  If it was the first capture
-                    if (hasCaughtAPiece == 0) {
-
-//                      set the firstCapture as false
-                        firstCapture = false;
-
-                    }
-
-//                  Search in ALL pieces
-                    for (CrazyPiece thisPiece : crazyPiecesInGame) {
-
-//                      If thisPiece is the same piece that was moved
-                        if (thisPiece.equals(previousCrazyPiece)) {
-
-//                          Undo the movement that thisPiece as made
-                            thisPiece.undoMov(previousPosition);
-
-                        }
-
-                    }
-
-                    s = "EMPATE";
-
-                    for (CrazyPiece crazyPiece_Eaten : crazyPiecesInGame) {
-
-                        if (crazyPieceRemovedFromTheGame.equals(crazyPiece_Eaten)) {
-
-                            crazyPiece_Eaten.isInGame();
-                            crazyPiece_Eaten.setPosition(positionErased);
-                            break;
-
-                        }
-
-                    }
-
-                    crazyPieceRemovedFromTheGame.isInGame();
-
-                    switch (shift.idTeam) {
-
-                        case 10 : {
-
-                            undoScoresStats(0, 1, 0, 1);
-
-                        }
-                        break;
-
-                        case 20 : {
-
-                            undoScoresStats(1, 0, 1, 0);
-
-                        }
-
-                    }
-
-                    s = "EMPATE";
-
-                }
-//              If there was no capture
-                else {
-
-//                  undo remove one unit to countNoCapture
-                    shift.removeCountNoCapture();
-
-//                  Search in the pieces in game
-                    for (CrazyPiece thisPiece : crazyPiecesInGame) {
-
-//                      If thisPiece is the same piece that was moved
-                        if (thisPiece.equals(previousCrazyPiece)) {
-
-//                          Undo the movement that thisPiece as made
-                            thisPiece.undoMov(previousPosition);
-
-                        }
-
-                    }
-
-                    switch (shift.idTeam) {
-
-                        case 10 : {
-
-                            undoScoresStats(0, 0, 0, 1);
-
-                        }
-                        break;
-
-                        case 20 : {
-
-                            undoScoresStats(0, 0, 1, 0);
-
-                        }
-
-                    }
-
-                }
-
-                for (CrazyPiece thisPiece : crazyPiecesInGame) {
-
-                    if (thisPiece.getType() == 7) {
-
-                        thisPiece.undoPieceType();
-
-                    }
-
-                }
-
-//              set hasMadeUndo as true
-                hasMadeUndo = true;
-
-            }
-
-        }
-
-    }//**************************************************************************
-
-//  Save Game
-    public boolean gravarJogo(File ficheiroDestino) {
-
-        boolean pieceFounded;
-
-        String newLine = System.getProperty("line.separator");
-
-        try {
-
-            FileWriter writer = new FileWriter(ficheiroDestino);
-
-            writer.write(String.valueOf(boardSize));
-            writer.write(newLine);
-            writer.write(String.valueOf(allCrazyPieces.size()));
-            writer.write(newLine);
-
-            for (CrazyPiece thisPiece : allCrazyPieces) {
-
-                writer.write(thisPiece.saveFile_ToString());
-                writer.write(newLine);
-
-            }
-
-            for (int line = 0 ; line < boardSize; line++) {
-
-                for (int column = 0; column < boardSize; column++) {
-
-                    pieceFounded = false;
-
-                    Position thisPosition = new Position(column, line);
-
-                    for (CrazyPiece thisPiece : crazyPiecesInGame) {
-
-                        if (thisPiece.getPosition().equals(thisPosition)) {
-
-                            writer.write(String.valueOf(thisPiece.getId()));
-
-                            pieceFounded = true;
-
-                            break;
-
-                        }
-
-                    }
-
-                    if (!pieceFounded) {
-
-                        writer.write(String.valueOf(0));
-
-                    }
-
-                    if (column != boardSize - 1) {
-
-                        writer.write(":");
-
-                    }
-
-                }
-
-                writer.write(newLine);
-
-            }
-
-            writer.write(String.valueOf(shift.getIdTeam()));
-            writer.write(setTeamStats(numberOfValidPlaysByBlackTeam, numberOfWhitePiecesCaptured, numberOfInvalidPlaysByBlackTeam));
-            writer.write(setTeamStats(numberOfValidPlaysByWhiteTeam, numberOfBlackPiecesCaptured, numberOfInvalidPlaysByWhiteTeam));
-
-            writer.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return true;
-
-    }//*************************************************************
-
+//  gravar jogo
     public boolean iniciaJogo(File ficheiroInicial) {
 
         reset();
@@ -977,7 +724,181 @@ public class Simulador {
 
     }//*************************************************************
 
-//  Processes the play
+//  termina o jogo
+    public boolean jogoTerminado() {
+
+        if (crazyPiecesInGame.size() == 0) {
+
+            return true;
+
+        } else if (shift.getCountNoCapture() == 10 && firstCapture) {
+
+            shift.resetCount();
+            shift.resetCountNoCapture();
+
+            return true;
+
+        } else {
+
+            List<Integer> kingsAndPieces = checkNumberOfBlackKings_WhiteKings_PiecesInGame();
+
+//          set nWhiteKing and nBlackKing as the values returned from the previous function
+            int nBlackKing = kingsAndPieces.get(0);
+            int nWhiteKing = kingsAndPieces.get(1);
+            int piecesInGame = kingsAndPieces.get(2);
+
+            if (piecesInGame <= 2) {
+
+                if (nBlackKing == 1 && nWhiteKing == 1 || nBlackKing == 0 && nWhiteKing == 0) {
+
+                    return true;
+
+                }
+
+            }
+
+            if (nBlackKing == 0) {
+
+                return true;
+
+            } else if (nWhiteKing == 0) {
+
+                return true;
+
+            }
+
+            return false;
+
+        }
+
+    }//******************************************************************************
+
+//  Save Game
+    public boolean gravarJogo(File ficheiroDestino) {
+
+        boolean pieceFounded;
+
+        String newLine = System.getProperty("line.separator");
+
+        try {
+
+            FileWriter writer = new FileWriter(ficheiroDestino);
+
+            writer.write(String.valueOf(boardSize));
+            writer.write(newLine);
+            writer.write(String.valueOf(allCrazyPieces.size()));
+            writer.write(newLine);
+
+            for (CrazyPiece thisPiece : allCrazyPieces) {
+
+                writer.write(thisPiece.saveFile_ToString());
+                writer.write(newLine);
+
+            }
+
+            for (int line = 0 ; line < boardSize; line++) {
+
+                for (int column = 0; column < boardSize; column++) {
+
+                    pieceFounded = false;
+
+                    Position thisPosition = new Position(column, line);
+
+                    for (CrazyPiece thisPiece : crazyPiecesInGame) {
+
+                        if (thisPiece.getPosition().equals(thisPosition)) {
+
+                            writer.write(String.valueOf(thisPiece.getId()));
+
+                            pieceFounded = true;
+
+                            break;
+
+                        }
+
+                    }
+
+                    if (!pieceFounded) {
+
+                        writer.write(String.valueOf(0));
+
+                    }
+
+                    if (column != boardSize - 1) {
+
+                        writer.write(":");
+
+                    }
+
+                }
+
+                writer.write(newLine);
+
+            }
+
+            writer.write(String.valueOf(shift.getIdTeam()));
+            writer.write(setTeamStats(numberOfValidPlaysByBlackTeam, numberOfWhitePiecesCaptured, numberOfInvalidPlaysByBlackTeam));
+            writer.write(setTeamStats(numberOfValidPlaysByWhiteTeam, numberOfBlackPiecesCaptured, numberOfInvalidPlaysByWhiteTeam));
+
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+
+    }//*************************************************************
+
+//  jogada
+    public List<String> obterSugestoesJogada(int xO, int yO) {
+
+        List<Position> possiblesPositions;
+
+//      clear the list
+        suggestedPlay.clear();
+
+//      Create a new position with the destination
+        Position origin = new Position(xO, yO);
+
+//      For each piece on crazyPiecesInGame variable
+        for (CrazyPiece thisPiece : crazyPiecesInGame) {
+
+//          Check if the this piece is in the position created
+            if (thisPiece.getPosition().equals(origin)) {
+
+//              Check if this piece belongs to the team that is playing
+                if (thisPiece.getIDTeam() == shift.getIdTeam()) {
+
+//                  Create a list with all the positions possibles for the piece moved
+                    possiblesPositions = thisPiece.possiblesPositions(boardSize, crazyPiecesInGame, shift);
+
+                    for (Position thisPosition : possiblesPositions) {
+
+                        suggestedPlay.add(thisPosition.getxActual() + ", " + thisPosition.getyActual());
+
+                    }
+
+                    return suggestedPlay;
+
+                }
+
+            }
+
+        }
+
+//        if (suggestedPlay.isEmpty()) {
+
+//          Add to the list
+        suggestedPlay.add("Pedido inválido");
+
+//        }
+
+//      return the list
+        return suggestedPlay;
+
+    }//****************************************************
+
     public boolean processaJogada(int xO, int yO, int xD, int yD) {
 
         previousCountNoCapture = 0;
@@ -1098,55 +1019,144 @@ public class Simulador {
 
     }//***********************************************
 
-//  falta a pontuacao
-    public boolean jogoTerminado() {
+    public void anularJogadaAnterior() {
 
-        if (crazyPiecesInGame.size() == 0) {
+//      If there was already a move
+        if (shift.getCount() > 0) {
 
-            return true;
+//          If there wasn't an undo made
+            if (!hasMadeUndo) {
 
-        } else if (shift.getCountNoCapture() == 10 && firstCapture) {
+//              undo shiftChange
+                shift.removeCount();
 
-            shift.resetCount();
-            shift.resetCountNoCapture();
+//              If there was a capture
+                if (previousCountNoCapture != 0) {
 
-            return true;
+                    if (previousCountNoCapture != -1) {
 
-        } else {
+//                      Get the previous countNoCapture
+                        shift.undoCountNoCapture(previousCountNoCapture);
 
-            List<Integer> kingsAndPieces = checkNumberOfBlackKings_WhiteKings_PiecesInGame();
+                    }
+//                  Remove 1 unit from the number pieces captured
+                    hasCaughtAPiece--;
 
-//          set nWhiteKing and nBlackKing as the values returned from the previous function
-            int nBlackKing = kingsAndPieces.get(0);
-            int nWhiteKing = kingsAndPieces.get(1);
-            int piecesInGame = kingsAndPieces.get(2);
+//                  If it was the first capture
+                    if (hasCaughtAPiece == 0) {
 
-            if (piecesInGame <= 2) {
+//                      set the firstCapture as false
+                        firstCapture = false;
 
-                if (nBlackKing == 1 && nWhiteKing == 1 || nBlackKing == 0 && nWhiteKing == 0) {
+                    }
 
-                    return true;
+//                  Search in ALL pieces
+                    for (CrazyPiece thisPiece : crazyPiecesInGame) {
+
+//                      If thisPiece is the same piece that was moved
+                        if (thisPiece.equals(previousCrazyPiece)) {
+
+//                          Undo the movement that thisPiece as made
+                            thisPiece.undoMov(previousPosition);
+
+                        }
+
+                    }
+
+                    s = "EMPATE";
+
+                    for (CrazyPiece crazyPiece_Eaten : crazyPiecesInGame) {
+
+                        if (crazyPieceRemovedFromTheGame.equals(crazyPiece_Eaten)) {
+
+                            crazyPiece_Eaten.isInGame();
+                            crazyPiece_Eaten.setPosition(positionErased);
+                            break;
+
+                        }
+
+                    }
+
+                    crazyPieceRemovedFromTheGame.isInGame();
+
+                    switch (shift.idTeam) {
+
+                        case 10 : {
+
+                            undoScoresStats(0, 1, 0, 1);
+
+                        }
+                        break;
+
+                        case 20 : {
+
+                            undoScoresStats(1, 0, 1, 0);
+
+                        }
+
+                    }
+
+                    s = "EMPATE";
+
+                }
+//              If there was no capture
+                else {
+
+//                  undo remove one unit to countNoCapture
+                    shift.removeCountNoCapture();
+
+//                  Search in the pieces in game
+                    for (CrazyPiece thisPiece : crazyPiecesInGame) {
+
+//                      If thisPiece is the same piece that was moved
+                        if (thisPiece.equals(previousCrazyPiece)) {
+
+//                          Undo the movement that thisPiece as made
+                            thisPiece.undoMov(previousPosition);
+
+                        }
+
+                    }
+
+                    switch (shift.idTeam) {
+
+                        case 10 : {
+
+                            undoScoresStats(0, 0, 0, 1);
+
+                        }
+                        break;
+
+                        case 20 : {
+
+                            undoScoresStats(0, 0, 1, 0);
+
+                        }
+
+                    }
 
                 }
 
+                for (CrazyPiece thisPiece : crazyPiecesInGame) {
+
+                    if (thisPiece.getType() == 7) {
+
+                        thisPiece.undoPieceType();
+
+                    }
+
+                }
+
+//              set hasMadeUndo as true
+                hasMadeUndo = true;
+
             }
-
-            if (nBlackKing == 0) {
-
-                return true;
-
-            } else if (nWhiteKing == 0) {
-
-                return true;
-
-            }
-
-            return false;
 
         }
 
-    }//******************************************************************************
+    }//**************************************************************************
 
+//  scores
     private void addScoresStats(int numberOfBlackPiecesCaptured, int numberOfWhitePiecesCaptured,
                                       int numberOfValidPlaysByWhiteTeam, int numberOfValidPlaysByBlackTeam) {
 
@@ -1187,14 +1197,7 @@ public class Simulador {
 
     }//************************************************************************
 
-    private String setTeamStats(int numberOfValidPlays, int numberOfPiecesCaptured, int numberOfInvalidPlays) {
-
-        return ":" + numberOfValidPlays +
-                ":" + numberOfPiecesCaptured +
-                ":" + numberOfInvalidPlays;
-
-    }//***
-
+//  reinicia o jogo
     private void reset() {
 
         boardSize = 0;

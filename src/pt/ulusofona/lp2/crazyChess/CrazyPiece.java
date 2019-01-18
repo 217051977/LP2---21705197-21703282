@@ -8,7 +8,6 @@ public class CrazyPiece {
     protected String imagePNG, name;
     protected Position position;
     protected boolean moveVertical = true, moveHorizontal = true, moveDiagonal = true,
-            canChangeType = false, hasChangedType = false,
             inGame = false;
     protected int maxMovHorizontal = 1, maxMovVertical = 1, minMovHorizontal = 0, minMovVertical = 0,
             id, type, idTeam, relativeValue;
@@ -91,20 +90,6 @@ public class CrazyPiece {
 
     }
 
-    public boolean getCanChangeType() {
-
-//      return the value of the variable "canChangeType" of this same class
-        return canChangeType;
-
-    }
-
-    public boolean getHasChangedType() {
-
-//      return the value of the variable "jahasChangedType" of this same class
-        return hasChangedType;
-
-    }
-
     public int getIDTeam() {
 
 //      return the value of the variable "idTeam" of this same class
@@ -137,30 +122,14 @@ public class CrazyPiece {
 
     }
 
-    public void nextType() {}
+//  set
+    public void setPosition(Position position) {
 
-    public void changePieceType(int pieceType) {}
-
-    public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
-
-        possiblesPositions.clear();
-
-        possiblesPositions_Horizontal(boardSize);
-
-        possiblesPositions_Vertical(boardSize);
-
-        possiblesPositions_Diagonal(boardSize);
-
-        possiblesPositions_RemovePosition(crazyPiecesInGame);
-
-        return possiblesPositions;
+        this.position = position;
 
     }
 
-//  undo
-    public void undoPieceType() {}
-
-//  movement
+//  movimento
     public String move(Position destiny, int boardSize, List<CrazyPiece> crazyPiecesInGame, List<CrazyPiece> crazyPiece_Removed_From_The_Game_Aux, Shift shift) {
 
 //      Get possiblesPosition
@@ -282,140 +251,22 @@ public class CrazyPiece {
 
     }
 
-//  suggested movement
-    public boolean suggestedMove(int xDestiny, int yDestiny) {
+    public List<Position> possiblesPositions(int boardSize, List<CrazyPiece> crazyPiecesInGame, Shift shift) {
 
-        return true;
+        possiblesPositions.clear();
 
-    }
+        possiblesPositions_Horizontal(boardSize);
 
-//  set
-    public void setPosition(Position position) {
+        possiblesPositions_Vertical(boardSize);
 
-        this.position = position;
+        possiblesPositions_Diagonal(boardSize);
 
-    }
+        possiblesPositions_RemovePosition(crazyPiecesInGame);
 
-//  remove
-    public boolean removeIamgePNG(){
-
-//      it tries to remove the image
-        try {
-
-//          set the variable of this same class as null
-            this.imagePNG = null;
-
-//          return the value of the variable "true" of this same class
-            return true;
-
-//      if there is any problem in the above code
-        } catch (Exception impossibleToChangeColor) {
-
-//          print this message in screen
-            System.out.println("Impossible to remove the image");
-
-//          return the value of the variable "false" of this same class
-            return false;
-
-        }
+        return possiblesPositions;
 
     }
 
-
-//  has
-    public boolean hasImagePNG(String imagePNG) {
-
-//      return true if the image received is the same of this piece
-        return this.imagePNG.equals(imagePNG);
-
-    }
-
-    public void moveRight(int countMoves) {
-
-        position.changeXPositionRight(countMoves);
-
-    }
-
-    public void moveLeft(int countMoves) {
-
-        position.changeXPositionLeft(countMoves);
-
-    }
-
-    public void moveUp(int countMoves) {
-
-        position.changeYPositionUp(countMoves);
-
-    }
-
-    public void moveDown(int countMoves) {
-
-        position.changeYPositionDown(countMoves);
-
-    }
-
-//  change
-    public void changeType() {
-
-
-
-        hasChangedType = true;
-
-    }
-
-    public void undoMov(Position previousPosition) {
-
-        this.position = previousPosition;
-
-    }
-
-
-    public void isInGame() {
-
-        inGame = true;
-
-    }
-
-    public void isOutOfGame() {
-
-        inGame = false;
-        Position destiny = new Position(-100, -100);
-        this.position.changePosition(destiny);
-
-    }
-
-    public String saveFile_ToString() {
-
-        return this.id +
-                ":" + this.type +
-                ":" + this.idTeam +
-                ":" + this.name;
-
-    }
-
-    protected String checkPosition() {
-
-        String string;
-        Position isOutOfTheGame = new Position(-100, -100);
-
-//      if actual position in x axis as the value of null OR actual position in y axis as the value of null
-        if(this.position.equals(isOutOfTheGame)){
-
-//          add this to the variable string
-            string = "(n/a)";
-
-        }else {
-
-//          add this to the variable string
-            string = "(" + this.position.getxActual() + ", " + this.position.getyActual() + ")";
-
-        }
-
-        return string;
-
-    }
-
-//  protected
     protected void possiblesPositions_Horizontal(int boardSize) {
 
 //      left
@@ -470,15 +321,15 @@ public class CrazyPiece {
 //      down
         for (int down = position.getyActual() + minMovVertical + 1; down < position.getyActual() + maxMovVertical + 1; down++) {
 
-        if (down < boardSize) {
+            if (down < boardSize) {
 
-            possiblesPositions.add(createPosition_Vertical(down));
+                possiblesPositions.add(createPosition_Vertical(down));
 
-        } else {
+            } else {
 
-            break;
+                break;
 
-        }
+            }
 
         }
 
@@ -648,6 +499,82 @@ public class CrazyPiece {
 
     }
 
+    public void moveRight(int countMoves) {
+
+        position.changeXPositionRight(countMoves);
+
+    }
+
+    public void moveLeft(int countMoves) {
+
+        position.changeXPositionLeft(countMoves);
+
+    }
+
+    public void moveUp(int countMoves) {
+
+        position.changeYPositionUp(countMoves);
+
+    }
+
+    public void moveDown(int countMoves) {
+
+        position.changeYPositionDown(countMoves);
+
+    }
+
+//  change
+    public void nextType() {}
+
+    public void changePieceType(int pieceType) {}
+
+    protected String checkPosition() {
+
+        String string;
+        Position isOutOfTheGame = new Position(-100, -100);
+
+//      if actual position in x axis as the value of null OR actual position in y axis as the value of null
+        if(this.position.equals(isOutOfTheGame)){
+
+//          add this to the variable string
+            string = "(n/a)";
+
+        }else {
+
+//          add this to the variable string
+            string = "(" + this.position.getxActual() + ", " + this.position.getyActual() + ")";
+
+        }
+
+        return string;
+
+    }
+
+//  undo
+    public void undoPieceType() {}
+
+    public void undoMov(Position previousPosition) {
+
+        this.position = previousPosition;
+
+    }
+
+//  game status
+    public void isInGame() {
+
+        inGame = true;
+
+    }
+
+    public void isOutOfGame() {
+
+        inGame = false;
+        Position destiny = new Position(-100, -100);
+        this.position.changePosition(destiny);
+
+    }
+
+//  create positions
     protected Position createPosition_Diagonal(int horizontal, int vertical) {
 
         return new Position(horizontal, vertical);
@@ -681,6 +608,15 @@ public class CrazyPiece {
 
 //      return the value of the variable string
         return string;
+
+    }
+
+    public String saveFile_ToString() {
+
+        return this.id +
+                ":" + this.type +
+                ":" + this.idTeam +
+                ":" + this.name;
 
     }
 

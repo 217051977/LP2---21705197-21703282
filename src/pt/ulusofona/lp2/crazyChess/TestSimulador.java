@@ -454,12 +454,7 @@ public class TestSimulador {
         assertEquals("The number of valid plays by white team should be 15", 15, simulador.getNumberOfValidPlaysByWhiteTeam());
         assertEquals("The number of black pieces captured should be 2", 2, simulador.getNumberOfBlackPiecesCaptured());
         assertEquals("The number of invalid plays by white team should be 3", 3, simulador.getNumberOfInvalidPlaysByWhiteTeam());
-        for (CrazyPiece thisPiece : simulador.crazyPiecesInGame) {
-            if (thisPiece.getType() == 7) {
-                assertEquals("Should be 1", 1, thisPiece.getPieceId());
-                assertEquals("Should be Joker/Rainha", "Joker/Rainha", thisPiece.getTypeName());
-            }
-        }
+        searchForAJoker(simulador);
         System.out.println(simulador.getResultados());
     }
 
@@ -468,12 +463,7 @@ public class TestSimulador {
         Simulador simulador = new Simulador();
         File file = new File("test-files/RUN_FILE.txt");
         assertTrue("Should work!", simulador.iniciaJogo(file));
-        for (CrazyPiece thisPiece : simulador.crazyPiecesInGame) {
-            if (thisPiece.getType() == 7) {
-                assertEquals("Should be 1", 1, thisPiece.getPieceId());
-                assertEquals("Should be Joker/Rainha", "Joker/Rainha", thisPiece.getTypeName());
-            }
-        }
+        searchForAJoker(simulador);
     }
 
     @Test
@@ -795,18 +785,17 @@ public class TestSimulador {
     public void testGetSuggestedPlay_King_ImpossibleToMove() {
         Simulador simulador = createSimulator(5);
         createCrazyPiece_King_Black_PresentInGame(1, 5, 5, simulador);
-        setPonies(simulador);
+        createSeveral_Ponies(simulador);
         List<String> result = new ArrayList<>();
         result.add("Pedido inválido");
         assertEquals("Not the the right suggestions!", result, simulador.obterSugestoesJogada(0, 2));
-
     }
 
     //  Queen
     @Test
     public void testGetSuggestedPlay_Queen() {
         Simulador simulador = createSimulator(11);
-        createCrazyPiecePresentInGame_Queen_Black(5, 5, simulador);
+        createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         List<String> result_queen = setQueenResult();
         assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
 
@@ -815,7 +804,7 @@ public class TestSimulador {
     @Test
     public void testGetSuggestedPlay_Queen_NotCentered() {
         Simulador simulador = createSimulator(11);
-        createCrazyPiecePresentInGame_Queen_Black(0, 5, simulador);
+        createCrazyPiecePresentInGame_Queen_Black(0, simulador);
         List<String> result_queen = new ArrayList<>();
         result_queen.add(1 + ", " + 5);
         result_queen.add(2 + ", " + 5);
@@ -832,7 +821,7 @@ public class TestSimulador {
     @Test
     public void testGetSuggestedPlay_Queen_EatingAnotherQueen() {
         Simulador simulador = createSimulator(11);
-        createCrazyPiecePresentInGame_Queen_Black(5, 5, simulador);
+        createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         createCrazyPiecePresentInGame_Queen_White(1, 5, simulador);
         List<String> result_queen = setQueenResult();
         result_queen.remove(0 + ", " + 5);
@@ -844,7 +833,7 @@ public class TestSimulador {
     @Test
     public void testGetSuggestedPlay_Queen_LessThanTwoHousesFromPriest() {
         Simulador simulador = createSimulator(11);
-        createCrazyPiecePresentInGame_Queen_Black(5, 5, simulador);
+        createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         createCrazyPiecePresentInGame_Priest_White(1, 5, simulador);
         List<String> result_queen = setQueenResult();
         result_queen.remove(0 + ", " + 5);
@@ -856,7 +845,7 @@ public class TestSimulador {
     @Test
     public void testGetSuggestedPlay_Queen_PiecesInTheWay() {
         Simulador simulador = createSimulator(11);
-        createCrazyPiecePresentInGame_Queen_Black(5, 5, simulador);
+        createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         createCrazyPiecePresentInGame_Pony_White(simulador);
         List<String> result_queen = setQueenResult();
         result_queen.remove(0 + ", " + 0);
@@ -870,12 +859,10 @@ public class TestSimulador {
     @Test
     public void testGetSuggestedPlay_Queen_ImpossibleToMove() {
         Simulador simulador = createSimulator(11);
-        createCrazyPiecePresentInGame_Queen_Black(5, 5, simulador);
-        setPonies(simulador);
+        createCrazyPiecePresentInGame_Queen_Black(5, simulador);
+        createSeveral_Ponies(simulador);
         List<String> result_queen = new ArrayList<>();
-//        result_queen.add("Pedido inválido");
         assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
-
     }
 
     //  Pony
@@ -984,8 +971,7 @@ public class TestSimulador {
         List<String> result_priest = new ArrayList<>();
         result_priest.add(4 + ", " + 4);
         result_priest.add(2 + ", " + 2);
-        result_priest.addAll(setPriestResult());
-        assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
+        setAndTest_PriestResult(simulador, result_priest);
     }
 
     @Test
@@ -995,9 +981,7 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_TowerH_White(simulador);
         List<String> result_priest = new ArrayList<>();
         result_priest.add(4 + ", " + 4);
-        result_priest.addAll(setPriestResult());
-        assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
-
+        setAndTest_PriestResult(simulador, result_priest);
     }
 
     @Test
@@ -1214,21 +1198,7 @@ public class TestSimulador {
         assertTrue("First Capture should be true!", simulador.getFirstCapture());
     }
 
-//    @Test_Aux
-    private void testUndoPieces_Aux(Simulador simulator) {
-        createCrazyPiece_King_White_PresentInGame(1, 0, 0, simulator);
-        createCrazyPiece_King_Black_PresentInGame(2, 4, 0, simulator);
-        createCrazyPiece_King_Black_PresentInGame(3, 2, 1, simulator);
-        assertTrue("Should be able to move!", simulator.processaJogada(4, 0, 3, 0));
-        assertTrue("Should be able to move!", simulator.processaJogada(0, 0, 1, 0));
-        assertTrue("Should be able to move!", simulator.processaJogada(3, 0, 2, 0));
-        assertTrue("Should eat the other piece!", simulator.processaJogada(1, 0, 2, 0));
-        assertEquals("Should be 2!", 3, simulator.getPreviousCountNoCapture());
-
-    }
-
-//  privates functions
-    //  creates
+//  creates
     private Simulador createSimulator(int boardSize) {
 
         return new Simulador(boardSize);
@@ -1293,9 +1263,9 @@ public class TestSimulador {
 
     }
 
-    private void createCrazyPiecePresentInGame_Queen_Black(int x, int y, Simulador simulador) {
+    private void createCrazyPiecePresentInGame_Queen_Black(int x, Simulador simulador) {
 
-        Position piecePosition = new Position(x, y);
+        Position piecePosition = new Position(x, 5);
         CrazyPiece piece = new RainhaPreta(1, "Black");
         piece.isInGame();
         piece.setPosition(piecePosition);
@@ -1425,7 +1395,7 @@ public class TestSimulador {
 
     }
 
-    private void setPonies(Simulador simulador) {
+    private void createSeveral_Ponies(Simulador simulador) {
 
         createCrazyPiecePresentInGame_Pony_Black(4, 4, simulador);
         createCrazyPiecePresentInGame_Pony_Black(5, 4, simulador);
@@ -1438,7 +1408,7 @@ public class TestSimulador {
 
     }
 
-    //  set results
+//  set results and runTestsAuxiliaries
     private List<String> setKingResult() {
 
         List<String> result = new ArrayList<>();
@@ -1666,6 +1636,37 @@ public class TestSimulador {
         result.add(10 + ", " + 5);
 
         return result;
+
+    }
+
+    private void setAndTest_PriestResult(Simulador simulador, List<String> result_priest) {
+
+        result_priest.addAll(setPriestResult());
+        assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
+
+    }
+
+    private void testUndoPieces_Aux(Simulador simulator) {
+        createCrazyPiece_King_White_PresentInGame(1, 0, 0, simulator);
+        createCrazyPiece_King_Black_PresentInGame(2, 4, 0, simulator);
+        createCrazyPiece_King_Black_PresentInGame(3, 2, 1, simulator);
+        assertTrue("Should be able to move!", simulator.processaJogada(4, 0, 3, 0));
+        assertTrue("Should be able to move!", simulator.processaJogada(0, 0, 1, 0));
+        assertTrue("Should be able to move!", simulator.processaJogada(3, 0, 2, 0));
+        assertTrue("Should eat the other piece!", simulator.processaJogada(1, 0, 2, 0));
+        assertEquals("Should be 2!", 3, simulator.getPreviousCountNoCapture());
+
+    }
+
+    private void searchForAJoker(Simulador simulador) {
+
+        for (CrazyPiece thisPiece : simulador.crazyPiecesInGame) {
+            if (thisPiece.getType() == 7) {
+                assertEquals("Should be 1", 1, thisPiece.getPieceId());
+                assertEquals("Should be Joker/Rainha", "Joker/Rainha", thisPiece.getTypeName());
+                break;
+            }
+        }
 
     }
 

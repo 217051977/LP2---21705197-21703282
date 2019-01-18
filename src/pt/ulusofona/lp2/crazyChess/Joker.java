@@ -12,9 +12,6 @@ public class Joker extends CrazyPiece {
 //      set the type piece as 7 (Joker)
         super.type = 7;
 
-//      set the impossibility to change type!
-        super.canChangeType = true; // for now
-
 //      set the relative value
         super.relativeValue = 4;
 
