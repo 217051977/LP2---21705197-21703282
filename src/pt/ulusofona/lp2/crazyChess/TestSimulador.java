@@ -344,6 +344,13 @@ public class TestSimulador {
 
 //  Start Game
     @Test
+    public void testStartGame_FileNotFounded() {
+        Simulador simulador = new Simulador();
+        File file = new File("test-files/FILE_NOT_FOUNDED.txt");
+        assertFalse("There's no info in it!", simulador.iniciaJogo(file));
+    }
+
+    @Test
     public void testStartGame_Empty() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_EMPTY.txt");

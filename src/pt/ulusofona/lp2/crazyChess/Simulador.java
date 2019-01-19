@@ -38,7 +38,7 @@ public class Simulador {
     private String s = "EMPATE";
     private Position positionErased;
 
-    //    Constructor
+//  Constructor
     public Simulador() {}//*********************************************************************************************
 
     public Simulador(int boardSize) {
@@ -47,7 +47,7 @@ public class Simulador {
 
     }//*****************************************************************************
 
-//    gets
+//  gets
     public int getTamanhoTabuleiro() {
 
         return boardSize;
@@ -261,24 +261,41 @@ public class Simulador {
 //  gravar jogo
     public boolean iniciaJogo(File ficheiroInicial) {
 
+//      inicia o jogo por fazer reset a todas as variaveis necessarias
         reset();
-        List<String> piecesIds = new ArrayList<>();
+//      cria uma lista que contera todos os ids presentes no ficheiro
+        List<Integer> piecesIds = new ArrayList<>();
 
+//      tenta ler o ficheiro
         try {
 
+//          cria um scanner de for a poder ler o ficheiro
             Scanner scan = new Scanner(ficheiroInicial);
 
+//          caso nao haja nenhuma linha, ou seja, o ficheiro ser vazio
             if (!scan.hasNextLine()) {
 
-                throw new NullPointerException();
+//              ativa uma excepcao que informara o utilizador do problema
+                throw new InvalidSimulatorInputException(Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                        "Ficheiro está vazio!");
 
             }
 
-            int nPieces = 0,
-                    nPiecesMaxIndex,
-                    boardSizeMaxIndex = 0,
-                    nLines = 0,
-                    yPosition = 0;
+/*
+*           declara e inicializa variaveis necessarias para o decorrer do programa:
+*
+*           nPiecesMaxIndex -> ultima linha do ficheiro que contem informacao sobre as pecas
+*           boardSizeMaxIndex -> ultima linha do ficheiro que contem informacao sobre o tabuleiro
+*           nLines -> numero da linha do ficheiro que estamos a ver
+*           yPosition -> posicao do eixo do y das pecas. Esta variavel e utilizada na leitura da informacao do tabueiro
+*           piecesInfo -> array de string que contem a informacao da peca que se esta a ler do ficheiro
+*           boardInfo -> array de string que contem a informacao da linha do tabuleiro que se esta a ler do ficheiro
+*           saveInfo -> array de string que contem a informacao da gravacao do jogo anterior
+* */
+            int nPiecesMaxIndex = 2,
+                boardSizeMaxIndex = 0,
+                nLines = 0,
+                yPosition = 0;
             String[] piecesInfo;
             String[] boardInfo;
             String[] saveInfo;
@@ -287,81 +304,116 @@ public class Simulador {
 
                 String line = scan.nextLine();
                 System.out.println(line);
-                nPiecesMaxIndex = nPieces + 2;
-                boardSizeMaxIndex = boardSize + nPiecesMaxIndex;
 
-                /*
-
-                tenho de ver se n pieces != npiecesmax
-                tenho de ver se n npiecesmax e != maxtabuleiro
-
-                 */
-
-//                quatro partes;
-//
-//                1 - dimensoes do tabuleiro => int
-//                2 - quantidade peças existentes no tabuleiro
-//                3 - descreve as pieces existentes no tabuleiro
-//                4 - conteudo inicial do tabuleiro ( posicao das pieces)
-
+//              se estivermos na primeira linha
                 if (nLines == 0) {
 
+//                  tenta guardar na variavel boardSize em valor numerico o tamanho do tabuleiro
                     try {
 
                         boardSize = Integer.parseInt(line);
 
+//                  caso a primeira linha do ficheiro nao seja um numero
                     }catch (ArithmeticException notAnInteger) {
 
-                        return false;
+//                      ativa uma excepcao que informara o utilizador do problema
+                        throw new InvalidSimulatorInputException(
+                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                "Tem de colocar o tamanho do tabuleiro em numérico!");
 
                     }
 
+//              se estivermos na segunda linhado ficheiro
                 } else if (nLines == 1) {
 
+//                  tenta guardar na variavel boardSize em valor numerico o numero de pecas existentes em jogo
                     try {
 
-                        nPieces = Integer.parseInt(line);
+                        nPiecesMaxIndex += Integer.parseInt(line);
 
+//                  caso a primeira linha do ficheiro nao seja um numero
                     }catch (ArithmeticException notAnInteger) {
 
-                        return false;
+//                      ativa uma excepcao que informara o utilizador do problema
+                        throw new InvalidSimulatorInputException(
+                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                "Tem de colocar o número de peças existêntes em jogo em numérico!");
 
                     }
 
+//                  guarda na variavel boardSizeMaxIndex o numero da ultima linha do ficheiro
+                    boardSizeMaxIndex = boardSize + nPiecesMaxIndex;
+
+//              se estivermos dentro da parte do ficheiro que contem a informacao de cada peca
                 } else if (nLines < nPiecesMaxIndex) {
 
-                    piecesInfo = line.split(":");
+//                  tenta dividir a linha em questao por ":" e guarda cada parcela da mesma na variavel piecesInfo
+                    try {
 
-                    if (piecesInfo.length != 4) {
+                        piecesInfo = line.split(":");
 
-                        throw new NullPointerException();
+                    } catch (NumberFormatException missingFileLines) {
+
+//                      ativa uma excepcao que informara o utilizador do problema
+                        throw new InvalidSimulatorInputException(
+                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                "Falta o tamanho do tabuleiro ou o número de peças");
 
                     }
 
-                    for (int i = 0; i < 4; i++) {
+//                  se a variavel nao contiver 4 parcelas
+                    if (piecesInfo.length > 4) {
 
-                        if (i == 3) {
+//                      ativa uma excepcao que informara o utilizador do problema
+                        throw new InvalidSimulatorInputException(
+                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                "DADOS A MAIS (Esperava: " + 4 + " ; Obtive: " + piecesInfo.length + " )");
 
-                            try {
+                    } else if (piecesInfo.length < 4) {
 
-                                Integer.parseInt(piecesInfo[i]);
-                                return false;
+//                      ativa uma excepcao que informara o utilizador do problema
+                        throw new InvalidSimulatorInputException(
+                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                "DADOS A MENOS (Esperava: " + 4 + " ; Obtive: " + piecesInfo.length + " )");
 
-                            } catch (Exception e) {
+                    }
 
-                                Ignore isAPiece;
+//                  para a primeira e a segunda parcela que tem de ser numerico da variavel piecesInfo
+                    for (int i = 0; i < 3; i++) {
 
-                            }
+//                      declara a variavel auxiliar
+                        int aux;
 
-                        }else {
+//                      tenta guardar na variavel aux em valor numerico o valor da parcela i da linha em especifico
+                        try {
 
-                            try {
+                            aux = Integer.parseInt(piecesInfo[i]);
 
-                                Integer.parseInt(piecesInfo[i]);
+//                      caso a primeira linha do ficheiro nao seja um numero
+                        } catch (Exception e) {
 
-                            } catch (Exception e) {
+//                          ativa uma excepcao que informara o utilizador do problema
+                            throw new InvalidSimulatorInputException(
+                                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                    "As primeiras três parcelas da informação das peças têm de ser em numérico!");
 
-                                return false;
+                        }
+
+//                      se for a primeira parcela da linha
+                        if (i == 0) {
+
+//                          percorre a lista de ids das pecas existentes no jogo
+                            for (Integer thisPieceId : piecesIds) {
+
+//                              se o id desta peça em especifico ja existir anteriormente ou se for 0
+                                if (thisPieceId == aux || aux == 0) {
+
+//                                  ativa uma excepcao que informara o utilizador do problema
+                                    throw new InvalidSimulatorInputException(
+                                            Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                            "Já existe uma peça com este ID!");
+
+                                }
 
                             }
 
@@ -369,26 +421,21 @@ public class Simulador {
 
                     }
 
-                    for (String thisPieceId : piecesIds) {
+//                  adiciona o id desta peca a lista de ids
+                    piecesIds.add(Integer.parseInt(piecesInfo[0]));
 
-                        if (thisPieceId.equals(piecesInfo[0])) {
-
-                            throw new NumberFormatException();
-
-                        }
-
-                    }
-
-                    piecesIds.add(piecesInfo[0]);
-
+//                  cria um objeto do tipo CrazyPiece chamado piece
                     CrazyPiece piece;
 
+//                  cria uma peca da equipa preta perante o seu tipo de peca
                     switch (Integer.parseInt(piecesInfo[2])) {
 
+//                      equipa preta
                         case 10: {
 
                             switch (Integer.parseInt(piecesInfo[1])) {
 
+//                              cria um rei
                                 case 0: {
 
                                     piece = new ReiPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -396,6 +443,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria uma rainha
                                 case 1: {
 
                                     piece = new RainhaPreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -403,6 +451,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria um ponei magico
                                 case 2: {
 
                                     piece = new PoneiMagicoPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -410,6 +459,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria um padre da vila
                                 case 3: {
 
                                     piece = new PadreDaVilaPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -417,6 +467,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria uma torre horizontal
                                 case 4: {
 
                                     piece = new TorreHPreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -424,6 +475,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria uma torre vertical
                                 case 5: {
 
                                     piece = new TorreVPreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -431,6 +483,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria uma lebre
                                 case 6: {
 
                                     piece = new LebrePreta(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -438,6 +491,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria um joker
                                 case 7: {
 
                                     piece = new JokerPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -445,9 +499,13 @@ public class Simulador {
                                 }
                                 break;
 
+//                              se o tipo da peca nao for nenhum dos anteriores
                                 default: {
 
-                                    throw new NumberFormatException();
+//                                  ativa uma excepcao que informara o utilizador do problema
+                                    throw new InvalidSimulatorInputException(
+                                            Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                            "Esse tipo de peça não existe!");
 
                                 }
 
@@ -456,10 +514,12 @@ public class Simulador {
                         }
                         break;
 
+//                      equipa branca
                         case 20: {
 
                             switch (Integer.parseInt(piecesInfo[1])) {
 
+//                              cria um rei
                                 case 0: {
 
                                     piece = new ReiBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -467,6 +527,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria uma rainha
                                 case 1: {
 
                                     piece = new RainhaBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -474,6 +535,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria um ponei magico
                                 case 2: {
 
                                     piece = new PoneiMagicoBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -481,6 +543,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria um padre da vila
                                 case 3: {
 
                                     piece = new PadreDaVilaBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -488,6 +551,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria uma torre horizontal
                                 case 4: {
 
                                     piece = new TorreHBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -495,6 +559,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria uma torre vertical
                                 case 5: {
 
                                     piece = new TorreVBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -502,6 +567,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria uma lebre
                                 case 6: {
 
                                     piece = new LebreBranca(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -509,6 +575,7 @@ public class Simulador {
                                 }
                                 break;
 
+//                              cria um joker
                                 case 7: {
 
                                     piece = new JokerBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
@@ -516,9 +583,13 @@ public class Simulador {
                                 }
                                 break;
 
+//                              se o tipo da peca nao for nenhum dos anteriores
                                 default: {
 
-                                    throw new NumberFormatException();
+//                                  ativa uma excepcao que informara o utilizador do problema
+                                    throw new InvalidSimulatorInputException(
+                                            Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                            "Esse tipo de peça não existe!");
 
                                 }
 
@@ -527,38 +598,94 @@ public class Simulador {
                         }
                         break;
 
+//                      se a equipa nao for nem branca (20) nem preta (10)
                         default: {
 
-                            throw new NumberFormatException();
+//                          ativa uma excepcao que informara o utilizador do problema
+                            throw new InvalidSimulatorInputException(
+                                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                    "Essa equipa não existe!");
 
                         }
 
                     }
 
+//                  adiciona a peca a lista de pecas crazyPiecesInGame
                     crazyPiecesInGame.add(piece);
 
+//              se estivermos dentro da parte do ficheiro que contem a informacao do tabuleiro
                 } else if (nLines < boardSizeMaxIndex) {
 
-                    boardInfo = line.split(":");
+//                  tenta dividir a linha em questao por ":" e guarda cada parcela da mesma na variavel piecesInfo
+                    try {
 
-                    if (boardInfo.length != boardSize) {
+                        boardInfo = line.split(":");
 
-                        throw new NullPointerException();
+                    } catch (NumberFormatException missingFileLines) {
+
+//                      ativa uma excepcao que informara o utilizador do problema
+                        throw new InvalidSimulatorInputException(
+                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                "O número de peças em jogo é diferente ao número de peças processadas");
 
                     }
 
-                    for (int index = 0; index < boardInfo.length; index++) {
+//                  se a variavel nao contiver o mesmo numero de parcelas que o tamanho do tabuleiro
+                    if (boardInfo.length > boardSize) {
 
-                        if (Integer.parseInt(boardInfo[index]) != 0) {
+//                      ativa uma excepcao que informara o utilizador do problema
+                        throw new InvalidSimulatorInputException(
+                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                "DADOS A MAIS (Esperava: " + boardSize + " ; Obtive: " + boardInfo.length + " )");
 
-                            for (CrazyPiece piece : crazyPiecesInGame) {
+                    } else if (boardInfo.length < boardSize) {
 
-                                if (piece.getId() == Integer.parseInt(boardInfo[index])) {
+//                      ativa uma excepcao que informara o utilizador do problema
+                        throw new InvalidSimulatorInputException(
+                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                "DADOS A MENOS (Esperava: " + boardSize + " ; Obtive: " + boardInfo.length + " )");
 
-                                    Position position = new Position(index, yPosition);
-                                    piece.setPosition(position);
-                                    piece.isInGame();
-                                    System.out.println(piece);
+                    }
+
+//                  percorre todas as parcelas da da linha
+                    for (int i = 0; i < boardInfo.length; i++) {
+
+//                      declara a variavel auxiliar
+                        int aux;
+
+//                      tenta guardar na variavel aux em valor numerico o valor da parcela i da linha em especifico
+                        try {
+
+                            aux = Integer.parseInt(boardInfo[i]);
+
+//                      caso a primeira linha do ficheiro nao seja um numero
+                        } catch (Exception e) {
+
+//                          ativa uma excepcao que informara o utilizador do problema
+                            throw new InvalidSimulatorInputException(
+                                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                    "Tem de colocar o tamanho do tabuleiro em valor numérico!");
+
+                        }
+
+//                      se a variavel aux for diferente de 0
+                        if (aux != 0) {
+
+//                          percorre a lista de pecas em jogo
+                            for (CrazyPiece thisPiece : crazyPiecesInGame) {
+
+//                              se o id da peca thisPiece for igual ao valor da variavel aux
+                                if (thisPiece.getId() == aux) {
+
+//                                  cria uma posicao sendo o valor de x = i e o valor do y = yPosition
+                                    Position position = new Position(i, yPosition);
+//                                  coloca a peca thisPiece na posicao position
+                                    thisPiece.setPosition(position);
+//                                  afirma que esta peca esta em jogo
+                                    thisPiece.isInGame();
+//                                  imprime a peca na consola
+                                    System.out.println(thisPiece);
+//                                  sai do ciclo
                                     break;
 
                                 }
@@ -569,61 +696,156 @@ public class Simulador {
 
                     }
 
+//                  passa para a proxima linha do tabuleiro
                     yPosition++;
 
-                } else if (nLines < boardSizeMaxIndex + 1) {
+//              se o numero de linhas - 1 for menor que o index que o valor da variavel boardSizeMaxIndex
+                } else if (nLines - 1 < boardSizeMaxIndex) {
 
-                    saveInfo = line.split(":");
+//                  tenta dividir a linha em questao por ":" e guarda cada parcela da mesma na variavel piecesInfo
+                    try {
 
-                    if (Integer.parseInt(saveInfo[0]) == 10 || Integer.parseInt(saveInfo[0]) == 20 &&
-                            saveInfo.length == 7) {
+                        saveInfo = line.split(":");
 
-                        int shiftCount;
-                        int jokerPieceType = 0;
+                    } catch (NumberFormatException missingFileLines) {
 
-                        shift.changeIdTeam(Integer.parseInt(saveInfo[0]));
-                        numberOfValidPlaysByBlackTeam = Integer.parseInt(saveInfo[1]);
-                        numberOfWhitePiecesCaptured = Integer.parseInt(saveInfo[2]);
-                        numberOfInvalidPlaysByBlackTeam = Integer.parseInt(saveInfo[3]);
-                        numberOfValidPlaysByWhiteTeam = Integer.parseInt(saveInfo[4]);
-                        numberOfBlackPiecesCaptured = Integer.parseInt(saveInfo[5]);
-                        numberOfInvalidPlaysByWhiteTeam = Integer.parseInt(saveInfo[6]);
-
-                        shiftCount = numberOfValidPlaysByBlackTeam + numberOfValidPlaysByWhiteTeam;
-
-                        shift.changeCount(shiftCount);
-
-                        for (int i = shiftCount; i >= 0; i -= 6) {
-
-                            jokerPieceType = i;
-
-                        }
-
-                        for (CrazyPiece thisPiece : crazyPiecesInGame) {
-
-                            if (thisPiece.getType() == 7) {
-
-                                thisPiece.changePieceType(jokerPieceType + 1);
-
-                            }
-
-                        }
-
-                        nLines = boardSizeMaxIndex - 1;
-
-                    } else {
-
-                        throw new NumberFormatException();
+//                      ativa uma excepcao que informara o utilizador do problema
+                        throw new InvalidSimulatorInputException(
+                                Thread.currentThread().getStackTrace()[1].getLineNumber(), "Gravação corrumpida!");
 
                     }
 
+//                  se a variavel nao contiver 7 parcelas
+                    if (saveInfo.length > 7) {
+
+//                      ativa uma excepcao que informara o utilizador do problema
+                        throw new InvalidSimulatorInputException(
+                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                "DADOS A MAIS (Esperava: " + 7 + " ; Obtive: " + saveInfo.length + " )");
+
+                    } else if (saveInfo.length < 7) {
+
+//                      ativa uma excepcao que informara o utilizador do problema
+                        throw new InvalidSimulatorInputException(
+                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                "DADOS A MENOS (Esperava: " + 7 + " ; Obtive: " + saveInfo.length + " )");
+
+                    }
+
+//                  percorre todas as parcelas da da linha
+                    for (int i = 0; i < saveInfo.length; i++) {
+
+//                      declara a variavel auxiliar
+                        int aux;
+
+//                      tenta guardar na variavel aux em valor numerico o valor da parcela i da linha em especifico
+                        try {
+
+                            aux = Integer.parseInt(saveInfo[i]);
+
+//                      caso a primeira linha do ficheiro nao seja um numero
+                        } catch (Exception e) {
+
+//                          ativa uma excepcao que informara o utilizador do problema
+                            throw new InvalidSimulatorInputException(
+                                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                    "Tem de introduzir valores numéricos!");
+
+                        }
+
+/*
+*                       se o valor da primeira parcela for igual a zero
+*                       E
+*                       o valor da variavel aux for diferente de 10 E diferente de 20
+* */
+                        if (i == 0 && (aux != 10 && aux != 20)) {
+
+//                          ativa uma excepcao que informara o utilizador do problema
+                            throw new InvalidSimulatorInputException(
+                                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                    "A primeira parcela tem de ser 10 ou 20, segundo a equipa que começa a jogar!");
+
+                        }
+
+                    }
+
+/*
+*                   declara e inicializa variaveis necessarias:
+*
+*                   shiftCount -> servira para alterar o turno
+*                   jokerPieceType -> servira para descobrir que tipo de peca o joker e inicializado
+* */
+                    int shiftCount;
+                    int jokerPieceType = 0;
+
+/*
+*                   altera os valor da simulador:
+*
+*                   altera a equipa a jogar
+*                   altera o numero de:
+*                       - jogadas validas que ambas as equipas fizeram
+*                       - jogadas invalidas que ambas as equipas fizeram
+*                       - numero de capturas que mabas as equipas fizeram
+* */
+                    shift.changeIdTeam(Integer.parseInt(saveInfo[0]));
+                    numberOfValidPlaysByBlackTeam = Integer.parseInt(saveInfo[1]);
+                    numberOfWhitePiecesCaptured = Integer.parseInt(saveInfo[2]);
+                    numberOfInvalidPlaysByBlackTeam = Integer.parseInt(saveInfo[3]);
+                    numberOfValidPlaysByWhiteTeam = Integer.parseInt(saveInfo[4]);
+                    numberOfBlackPiecesCaptured = Integer.parseInt(saveInfo[5]);
+                    numberOfInvalidPlaysByWhiteTeam = Integer.parseInt(saveInfo[6]);
+
+/*
+*                   altera o valor da variavel shiftCounter de forma a ficar com a soma do total de jogadas
+*                   efectuadas por ambas as equipas
+* */
+                    shiftCount = numberOfValidPlaysByBlackTeam + numberOfValidPlaysByWhiteTeam;
+
+//                  altera o valor do turno perante o valor da variavel shiftCount
+                    shift.changeCount(shiftCount);
+
+/*
+*                   descobre qual o tipo do joker atravez de:
+*
+*                   numa variavel auxiliar i que comeca com o valor do shiftCount e e reduzido sempre 6 unidades
+*                   (equivalente a completar um ciclo, ou seja, voltar a ter o valor de rainha).
+*
+*                   Quando o valor de i for menor que 0, entao, jokerPieceType fica com o valor do i anterior.
+* */
+                    for (int i = shiftCount; i >= 0; i -= 6) {
+
+                        jokerPieceType = i;
+
+                    }
+
+//                  percorre todas as pecas existentes no jogo
+                    for (CrazyPiece thisPiece : crazyPiecesInGame) {
+
+//                      se a peca thisPiece for um joker
+                        if (thisPiece.getType() == 7) {
+
+/*
+*                           modifica o tipo de peca que este joker contem atraves de alteral o seu tipo para o valor da
+*                           variavel jokerPieceType + 1
+* */
+                            thisPiece.changePieceType(jokerPieceType + 1);
+
+                        }
+
+                    }
+
+//                  desincrementa o valor da variavel nLines
+                    nLines = boardSizeMaxIndex - 1;
+
                 }else {
 
-                    System.out.println("There's too much info!");
-                    return false;
+//                  ativa uma excepcao que informara o utilizador do problema
+                    throw new InvalidSimulatorInputException(Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                            "Existe informação a mais neste ficheiro!");
 
                 }
 
+//              incrementa o valor da variavel nLines
                 nLines++;
 
             }
@@ -631,53 +853,41 @@ public class Simulador {
             List<Position> oneBarrierPiecePositions;
             Position piecePositionToCheck;
 
+//          percorre todas as pecas no jogo
             for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
+//              se o tipo da peca thisPiece for uma rainha
                 if (thisPiece.getType() == 1) {
 
+//                  cria uma barreira a sua volta e guarda-as numa lista
                     oneBarrierPiecePositions = (thisPiece.getPosition().oneSquareBarrier(boardSize));
 
+//                  percorre de novo as pecas em jogo
                     for (CrazyPiece crazyPieceToCheck : crazyPiecesInGame) {
 
+//                      se a equipa da crazyPieceToCheck for diferente da equipa da thisPiece
                         if (crazyPieceToCheck.getIDTeam() != thisPiece.getIDTeam()) {
 
+//                          se o tipo da peca crazyPieceToCheck for um padre da vila
                             if (crazyPieceToCheck.getType() == 3) {
 
+//                              guarda a posicao desta peca
                                 piecePositionToCheck = crazyPieceToCheck.getPosition();
 
+//                              percorre todas as posicoes na lista
                                 for (Position thisPosition : oneBarrierPiecePositions) {
 
+//                                  se a posicao da peca thisPiece for igual a posicao piecePositionToCheck
                                     if (thisPosition.equals(piecePositionToCheck)) {
 
-                                        throw new NumberFormatException();
+/*
+*                                       lanca uma excepcao de forma a informar que hexiste um padre da vila
+*                                       imediatamente ao lado de uma rainha
+* */
 
-                                    }
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                } else if (thisPiece.getType() == 3) {
-
-                    oneBarrierPiecePositions = (thisPiece.getPosition().oneSquareBarrier(boardSize));
-
-                    for (CrazyPiece crazyPieceToCheck : crazyPiecesInGame) {
-
-                        if (crazyPieceToCheck.getIDTeam() != thisPiece.getIDTeam()) {
-
-                            if (crazyPieceToCheck.getType() == 1) {
-
-                                piecePositionToCheck = crazyPieceToCheck.getPosition();
-
-                                for (Position thisPosition : oneBarrierPiecePositions) {
-
-                                    if (thisPosition.equals(piecePositionToCheck)) {
-
-                                        throw new NumberFormatException();
+                                        throw new InvalidSimulatorInputException(
+                                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                                "Padre da vila junto a uma rainha");
 
                                     }
 
@@ -693,30 +903,38 @@ public class Simulador {
 
             }
 
+//          se o numero de linhas do ficheiro (nLines) for igual ao index da suposta ultima linha do ficheiro
             if (nLines == boardSizeMaxIndex) {
 
+//              guarda todas as pecas em jogo na variavel allCrazyPieces
                 allCrazyPieces.addAll(crazyPiecesInGame);
+//              retorna true
                 return true;
 
             }
+
+//          retorna false
+            return false;
+
+        } catch (InvalidSimulatorInputException e) {
+
+            e.printStackTrace();
 
             return false;
 
         } catch (FileNotFoundException e) {
 
-            System.out.println(ficheiroInicial.getName() + " not found!");
+            new InvalidSimulatorInputException(
+                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                    ficheiroInicial.getName() + " not found!").printStackTrace();
 
             return false;
 
         } catch (NumberFormatException notInt) {
 
-            System.out.println("The file inputs are not valid!");
-
-            return false;
-
-        } catch (NullPointerException notEnoughInfo) {
-
-            System.out.println("There's information missing in the file!");
+            new InvalidSimulatorInputException(
+                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                    "The file inputs are not valid!").printStackTrace();
 
             return false;
 

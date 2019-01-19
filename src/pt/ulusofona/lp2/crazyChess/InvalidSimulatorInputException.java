@@ -7,7 +7,7 @@ public class InvalidSimulatorInputException extends IOException {
     private String descricaoProblema;
     private int linhaErro;
 
-    InvalidSimulatorInputException(int linhaErro, String descricaoProblema) {
+    public InvalidSimulatorInputException(int linhaErro, String descricaoProblema) {
 
         this.descricaoProblema = descricaoProblema;
         this.linhaErro = linhaErro;
@@ -25,4 +25,12 @@ public class InvalidSimulatorInputException extends IOException {
         return descricaoProblema;
 
     }
+
+    @Override
+    public String toString() {
+
+        return "Na linha " + linhaErro + " deu o erro: " + descricaoProblema;
+
+    }
+
 }
