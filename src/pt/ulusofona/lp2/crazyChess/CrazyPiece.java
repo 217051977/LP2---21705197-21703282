@@ -10,11 +10,11 @@ public class CrazyPiece {
     protected boolean moveVertical = true, moveHorizontal = true, moveDiagonal = true,
             inGame = false;
     protected int maxMovHorizontal = 1, maxMovVertical = 1, minMovHorizontal = 0, minMovVertical = 0,
-            id, type, idTeam, relativeValue;
+            id, type, idTeam, relativeValue = 1000;
     protected byte pieceId = 1;
     protected String typeName;
     protected List<Position> possiblesPositions = new ArrayList<>();
-
+    protected int nPoints = 0;
 
     public boolean equals(CrazyPiece thisPiece) {
 
@@ -122,7 +122,19 @@ public class CrazyPiece {
 
     }
 
-//  set
+    public int getRelativeValue() {
+
+        return relativeValue;
+
+    }
+
+    public int getNPoints() {
+
+        return nPoints;
+
+    }
+
+    //  set
     public void setPosition(Position position) {
 
         this.position = position;
@@ -177,6 +189,8 @@ public class CrazyPiece {
                                 }
 
                             }
+
+                            nPoints += thisPiece.getNPoints();
 
 //                          set CRAZYPIECE_REVOMED_FROM_THE_GAME as thisPiece
                             crazyPiece_Removed_From_The_Game_Aux.add(thisPiece);

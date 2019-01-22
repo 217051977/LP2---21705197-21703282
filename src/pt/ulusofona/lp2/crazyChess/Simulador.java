@@ -1,16 +1,10 @@
 package pt.ulusofona.lp2.crazyChess;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-//  corrigir metodo verificar jogada
+import java.util.*;
 
 public class Simulador {
 
@@ -24,7 +18,7 @@ public class Simulador {
     List<CrazyPiece> crazyPiecesInGame = new ArrayList<>();
     private List<CrazyPiece> allCrazyPieces = new ArrayList<>();
     private List<String> authors = new ArrayList<>();
-    private List<String> suggestedPlay = new ArrayList<>();
+    private List<ValidPlay> suggestedPlay = new ArrayList<>();
     private List<String> scores = new ArrayList<>();
     Shift shift = new Shift();
     boolean firstCapture = false;
@@ -37,6 +31,85 @@ public class Simulador {
     private boolean hasMadeUndo = false;
     private String s = "EMPATE";
     private Position positionErased;
+    private Map<String, List<String>> estatisticas;
+    private Map<String, Integer> captures = new HashMap<>();
+    private Map<String, Integer> captured = new HashMap<>();
+    private Map<String, Integer> valid = new HashMap<>();
+    private Map<String, Integer> invalids = new HashMap<>();
+
+    public Map<String, List<String>> getEstatistivas() {
+
+        estatisticas.clear();
+
+//      create a map so it can keep the relation number of invalid plays/number of plays of each piece
+        Map<String, Integer> relation_NInvalidPlays_NPlays_map = new HashMap<>();
+        List<String> valueToReturn = new ArrayList<>();
+
+        List<Map.Entry<String, Integer>> invalids_List = changeMap_To_List(invalids);
+
+        invalids_List.stream().filter((invalid) -> valid.containsKey(invalid.getKey()))
+                .forEach((invalid) ->
+                        relation_NInvalidPlays_NPlays_map.put(invalid.getKey(),
+                                (invalids.get(invalid.getKey()) /
+                                        (invalids.get(invalid.getKey()) + valid.get(invalid.getKey())))));
+
+//      create a list with the key entry of captures, map type variable
+        List<Map.Entry<String, Integer>> capturesList = orderedList(
+                changeMap_To_List(captures));
+
+//      create lists of the best x with the key entry of the map type variable used
+        List<Map.Entry<String, Integer>> top5Points_list = getTop_X(orderedList(
+                changeMap_To_List(valid)), 5);
+
+        List<Map.Entry<String, Integer>> mostCaptured_list = getTop_X(orderedList(
+                changeMap_To_List(captured)), captured.size());
+
+        List<Map.Entry<String, Integer>> top3_Relation_NInvalidPlays_NPlays_list = getTop_X(orderedList(
+                changeMap_To_List(relation_NInvalidPlays_NPlays_map)), relation_NInvalidPlays_NPlays_map.size());
+
+//      create lists of the best x with the the list used
+        List<Map.Entry<String, Integer>> top5Captures_list = getTop_X(capturesList, 5);
+
+        List<Map.Entry<String, Integer>> piecesWith_5OrMore_Captures_list = getTop_X(capturesList,
+                (int) capturesList.stream().filter((vp) -> vp.getValue() > 5).count());
+
+//      create maps by creating a list like the above one, order it by it value and the changing it to map again
+        Map<String, Integer> top5Captures_map = changeList_To_Map(top5Captures_list);
+        Map<String, Integer> top5Points_map = changeList_To_Map(top5Points_list);
+        Map<String, Integer> piecesWith_5OrMore_Captures_map = changeList_To_Map(piecesWith_5OrMore_Captures_list);
+        Map<String, Integer> top3_Relation_NInvalidPlays_NPlays_map = changeList_To_Map(
+                top3_Relation_NInvalidPlays_NPlays_list);
+        Map<String, Integer> MostCaptured_map = changeList_To_Map(mostCaptured_list);
+
+        estatisticas.put("top5Capturas", getValueToReturn(top5Captures_list, top5Captures_map));
+        estatisticas.put("top5Pontos", getValueToReturn(top5Points_list, top5Points_map));
+        estatisticas.put("pecasMais5Capturas", getValueToReturn(piecesWith_5OrMore_Captures_list,
+                                                                    piecesWith_5OrMore_Captures_map));
+
+        top3_Relation_NInvalidPlays_NPlays_list.stream()
+                .forEach((i) ->
+                        crazyPiecesInGame.stream()
+                                .filter((thisPiece) -> thisPiece.getId() == Integer.parseInt(i.getKey()))
+                                .forEach((thisPiece) ->
+                                        valueToReturn.add(thisPiece.getIDTeam() + ":" + thisPiece.getName() + ":" +
+                                                invalids.get(i.getKey()) + ":" + valid.get(i.getKey()))
+                                ));
+
+        estatisticas.put("3pecasMaisBaralhadas",valueToReturn);
+
+        mostCaptured_list.stream()
+                .forEach((i) ->
+                        crazyPiecesInGame.stream()
+                                .filter((thisPiece) -> thisPiece.getId() == Integer.parseInt(i.getKey()))
+                                .forEach((thisPiece) ->
+                                        valueToReturn.add(thisPiece.getType() + ":" + i.getValue())
+                                ));
+
+        estatisticas.put("tiposPecaCapturados", valueToReturn);
+
+        return estatisticas;
+
+    }
 
 //  Constructor
     public Simulador() {}//*********************************************************************************************
@@ -259,7 +332,7 @@ public class Simulador {
     }//***
 
 //  gravar jogo
-    public boolean iniciaJogo(File ficheiroInicial) {
+    public void iniciaJogo(File ficheiroInicial) throws InvalidSimulatorInputException {
 
 //      inicia o jogo por fazer reset a todas as variaveis necessarias
         reset();
@@ -292,7 +365,9 @@ public class Simulador {
 *           boardInfo -> array de string que contem a informacao da linha do tabuleiro que se esta a ler do ficheiro
 *           saveInfo -> array de string que contem a informacao da gravacao do jogo anterior
 * */
-            int nPiecesMaxIndex = 2,
+            int nPieces,
+                nPieces_Counter = 0,
+                nPiecesMaxIndex = 2,
                 boardSizeMaxIndex = 0,
                 nLines = 0,
                 yPosition = 0;
@@ -329,7 +404,7 @@ public class Simulador {
 //                  tenta guardar na variavel boardSize em valor numerico o numero de pecas existentes em jogo
                     try {
 
-                        nPiecesMaxIndex += Integer.parseInt(line);
+                        nPieces = Integer.parseInt(line);
 
 //                  caso a primeira linha do ficheiro nao seja um numero
                     }catch (ArithmeticException notAnInteger) {
@@ -341,7 +416,10 @@ public class Simulador {
 
                     }
 
-//                  guarda na variavel boardSizeMaxIndex o numero da ultima linha do ficheiro
+//                  guarda na variavel nPiecesMaxIndex o numero da ultima linha do ficheiro relativa as pecas
+                    nPiecesMaxIndex += nPieces;
+
+//                  guarda na variavel boardSizeMaxIndex o numero da ultima linha do ficheiro relativa ao tabuleiro
                     boardSizeMaxIndex = boardSize + nPiecesMaxIndex;
 
 //              se estivermos dentro da parte do ficheiro que contem a informacao de cada peca
@@ -613,6 +691,8 @@ public class Simulador {
 //                  adiciona a peca a lista de pecas crazyPiecesInGame
                     crazyPiecesInGame.add(piece);
 
+                    nPieces_Counter++;
+
 //              se estivermos dentro da parte do ficheiro que contem a informacao do tabuleiro
                 } else if (nLines < boardSizeMaxIndex) {
 
@@ -626,7 +706,7 @@ public class Simulador {
 //                      ativa uma excepcao que informara o utilizador do problema
                         throw new InvalidSimulatorInputException(
                                 Thread.currentThread().getStackTrace()[1].getLineNumber(),
-                                "O número de peças em jogo é diferente ao número de peças processadas");
+                                "DADOS A MENOS (Esperava: " + 4 + " ; Obtive: " + nPieces_Counter + " )");
 
                     }
 
@@ -908,19 +988,8 @@ public class Simulador {
 
 //              guarda todas as pecas em jogo na variavel allCrazyPieces
                 allCrazyPieces.addAll(crazyPiecesInGame);
-//              retorna true
-                return true;
 
             }
-
-//          retorna false
-            return false;
-
-        } catch (InvalidSimulatorInputException e) {
-
-            e.printStackTrace();
-
-            return false;
 
         } catch (FileNotFoundException e) {
 
@@ -928,19 +997,15 @@ public class Simulador {
                     Thread.currentThread().getStackTrace()[1].getLineNumber(),
                     ficheiroInicial.getName() + " not found!").printStackTrace();
 
-            return false;
-
         } catch (NumberFormatException notInt) {
 
             new InvalidSimulatorInputException(
                     Thread.currentThread().getStackTrace()[1].getLineNumber(),
                     "The file inputs are not valid!").printStackTrace();
 
-            return false;
-
         }
 
-    }//*************************************************************
+    }//**************************
 
 //  termina o jogo
     public boolean jogoTerminado() {
@@ -1069,9 +1134,13 @@ public class Simulador {
     }//*************************************************************
 
 //  jogada
-    public List<String> obterSugestoesJogada(int xO, int yO) {
+    public List<ValidPlay> obterSugestoesJogada(int xO, int yO) {
 
         List<Position> possiblesPositions;
+
+        List<ValidPlay> validPlaysOrdered = new ArrayList<>();
+
+        ValidPlay validPlay;
 
 //      clear the list
         suggestedPlay.clear();
@@ -1093,11 +1162,26 @@ public class Simulador {
 
                     for (Position thisPosition : possiblesPositions) {
 
-                        suggestedPlay.add(thisPosition.getxActual() + ", " + thisPosition.getyActual());
+                        for (CrazyPiece piece : crazyPiecesInGame) {
+
+                            if (piece.getPosition().equals(thisPosition)) {
+
+//                                Collections.sort();
+
+                                validPlay = new ValidPlay(thisPosition.getxActual(), thisPosition.getyActual(),
+                                        piece.getRelativeValue());
+
+                                suggestedPlay.add(validPlay);
+
+                            }
+
+                        }
 
                     }
 
-                    return suggestedPlay;
+                    Collections.sort(suggestedPlay);
+
+                    return validPlaysOrdered;
 
                 }
 
@@ -1105,17 +1189,24 @@ public class Simulador {
 
         }
 
-//        if (suggestedPlay.isEmpty()) {
-
-//          Add to the list
-        suggestedPlay.add("Pedido inválido");
-
-//        }
-
 //      return the list
-        return suggestedPlay;
+        return validPlaysOrdered;
 
-    }//****************************************************
+    }//*************************************************
+
+    private void addEstatistic(String key, Map<String, Integer> hashMap) {
+
+        if (!hashMap.containsKey(key)) {
+
+            hashMap.put(key, 1);
+
+        } else {
+
+            hashMap.put(key, hashMap.get(key) + 1);
+
+        }
+
+    }
 
     public boolean processaJogada(int xO, int yO, int xD, int yD) {
 
@@ -1136,20 +1227,22 @@ public class Simulador {
                     Position destiny = new Position(xD, yD);
 
 //                  For every piece in the list of pieces in the game
-                    for (CrazyPiece thiPiece : crazyPiecesInGame) {
+                    for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
 //                      If the position of this piece is in the positionOrigin
-                        if (thiPiece.getPosition().equals(origin)) {
+                        if (thisPiece.getPosition().equals(origin)) {
 
 //                          Check if it belongs to the playing team
-                            if (thiPiece.getIDTeam() == shift.getIdTeam()) {
+                            if (thisPiece.getIDTeam() == shift.getIdTeam()) {
 
 //                              return the value returned of the move method of this piece
-                                String score = thiPiece.move(destiny, boardSize, crazyPiecesInGame, crazyPieceRemovedFromTheGameAux, shift);
+                                String score = thisPiece.move(destiny, boardSize, crazyPiecesInGame, crazyPieceRemovedFromTheGameAux, shift);
 
                                 if (score.equals("")) {
 
                                     addScoresStatsInvalid();
+
+                                    addEstatistic(String.valueOf(thisPiece.getId()), invalids);
 
                                     return false;
 
@@ -1183,11 +1276,15 @@ public class Simulador {
 
                                         crazyPieceRemovedFromTheGameAux.remove(crazyPieceRemovedFromTheGame);
 
-                                        positionErased = thiPiece.getPosition();
+                                        positionErased = thisPiece.getPosition();
+
+                                        addEstatistic(String.valueOf(thisPiece.getId()), captures);
 
                                         for (CrazyPiece crazyPiece_Eaten : crazyPiecesInGame) {
 
                                             if (crazyPieceRemovedFromTheGame.equals(crazyPiece_Eaten)) {
+
+                                                addEstatistic(String.valueOf(thisPiece.getType()), captures);
 
                                                 crazyPiece_Eaten.isOutOfGame();
                                                 break;
@@ -1204,11 +1301,13 @@ public class Simulador {
 
                                     shift.addCount(crazyPiecesInGame);
 
-                                    previousCrazyPiece = thiPiece;
+                                    previousCrazyPiece = thisPiece;
 
                                     previousPosition = origin;
 
                                     hasMadeUndo = false;
+
+                                    addEstatistic(String.valueOf(thisPiece.getId()), valid);
 
                                     return true;
 
@@ -1414,6 +1513,68 @@ public class Simulador {
         }
 
     }//************************************************************************
+
+    private List<String> getValueToReturn(List<Map.Entry<String, Integer>> thisList, Map<String, Integer> thisMap) {
+
+        List<String> valueToReturn = new ArrayList<>();
+
+        thisList.stream()
+                .forEach((i) ->
+                        crazyPiecesInGame.stream()
+                                .filter((thisPiece) -> thisPiece.getId() == Integer.parseInt(i.getKey()))
+                                .forEach((thisPiece) ->
+                                        valueToReturn.add(thisPiece.getIDTeam() + ":" + thisPiece.getName() + ":" +
+                                                thisPiece.getNPoints() + ":" + thisMap.get(i.getKey()))
+                                ));
+
+        return valueToReturn;
+
+    }
+
+    private List<Map.Entry<String, Integer>> getTop_X(List<Map.Entry<String, Integer>> thisList, int x) {
+
+        if (thisList.stream().count() < x) {
+
+            return thisList;
+
+        }
+
+        List<Map.Entry<String, Integer>> list = new ArrayList<>();
+
+        thisList.stream().limit(x).forEach(list::add);
+
+        return list;
+
+    }//*********
+
+    private List<Map.Entry<String, Integer>> changeMap_To_List(Map<String, Integer> map) {
+
+//      creates a list of map<String, Integer> by it entrance state and return it
+        return new LinkedList<>(map.entrySet());
+
+    }//************************
+
+    private List<Map.Entry<String, Integer>> orderedList(List<Map.Entry<String, Integer>> list) {
+
+//      sort the list by the value of every map in it
+        list.sort(Comparator.comparing(Map.Entry::getValue));
+
+        return list;
+
+    }//*****************
+
+    private Map<String, Integer> changeList_To_Map(List<Map.Entry<String, Integer>> list) {
+
+//      creates a map<String, Integer> type variable
+        Map<String, Integer> map = new LinkedHashMap<>();
+
+        list.stream().forEach((i) ->
+                map.put(i.getKey(), i.getValue()));
+
+//      return the map it self
+        return map;
+
+    }//***********************
 
 //  reinicia o jogo
     private void reset() {
