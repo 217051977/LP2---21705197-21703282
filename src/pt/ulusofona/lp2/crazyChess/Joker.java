@@ -12,8 +12,11 @@ public class Joker extends CrazyPiece {
 //      set the type piece as 7 (Joker)
         super.type = 7;
 
+//      set the nPoints value
+        super.nPoints = 4;
+
 //      set the relative value
-        super.relativeValue = 4;
+        super.relativeValue = String.valueOf(super.nPoints);
 
 //      set typeName as this className
         super.typeName = "Joker/Rainha";

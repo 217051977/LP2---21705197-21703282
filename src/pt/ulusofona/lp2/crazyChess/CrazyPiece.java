@@ -10,7 +10,8 @@ public class CrazyPiece {
     protected boolean moveVertical = true, moveHorizontal = true, moveDiagonal = true,
             inGame = false;
     protected int maxMovHorizontal = 1, maxMovVertical = 1, minMovHorizontal = 0, minMovVertical = 0,
-            id, type, idTeam, relativeValue = 1000;
+            id, type, idTeam;
+    protected String relativeValue = "";
     protected byte pieceId = 1;
     protected String typeName;
     protected List<Position> possiblesPositions = new ArrayList<>();
@@ -122,7 +123,7 @@ public class CrazyPiece {
 
     }
 
-    public int getRelativeValue() {
+    public String getRelativeValue() {
 
         return relativeValue;
 
@@ -607,6 +608,15 @@ public class CrazyPiece {
 
     }
 
+    public String saveFile_ToString() {
+
+        return this.id +
+                ":" + this.type +
+                ":" + this.idTeam +
+                ":" + this.name;
+
+    }
+
     //  toString (por acabar)
     public String toString() {
 
@@ -622,15 +632,6 @@ public class CrazyPiece {
 
 //      return the value of the variable string
         return string;
-
-    }
-
-    public String saveFile_ToString() {
-
-        return this.id +
-                ":" + this.type +
-                ":" + this.idTeam +
-                ":" + this.name;
 
     }
 

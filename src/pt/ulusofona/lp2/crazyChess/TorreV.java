@@ -17,8 +17,11 @@ public class TorreV extends CrazyPiece {
 //      set the type piece as 5 (V Tower)
         super.type = 5;
 
+//      set the nPoints value
+        super.nPoints = 3;
+
 //      set the relative value
-        super.relativeValue = 3;
+        super.relativeValue = String.valueOf(super.nPoints);
 
 //      set typeName as this className
         super.typeName = "TorreV";

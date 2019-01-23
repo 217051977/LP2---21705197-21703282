@@ -38,80 +38,6 @@ public class Simulador {
     private Map<String, Integer> valid = new HashMap<>();
     private Map<String, Integer> invalids = new HashMap<>();
 
-    public Map<String, List<String>> getEstatisticas() {
-
-        estatisticas.clear();
-
-//      create a map so it can keep the relation number of invalid plays/number of plays of each piece
-        Map<String, Integer> relation_NInvalidPlays_NPlays_map = new HashMap<>();
-        List<String> valueToReturn = new ArrayList<>();
-
-        List<Map.Entry<String, Integer>> invalids_List = changeMap_To_List(invalids);
-
-        invalids_List.stream().filter((invalid) -> valid.containsKey(invalid.getKey()))
-                .forEach((invalid) ->
-                        relation_NInvalidPlays_NPlays_map.put(invalid.getKey(),
-                                (invalids.get(invalid.getKey()) /
-                                        (invalids.get(invalid.getKey()) + valid.get(invalid.getKey())))));
-
-//      create a list with the key entry of captures, map type variable
-        List<Map.Entry<String, Integer>> capturesList = orderedList(
-                changeMap_To_List(captures));
-
-//      create lists of the best x with the key entry of the map type variable used
-        List<Map.Entry<String, Integer>> top5Points_list = getTop_X(orderedList(
-                changeMap_To_List(valid)), 5);
-
-        List<Map.Entry<String, Integer>> mostCaptured_list = getTop_X(orderedList(
-                changeMap_To_List(captured)), captured.size());
-
-        List<Map.Entry<String, Integer>> top3_Relation_NInvalidPlays_NPlays_list = getTop_X(orderedList(
-                changeMap_To_List(relation_NInvalidPlays_NPlays_map)), relation_NInvalidPlays_NPlays_map.size());
-
-//      create lists of the best x with the the list used
-        List<Map.Entry<String, Integer>> top5Captures_list = getTop_X(capturesList, 5);
-
-        List<Map.Entry<String, Integer>> piecesWith_5OrMore_Captures_list = getTop_X(capturesList,
-                (int) capturesList.stream().filter((vp) -> vp.getValue() > 5).count());
-
-//      create maps by creating a list like the above one, order it by it value and the changing it to map again
-        Map<String, Integer> top5Captures_map = changeList_To_Map(top5Captures_list);
-        Map<String, Integer> top5Points_map = changeList_To_Map(top5Points_list);
-        Map<String, Integer> piecesWith_5OrMore_Captures_map = changeList_To_Map(piecesWith_5OrMore_Captures_list);
-        Map<String, Integer> top3_Relation_NInvalidPlays_NPlays_map = changeList_To_Map(
-                top3_Relation_NInvalidPlays_NPlays_list);
-        Map<String, Integer> MostCaptured_map = changeList_To_Map(mostCaptured_list);
-
-        estatisticas.put("top5Capturas", getValueToReturn(top5Captures_list, top5Captures_map));
-        estatisticas.put("top5Pontos", getValueToReturn(top5Points_list, top5Points_map));
-        estatisticas.put("pecasMais5Capturas", getValueToReturn(piecesWith_5OrMore_Captures_list,
-                                                                    piecesWith_5OrMore_Captures_map));
-
-        top3_Relation_NInvalidPlays_NPlays_list.stream()
-                .forEach((i) ->
-                        crazyPiecesInGame.stream()
-                                .filter((thisPiece) -> thisPiece.getId() == Integer.parseInt(i.getKey()))
-                                .forEach((thisPiece) ->
-                                        valueToReturn.add(thisPiece.getIDTeam() + ":" + thisPiece.getName() + ":" +
-                                                invalids.get(i.getKey()) + ":" + valid.get(i.getKey()))
-                                ));
-
-        estatisticas.put("3pecasMaisBaralhadas",valueToReturn);
-
-        mostCaptured_list.stream()
-                .forEach((i) ->
-                        crazyPiecesInGame.stream()
-                                .filter((thisPiece) -> thisPiece.getId() == Integer.parseInt(i.getKey()))
-                                .forEach((thisPiece) ->
-                                        valueToReturn.add(thisPiece.getType() + ":" + i.getValue())
-                                ));
-
-        estatisticas.put("tiposPecaCapturados", valueToReturn);
-
-        return estatisticas;
-
-    }
-
 //  Constructor
     public Simulador() {}//*********************************************************************************************
 
@@ -323,6 +249,80 @@ public class Simulador {
 
     }//**********************************************************************
 
+    public Map<String, List<String>> getEstatisticas() {
+
+        estatisticas.clear();
+
+//      create a map so it can keep the relation number of invalid plays/number of plays of each piece
+        Map<String, Integer> relation_NInvalidPlays_NPlays_map = new HashMap<>();
+        List<String> valueToReturn = new ArrayList<>();
+
+        List<Map.Entry<String, Integer>> invalids_List = changeMap_To_List(invalids);
+
+        invalids_List.stream().filter((invalid) -> valid.containsKey(invalid.getKey()))
+                .forEach((invalid) ->
+                        relation_NInvalidPlays_NPlays_map.put(invalid.getKey(),
+                                (invalids.get(invalid.getKey()) /
+                                        (invalids.get(invalid.getKey()) + valid.get(invalid.getKey())))));
+
+//      create a list with the key entry of captures, map type variable
+        List<Map.Entry<String, Integer>> capturesList = orderedList(
+                changeMap_To_List(captures));
+
+//      create lists of the best x with the key entry of the map type variable used
+        List<Map.Entry<String, Integer>> top5Points_list = getTop_X(orderedList(
+                changeMap_To_List(valid)), 5);
+
+        List<Map.Entry<String, Integer>> mostCaptured_list = getTop_X(orderedList(
+                changeMap_To_List(captured)), captured.size());
+
+        List<Map.Entry<String, Integer>> top3_Relation_NInvalidPlays_NPlays_list = getTop_X(orderedList(
+                changeMap_To_List(relation_NInvalidPlays_NPlays_map)), relation_NInvalidPlays_NPlays_map.size());
+
+//      create lists of the best x with the the list used
+        List<Map.Entry<String, Integer>> top5Captures_list = getTop_X(capturesList, 5);
+
+        List<Map.Entry<String, Integer>> piecesWith_5OrMore_Captures_list = getTop_X(capturesList,
+                (int) capturesList.stream().filter((vp) -> vp.getValue() > 5).count());
+
+//      create maps by creating a list like the above one, order it by it value and the changing it to map again
+        Map<String, Integer> top5Captures_map = changeList_To_Map(top5Captures_list);
+        Map<String, Integer> top5Points_map = changeList_To_Map(top5Points_list);
+        Map<String, Integer> piecesWith_5OrMore_Captures_map = changeList_To_Map(piecesWith_5OrMore_Captures_list);
+        Map<String, Integer> top3_Relation_NInvalidPlays_NPlays_map = changeList_To_Map(
+                top3_Relation_NInvalidPlays_NPlays_list);
+        Map<String, Integer> MostCaptured_map = changeList_To_Map(mostCaptured_list);
+
+        estatisticas.put("top5Capturas", getValueToReturn(top5Captures_list, top5Captures_map));
+        estatisticas.put("top5Pontos", getValueToReturn(top5Points_list, top5Points_map));
+        estatisticas.put("pecasMais5Capturas", getValueToReturn(piecesWith_5OrMore_Captures_list,
+                piecesWith_5OrMore_Captures_map));
+
+        top3_Relation_NInvalidPlays_NPlays_list.stream()
+                .forEach((i) ->
+                        crazyPiecesInGame.stream()
+                                .filter((thisPiece) -> thisPiece.getId() == Integer.parseInt(i.getKey()))
+                                .forEach((thisPiece) ->
+                                        valueToReturn.add(thisPiece.getIDTeam() + ":" + thisPiece.getName() + ":" +
+                                                invalids.get(i.getKey()) + ":" + valid.get(i.getKey()))
+                                ));
+
+        estatisticas.put("3pecasMaisBaralhadas",valueToReturn);
+
+        mostCaptured_list.stream()
+                .forEach((i) ->
+                        crazyPiecesInGame.stream()
+                                .filter((thisPiece) -> thisPiece.getId() == Integer.parseInt(i.getKey()))
+                                .forEach((thisPiece) ->
+                                        valueToReturn.add(thisPiece.getType() + ":" + i.getValue())
+                                ));
+
+        estatisticas.put("tiposPecaCapturados", valueToReturn);
+
+        return estatisticas;
+
+    }
+
 //  set
     private String setTeamStats(int numberOfValidPlays, int numberOfPiecesCaptured, int numberOfInvalidPlays) {
 
@@ -339,6 +339,7 @@ public class Simulador {
         reset();
 //      cria uma lista que contera todos os ids presentes no ficheiro
         List<Integer> piecesIds = new ArrayList<>();
+        int fileLine = 0;
 
 //      tenta ler o ficheiro
         try {
@@ -350,7 +351,7 @@ public class Simulador {
             if (!scan.hasNextLine()) {
 
 //              ativa uma excepcao que informara o utilizador do problema
-                throw new InvalidSimulatorInputException(Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                throw new InvalidSimulatorInputException(fileLine,
                         "Ficheiro está vazio!");
 
             }
@@ -378,6 +379,8 @@ public class Simulador {
 
             while (scan.hasNextLine()) {
 
+                fileLine++;
+
                 String line = scan.nextLine();
                 System.out.println(line);
 
@@ -394,7 +397,7 @@ public class Simulador {
 
 //                      ativa uma excepcao que informara o utilizador do problema
                         throw new InvalidSimulatorInputException(
-                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                fileLine,
                                 "Tem de colocar o tamanho do tabuleiro em numérico!");
 
                     }
@@ -412,7 +415,7 @@ public class Simulador {
 
 //                      ativa uma excepcao que informara o utilizador do problema
                         throw new InvalidSimulatorInputException(
-                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                fileLine,
                                 "Tem de colocar o número de peças existêntes em jogo em numérico!");
 
                     }
@@ -435,7 +438,7 @@ public class Simulador {
 
 //                      ativa uma excepcao que informara o utilizador do problema
                         throw new InvalidSimulatorInputException(
-                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                fileLine,
                                 "Falta o tamanho do tabuleiro ou o número de peças");
 
                     }
@@ -445,14 +448,14 @@ public class Simulador {
 
 //                      ativa uma excepcao que informara o utilizador do problema
                         throw new InvalidSimulatorInputException(
-                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                fileLine,
                                 "DADOS A MAIS (Esperava: " + 4 + " ; Obtive: " + piecesInfo.length + " )");
 
                     } else if (piecesInfo.length < 4) {
 
 //                      ativa uma excepcao que informara o utilizador do problema
                         throw new InvalidSimulatorInputException(
-                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                fileLine,
                                 "DADOS A MENOS (Esperava: " + 4 + " ; Obtive: " + piecesInfo.length + " )");
 
                     }
@@ -473,7 +476,7 @@ public class Simulador {
 
 //                          ativa uma excepcao que informara o utilizador do problema
                             throw new InvalidSimulatorInputException(
-                                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                    fileLine,
                                     "As primeiras três parcelas da informação das peças têm de ser em numérico!");
 
                         }
@@ -489,7 +492,7 @@ public class Simulador {
 
 //                                  ativa uma excepcao que informara o utilizador do problema
                                     throw new InvalidSimulatorInputException(
-                                            Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                            fileLine,
                                             "Já existe uma peça com este ID!");
 
                                 }
@@ -583,7 +586,7 @@ public class Simulador {
 
 //                                  ativa uma excepcao que informara o utilizador do problema
                                     throw new InvalidSimulatorInputException(
-                                            Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                            fileLine,
                                             "Esse tipo de peça não existe!");
 
                                 }
@@ -667,7 +670,7 @@ public class Simulador {
 
 //                                  ativa uma excepcao que informara o utilizador do problema
                                     throw new InvalidSimulatorInputException(
-                                            Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                            fileLine,
                                             "Esse tipo de peça não existe!");
 
                                 }
@@ -682,7 +685,7 @@ public class Simulador {
 
 //                          ativa uma excepcao que informara o utilizador do problema
                             throw new InvalidSimulatorInputException(
-                                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                    fileLine,
                                     "Essa equipa não existe!");
 
                         }
@@ -706,7 +709,7 @@ public class Simulador {
 
 //                      ativa uma excepcao que informara o utilizador do problema
                         throw new InvalidSimulatorInputException(
-                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                fileLine,
                                 "DADOS A MENOS (Esperava: " + 4 + " ; Obtive: " + nPieces_Counter + " )");
 
                     }
@@ -716,14 +719,14 @@ public class Simulador {
 
 //                      ativa uma excepcao que informara o utilizador do problema
                         throw new InvalidSimulatorInputException(
-                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                fileLine,
                                 "DADOS A MAIS (Esperava: " + boardSize + " ; Obtive: " + boardInfo.length + " )");
 
                     } else if (boardInfo.length < boardSize) {
 
 //                      ativa uma excepcao que informara o utilizador do problema
                         throw new InvalidSimulatorInputException(
-                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                fileLine,
                                 "DADOS A MENOS (Esperava: " + boardSize + " ; Obtive: " + boardInfo.length + " )");
 
                     }
@@ -744,7 +747,7 @@ public class Simulador {
 
 //                          ativa uma excepcao que informara o utilizador do problema
                             throw new InvalidSimulatorInputException(
-                                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                    fileLine,
                                     "Tem de colocar o tamanho do tabuleiro em valor numérico!");
 
                         }
@@ -792,7 +795,8 @@ public class Simulador {
 
 //                      ativa uma excepcao que informara o utilizador do problema
                         throw new InvalidSimulatorInputException(
-                                Thread.currentThread().getStackTrace()[1].getLineNumber(), "Gravação corrumpida!");
+                                fileLine,
+                                "Gravação corrumpida!");
 
                     }
 
@@ -801,14 +805,14 @@ public class Simulador {
 
 //                      ativa uma excepcao que informara o utilizador do problema
                         throw new InvalidSimulatorInputException(
-                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                fileLine,
                                 "DADOS A MAIS (Esperava: " + 7 + " ; Obtive: " + saveInfo.length + " )");
 
                     } else if (saveInfo.length < 7) {
 
 //                      ativa uma excepcao que informara o utilizador do problema
                         throw new InvalidSimulatorInputException(
-                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                fileLine,
                                 "DADOS A MENOS (Esperava: " + 7 + " ; Obtive: " + saveInfo.length + " )");
 
                     }
@@ -829,7 +833,7 @@ public class Simulador {
 
 //                          ativa uma excepcao que informara o utilizador do problema
                             throw new InvalidSimulatorInputException(
-                                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                    fileLine,
                                     "Tem de introduzir valores numéricos!");
 
                         }
@@ -843,7 +847,7 @@ public class Simulador {
 
 //                          ativa uma excepcao que informara o utilizador do problema
                             throw new InvalidSimulatorInputException(
-                                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                    fileLine,
                                     "A primeira parcela tem de ser 10 ou 20, segundo a equipa que começa a jogar!");
 
                         }
@@ -921,7 +925,7 @@ public class Simulador {
                 }else {
 
 //                  ativa uma excepcao que informara o utilizador do problema
-                    throw new InvalidSimulatorInputException(Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                    throw new InvalidSimulatorInputException(fileLine,
                             "Existe informação a mais neste ficheiro!");
 
                 }
@@ -967,7 +971,7 @@ public class Simulador {
 * */
 
                                         throw new InvalidSimulatorInputException(
-                                                Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                                                fileLine,
                                                 "Padre da vila junto a uma rainha");
 
                                     }
@@ -993,13 +997,13 @@ public class Simulador {
             } else if (nLines < boardSizeMaxIndex) {
 
                 throw new InvalidSimulatorInputException(
-                        Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                        fileLine,
                         "DADOS A MENOS (Esperava: " + boardSize + " ; Obtive: " + yPosition + " )");
 
             } else {
 
                 throw new InvalidSimulatorInputException(
-                        Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                        fileLine,
                         "DADOS A MAIS (Esperava: " + boardSize + " ; Obtive: " + yPosition + " )");
 
             }
@@ -1007,13 +1011,13 @@ public class Simulador {
         } catch (FileNotFoundException e) {
 
             throw new InvalidSimulatorInputException(
-                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                    fileLine,
                     ficheiroInicial.getName() + " not found!");
 
         } catch (NumberFormatException notInt) {
 
             throw new InvalidSimulatorInputException(
-                    Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                    fileLine,
                     "The file inputs are not valid!");
 
         }
@@ -1153,7 +1157,7 @@ public class Simulador {
 
         List<Comparable> validPlays = new ArrayList<>();
 
-        ValidPlay validPlay = new ValidPlay();
+        boolean pieceFound;
 
 //      clear the list
         suggestedPlay.clear();
@@ -1173,31 +1177,35 @@ public class Simulador {
 //                  Create a list with all the positions possibles for the piece moved
                     possiblesPositions = thisPiece.possiblesPositions(boardSize, crazyPiecesInGame, shift);
 
-                    boolean pieceFound = false;
-
                     for (Position thisPosition : possiblesPositions) {
 
-                        for (CrazyPiece piece : crazyPiecesInGame) {
+                        pieceFound = false;
 
-                            if (piece.getPosition().equals(thisPosition)) {
+                        for (int i = 0; i < crazyPiecesInGame.size(); i++) {
 
-                                if (thisPiece.getIDTeam() != piece.getIDTeam()) {
+                            if (crazyPiecesInGame.get(i).getPosition().equals(thisPosition)) {
+
+                                if (thisPiece.getIDTeam() != crazyPiecesInGame.get(i).getIDTeam()) {
 
                                     pieceFound = true;
 
+                                    validPlays.add(createValidPlay(thisPosition, crazyPiecesInGame.get(i), true));
+
                                 }
 
-                                validPlays.add(createValidPlay(thisPosition, piece));
+                                if (!pieceFound) {
+
+                                    validPlays.add(createValidPlay(thisPosition, crazyPiecesInGame.get(i), false));
+
+                                }
 
                                 break;
 
                             }
 
-                            if (!pieceFound) {
+                            if (i == crazyPiecesInGame.size() - 1) {
 
-                                validPlays.add(createValidPlay(thisPosition, piece));
-
-                                break;
+                                validPlays.add(createValidPlay(thisPosition, crazyPiecesInGame.get(i), false));
 
                             }
 
@@ -1220,10 +1228,18 @@ public class Simulador {
 
     }//*************************************************
 
-    private ValidPlay createValidPlay(Position thisPosition, CrazyPiece thisPiece) {
+    private ValidPlay createValidPlay(Position thisPosition, CrazyPiece thisPiece, boolean haveCaptured) {
 
-        return new ValidPlay(thisPosition.getxActual(), thisPosition.getyActual(),
-                thisPiece.getRelativeValue());
+        if (haveCaptured) {
+
+            return new ValidPlay(thisPosition.getxActual(), thisPosition.getyActual(),
+                    thisPiece.getNPoints(), thisPiece.getRelativeValue());
+
+        } else {
+
+            return new ValidPlay(thisPosition.getxActual(), thisPosition.getyActual(), 0);
+
+        }
 
     }
 
@@ -1307,7 +1323,7 @@ public class Simulador {
 
                                         crazyPieceRemovedFromTheGame = crazyPieceRemovedFromTheGameAux.get(0);
 
-                                        crazyPieceRemovedFromTheGameAux.remove(crazyPieceRemovedFromTheGame);
+                                        crazyPieceRemovedFromTheGameAux.clear();
 
                                         positionErased = thisPiece.getPosition();
 

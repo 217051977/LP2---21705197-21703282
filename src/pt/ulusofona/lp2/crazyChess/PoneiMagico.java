@@ -21,8 +21,11 @@ public class PoneiMagico extends CrazyPiece {
 //      set the type piece as 2 (Ponei magico)
         super.type = 2;
 
+//      set the nPoints value
+        super.nPoints = 5;
+
 //      set the relative value
-        super.relativeValue = 5;
+        super.relativeValue = String.valueOf(super.nPoints);
 
 //      set typeName as this className
         super.typeName = "Ponei Mágico";

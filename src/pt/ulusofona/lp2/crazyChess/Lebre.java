@@ -13,8 +13,11 @@ public class Lebre extends CrazyPiece {
 //      set the type piece as 6 (Lebre)
         super.type = 6;
 
+//      set the nPoints value
+        super.nPoints = 2;
+
 //      set the relative value
-        super.relativeValue = 2;
+        super.relativeValue = String.valueOf(super.nPoints);
 
 //      set typeName as this className
         super.typeName = "Lebre";

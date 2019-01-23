@@ -18,8 +18,11 @@ public class PadreDaVila extends CrazyPiece {
 //      set the type piece as 3 (Padre da vila)
         super.type = 3;
 
+//      set the nPoints value
+        super.nPoints = 3;
+
 //      set the relative value
-        super.relativeValue = 3;
+        super.relativeValue = String.valueOf(super.nPoints);
 
 //      set typeName as this className
         super.typeName = "Padre da Vila";

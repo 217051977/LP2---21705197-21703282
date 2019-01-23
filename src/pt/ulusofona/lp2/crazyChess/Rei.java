@@ -9,29 +9,12 @@ public class Rei extends CrazyPiece {
 
 //      set typeName as this className
         super.typeName = "Rei";
-/*
+
+//      set the nPoints value
+        super.nPoints = 1000;
+
 //      set the relative value
-        super.relativeValue = Integer.MAX_VALUE;
-*/
-    }
-
-
-    @Override
-//  toString (por acabar)
-    public String toString() {
-
-//      set a string type variable called string as the toString settings
-        String string = this.id +
-                " | " + this.typeName +
-                " | " + "(infinito)" +
-                " | " + this.idTeam +
-                " | " + this.name +
-                " @ ";
-
-        string += checkPosition();
-
-//      return the value of the variable string
-        return string;
+        super.relativeValue = "(infinito)";
 
     }
 

@@ -14,8 +14,11 @@ public class Rainha extends CrazyPiece {
 //      set the type piece as 1 (Queen)
         super.type = 1;
 
+//      set the nPoints value
+        super.nPoints = 8;
+
 //      set the relative value
-        super.relativeValue = 8;
+        super.relativeValue = String.valueOf(super.nPoints);
 
 //      set typeName as this className
         super.typeName = "Rainha";

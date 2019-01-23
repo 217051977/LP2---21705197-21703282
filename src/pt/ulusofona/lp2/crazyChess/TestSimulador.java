@@ -882,6 +882,8 @@ public class TestSimulador {
         Simulador simulador = createSimulator(5);
         createCrazyPiece_King_Black_PresentInGame(1, 2, 2, simulador);
         List<Comparable> result = setKingResult();
+        result.forEach(System.out::println);
+
         assertEquals("Not the the right suggestions!", result.toString(), simulador.obterSugestoesJogada(2, 2).toString());
 
     }
@@ -901,12 +903,13 @@ public class TestSimulador {
         Simulador simulador = createSimulator(5);
         createCrazyPiece_King_Black_PresentInGame(1, 0, 2, simulador);
         List<Comparable> result = new ArrayList<>();
-        result.add(1 + ", " + 2);
-        result.add(0 + ", " + 1);
-        result.add(0 + ", " + 3);
-        result.add(1 + ", " + 3);
-        result.add(1 + ", " + 1);
-        assertEquals("Not the the right suggestions!", result.toString(), simulador.obterSugestoesJogada(0, 2).toString());
+        result.add(new ValidPlay(1, 2, 0));
+        result.add(new ValidPlay(0, 1, 0));
+        result.add(new ValidPlay(0, 3, 0));
+        result.add(new ValidPlay(1, 3, 0));
+        result.add(new ValidPlay(1, 1, 0));
+        result.forEach(System.out::println);
+        assertEquals("Not the the right suggestions!", result.stream().sorted().collect(Collectors.toList()).toString(), simulador.obterSugestoesJogada(0, 2).toString());
 
     }
 
@@ -915,8 +918,22 @@ public class TestSimulador {
         Simulador simulador = createSimulator(5);
         createCrazyPiece_King_Black_PresentInGame(1, 5, 5, simulador);
         createSeveral_Ponies(simulador);
-        List<Comparable> result = new ArrayList<>();
-        assertEquals("Not the the right suggestions!", result, simulador.obterSugestoesJogada(0, 2));
+        assertEquals("Not the the right suggestions!", new ArrayList<>().toString(), simulador.obterSugestoesJogada(0, 2).toString());
+    }
+
+    @Test
+    public void testGetSuggestedPlay_King_EatAnotherPiece() {
+        Simulador simulador = createSimulator(11);
+        createCrazyPiece_King_Black_PresentInGame(1, 5, 5, simulador);
+        CrazyPiece capturedPiece = createCrazyPiece_King_White_PresentInGame(1, 4, 4, simulador);
+        List<Comparable> result_King = new ArrayList<>();
+        result_King.add(new ValidPlay(4, 5, 0));
+        result_King.add(new ValidPlay(6, 5, 0));
+        result_King.add(new ValidPlay(5, 4, 0));
+        result_King.add(new ValidPlay(5, 6, 0));
+        result_King.add(new ValidPlay(4, 4, capturedPiece.getNPoints(), capturedPiece.getRelativeValue()));
+        result_King.addAll(set__6_6__4_6__6_4());
+        assertEquals("Not the the right suggestions!", result_King.stream().sorted().collect(Collectors.toList()).toString(), simulador.obterSugestoesJogada(5, 5).toString());
     }
 
     //  Queen
@@ -925,7 +942,7 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         List<Comparable> result_queen = setQueenResult();
-        assertEquals("Not the the right suggestions!", result_queen.toString(), simulador.obterSugestoesJogada(5, 5).toString());
+        assertEquals("Not the the right suggestions!", result_queen.stream().sorted().collect(Collectors.toList()).toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -933,16 +950,11 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Queen_NotCentered() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Queen_Black(0, simulador);
-        List<Comparable> result_queen = new ArrayList<>();
-        result_queen.add(1 + ", " + 5);
-        result_queen.add(2 + ", " + 5);
-        result_queen.add(3 + ", " + 5);
-        result_queen.add(4 + ", " + 5);
-        result_queen.add(5 + ", " + 5);
+        List<Comparable> result_queen = new ArrayList<>(set__1_5__TO__5_5());
         result_queen.addAll(set__0_0__TO__0_4());
         result_queen.addAll(set__0_6__TO__0_10());
         result_queen.addAll(setQueenResult_NotCentered());
-        assertEquals("Not the the right suggestions!", result_queen.toString(), simulador.obterSugestoesJogada(0, 5).toString());
+        assertEquals("Not the the right suggestions!", result_queen.stream().sorted().collect(Collectors.toList()).toString(), simulador.obterSugestoesJogada(0, 5).toString());
 
     }
 
@@ -952,7 +964,7 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         createCrazyPiecePresentInGame_Queen_White(1, 5, simulador);
         List<Comparable> result_queen = setQueenResult();
-        List<Comparable> result = result_queen.stream().filter((i) -> !i.toString().equals("0, 5")).filter((i) -> !i.toString().equals("1, 5")).collect(Collectors.toList());
+        List<Comparable> result = result_queen.stream().filter((i) -> !i.toString().equals("0, 5, 0")).filter((i) -> !i.toString().equals("1, 5, 0")).collect(Collectors.toList());
         assertEquals("Not the the right suggestions!", result.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
@@ -961,10 +973,13 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Queen_LessThanTwoHousesFromPriest() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
-        createCrazyPiecePresentInGame_Priest_White(1, 5, simulador);
-        List<Comparable> result_queen = setQueenResult();
-        List<Comparable> result = result_queen.stream().filter((i) -> !i.toString().equals("0, 5")).filter((i) -> !i.toString().equals("2, 5")).collect(Collectors.toList());
-        assertEquals("Not the the right suggestions!", result.toString(), simulador.obterSugestoesJogada(5, 5).toString());
+        CrazyPiece capturedPiece = createCrazyPiecePresentInGame_Priest_White(1, 5, simulador);
+        List<Comparable> result_queen = new ArrayList<>();
+        result_queen.add(new ValidPlay(4, 5, 0));
+        result_queen.add(new ValidPlay(3, 5, 0));
+        result_queen.add(new ValidPlay(1, 5, capturedPiece.getNPoints(), capturedPiece.getRelativeValue()));
+        result_queen.addAll(set__Horizontal_RightOf_5_5__VerticalExcept_5_5__Diagonals_Except_5_5());
+        assertEquals("Not the the right suggestions!", result_queen.stream().sorted().collect(Collectors.toList()).toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -972,13 +987,11 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Queen_PiecesInTheWay() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
-        createCrazyPiecePresentInGame_Pony_White(simulador);
-        List<Comparable> result_queen = setQueenResult();
-        result_queen.remove(0 + ", " + 0);
-        result_queen.remove(1 + ", " + 1);
-        result_queen.remove(2 + ", " + 2);
-        result_queen.remove(3 + ", " + 3);
-        assertEquals("Not the the right suggestions!", result_queen.toString(), simulador.obterSugestoesJogada(5, 5).toString());
+        CrazyPiece capturedPiece = createCrazyPiecePresentInGame_Pony_White(simulador);
+        List<Comparable> result_queen = set__Horizontal_Except_5_5();
+        result_queen.add(new ValidPlay(4, 4, capturedPiece.getNPoints(), capturedPiece.getRelativeValue()));
+        result_queen.addAll(set__Vertical_Except_5_5());
+        assertEquals("Not the the right suggestions!", result_queen.stream().sorted().collect(Collectors.toList()).toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -987,8 +1000,7 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         createSeveral_Ponies(simulador);
-        List<Comparable> result_queen = new ArrayList<>();
-        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
+        assertEquals("Not the the right suggestions!", new ArrayList<>().toString(), simulador.obterSugestoesJogada(5, 5).toString());
     }
 
     //  Pony
@@ -1006,10 +1018,10 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Pony_Black(5, 3, simulador);
         List<Comparable> result_pony = new ArrayList<>();
-        result_pony.add(7 + ", " + 5);
-        result_pony.add(3 + ", " + 5);
-        result_pony.add(3 + ", " + 1);
-        result_pony.add(7 + ", " + 1);
+        result_pony.add(new ValidPlay(7, 5, 0));
+        result_pony.add(new ValidPlay(3, 5, 0));
+        result_pony.add(new ValidPlay(3, 1, 0));
+        result_pony.add(new ValidPlay(7, 1, 0));
         assertEquals("Not the the right suggestions!", result_pony.toString(), simulador.obterSugestoesJogada(5, 3).toString());
 
     }
@@ -1019,8 +1031,8 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Pony_Black(5, 0, simulador);
         List<Comparable> result_pony = new ArrayList<>();
-        result_pony.add(7 + ", " + 2);
-        result_pony.add(3 + ", " + 2);
+        result_pony.add(new ValidPlay(7, 2, 0));
+        result_pony.add(new ValidPlay(3, 2, 0));
         assertEquals("Not the the right suggestions!", result_pony.toString(), simulador.obterSugestoesJogada(5, 0).toString());
 
     }
@@ -1042,9 +1054,9 @@ public class TestSimulador {
         createCrazyPiece_King_White_PresentInGame(1, 5, 3, simulador);
         createCrazyPiece_King_Black_PresentInGame(1, 3, 5, simulador);
         List<Comparable> result_pony = new ArrayList<>();
-        result_pony.add(7 + ", " + 7);
-        result_pony.add(3 + ", " + 7);
-        result_pony.add(7 + ", " + 3);
+        result_pony.add(new ValidPlay(7, 7, 0));
+        result_pony.add(new ValidPlay(3, 7, 0));
+        result_pony.add(new ValidPlay(7, 3, 0));
         assertEquals("Not the the right suggestions!", result_pony.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
@@ -1068,10 +1080,7 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Priest() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Priest_Black(5, 5, simulador);
-        List<Comparable> result_priest = set__0_0__TO__4_4();
-        result_priest.remove(1 + ", " + 1);
-        result_priest.remove(0 + ", " + 0);
-        result_priest.addAll(setPriestResult());
+        List<Comparable> result_priest = new ArrayList<>(setPriestResult());
         assertEquals("Not the the right suggestions!", result_priest.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
@@ -1080,11 +1089,13 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Priest_NotCentered() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Priest_Black(0, 5, simulador);
-        List<Comparable> result_priest = setQueenResult_NotCentered();
-        result_priest.remove(4 + ", " + 9);
-        result_priest.remove(5 + ", " + 10);
-        result_priest.remove(4 + ", " + 1);
-        result_priest.remove(5 + ", " + 0);
+        List<Comparable> result = setQueenResult_NotCentered();
+        List<Comparable> result_priest = result.stream()
+                .filter((i) -> !i.toString().equals("4, 9, 0"))
+                .filter((i) -> !i.toString().equals("5, 10, 0"))
+                .filter((i) -> !i.toString().equals("4, 1, 0"))
+                .filter((i) -> !i.toString().equals("5, 0, 0"))
+                .collect(Collectors.toList());
         assertEquals("Not the the right suggestions!", result_priest.toString(), simulador.obterSugestoesJogada(0, 5).toString());
 
     }
@@ -1093,10 +1104,10 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Priest_LessThan2HousesFromAQueen() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Priest_Black(5, 5, simulador);
-        createCrazyPiecePresentInGame_Queen_White(2, 2, simulador);
+        CrazyPiece capturedPiece = createCrazyPiecePresentInGame_Queen_White(2, 2, simulador);
         List<Comparable> result_priest = new ArrayList<>();
-        result_priest.add(4 + ", " + 4);
-        result_priest.add(2 + ", " + 2);
+        result_priest.add(new ValidPlay(4, 4, 0));
+        result_priest.add(new ValidPlay(2, 2, capturedPiece.getNPoints(), capturedPiece.getRelativeValue()));
         setAndTest_PriestResult(simulador, result_priest);
     }
 
@@ -1104,9 +1115,9 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Priest_PiecesInTheWay() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Priest_Black(5, 5, simulador);
-        createCrazyPiecePresentInGame_TowerH_White(simulador);
+        CrazyPiece capturedPiece = createCrazyPiecePresentInGame_TowerH_White(simulador);
         List<Comparable> result_priest = new ArrayList<>();
-        result_priest.add(4 + ", " + 4);
+        result_priest.add(new ValidPlay(4, 4, capturedPiece.getNPoints(), capturedPiece.getRelativeValue()));
         setAndTest_PriestResult(simulador, result_priest);
     }
 
@@ -1139,15 +1150,11 @@ public class TestSimulador {
     public void testGetSuggestedPlay_TowerH_NotCentered() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_TowerH_Black(0, 5, simulador);
-        List<Comparable> result_towerH = new ArrayList<>();
-        List<Comparable> aux = set__0_5__TO__4_5();
-        for (int i = aux.size() - 2; i >= 0; i --) {
-
-            result_towerH.add(aux.get(i));
-
-        }
-        result_towerH.add(5 + ", " + 5);
-        result_towerH.addAll(set__6_5__TO__10_5());
+        List<Comparable> result = new ArrayList<>(set__1_5__TO__5_5());
+        result.addAll(set__6_5__TO__10_5());
+        List<Comparable> result_towerH = result.stream()
+                .filter((i) -> !i.toString().equals("0, 5, 0"))
+                .collect(Collectors.toList());
         assertEquals("Not the the right suggestions!", result_towerH.toString(), simulador.obterSugestoesJogada(0, 5).toString());
 
     }
@@ -1156,10 +1163,10 @@ public class TestSimulador {
     public void testGetSuggestedPlay_TowerH_PiecesInTheWay() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_TowerH_Black(5, 5, simulador);
-        createCrazyPiecePresentInGame_Priest_White(6, 5, simulador);
+        CrazyPiece capturedPiece = createCrazyPiecePresentInGame_Priest_White(6, 5, simulador);
         List<Comparable> result_towerH = set__0_5__TO__4_5();
-        result_towerH.add(6 + ", " + 5);
-        assertEquals("Not the the right suggestions!", result_towerH.toString(), simulador.obterSugestoesJogada(5, 5).toString());
+        result_towerH.add(new ValidPlay(6, 5, capturedPiece.getNPoints(), capturedPiece.getRelativeValue()));
+        assertEquals("Not the the right suggestions!", result_towerH.stream().sorted().collect(Collectors.toList()).toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -1198,11 +1205,11 @@ public class TestSimulador {
     public void testGetSuggestedPlay_TowerV_PiecesInTheWay() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_TowerV_Black(5, simulador);
-        createCrazyPiecePresentInGame_Priest_White(5, 4, simulador);
+        CrazyPiece capturedPiece = createCrazyPiecePresentInGame_Priest_White(5, 4, simulador);
         List<Comparable> result_towerV = new ArrayList<>();
-        result_towerV.add(5 + ", " + 4);
+        result_towerV.add(new ValidPlay(5, 4, capturedPiece.getNPoints(), capturedPiece.getRelativeValue()));
         result_towerV.addAll(set__5_6__TO__5_10());
-        assertEquals("Not the the right suggestions!", result_towerV.toString(), simulador.obterSugestoesJogada(5, 5).toString());
+        assertEquals("Not the the right suggestions!", result_towerV.stream().sorted().collect(Collectors.toList()).toString(), simulador.obterSugestoesJogada(5, 5).toString());
     }
 
     @Test
@@ -1243,9 +1250,9 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Bunny_Black(0, 5, simulador);
         List<Comparable> result_bunny = new ArrayList<>();
-        result_bunny.add(1 + ", " + 6);
-        result_bunny.add(1 + ", " + 4);
-        assertEquals("Not the the right suggestions!", result_bunny.toString(), simulador.obterSugestoesJogada(0, 5).toString());
+        result_bunny.add(new ValidPlay(1, 6, 0));
+        result_bunny.add(new ValidPlay(1, 4, 0));
+        assertEquals("Not the the right suggestions!", result_bunny.stream().sorted().collect(Collectors.toList()).toString(), simulador.obterSugestoesJogada(0, 5).toString());
 
     }
 
@@ -1348,7 +1355,7 @@ public class TestSimulador {
 
     }
 
-    private void createCrazyPiece_King_White_PresentInGame(int PieceId, int x, int y, Simulador simulador) {
+    private CrazyPiece createCrazyPiece_King_White_PresentInGame(int PieceId, int x, int y, Simulador simulador) {
 
         Position piecePosition = new Position(x,y);
         CrazyPiece piece = new ReiBranco(PieceId, "White");
@@ -1356,6 +1363,7 @@ public class TestSimulador {
         piece.setPosition(piecePosition);
         simulador.crazyPiecesInGame.add(piece);
 
+        return piece;
     }
 
     private void createCrazyPiece_King_Black_PresentInGame(int PieceId, int x, int y, Simulador simulador) {
@@ -1368,23 +1376,14 @@ public class TestSimulador {
 
     }
 
-    private void createCrazyPiecePresentInGame_Queen_White(int x, int y, Simulador simulador) {
+    private CrazyPiece createCrazyPiecePresentInGame_Queen_White(int x, int y, Simulador simulador) {
 
         Position piecePosition = new Position(x, y);
         CrazyPiece piece = new RainhaBranca(2, "White");
         piece.isInGame();
         piece.setPosition(piecePosition);
         simulador.crazyPiecesInGame.add(piece);
-
-    }
-
-    private void createCrazyPiece_Queen_White(Simulador simulador) {
-
-        Position piecePosition = new Position(0, 2);
-        CrazyPiece piece = new RainhaBranca(0, "White");
-        piece.setPosition(piecePosition);
-        piece.isOutOfGame();
-        simulador.crazyPiecesInGame.add(piece);
+        return piece;
 
     }
 
@@ -1398,13 +1397,14 @@ public class TestSimulador {
 
     }
 
-    private void createCrazyPiecePresentInGame_Pony_White(Simulador simulador) {
+    private CrazyPiece createCrazyPiecePresentInGame_Pony_White(Simulador simulador) {
 
         Position piecePosition = new Position(4, 4);
         CrazyPiece piece = new PoneiMagicoBranco(1, "White");
         piece.isInGame();
         piece.setPosition(piecePosition);
         simulador.crazyPiecesInGame.add(piece);
+        return piece;
 
     }
 
@@ -1418,13 +1418,14 @@ public class TestSimulador {
 
     }
 
-    private void createCrazyPiecePresentInGame_Priest_White(int x, int y, Simulador simulador) {
+    private CrazyPiece createCrazyPiecePresentInGame_Priest_White(int x, int y, Simulador simulador) {
 
         Position piecePosition = new Position(x, y);
         CrazyPiece piece = new PadreDaVilaBranco(1, "White");
         piece.isInGame();
         piece.setPosition(piecePosition);
         simulador.crazyPiecesInGame.add(piece);
+        return piece;
 
     }
 
@@ -1438,7 +1439,7 @@ public class TestSimulador {
 
     }
 
-    private void createCrazyPiecePresentInGame_TowerH_White(Simulador simulador) {
+    private CrazyPiece createCrazyPiecePresentInGame_TowerH_White(Simulador simulador) {
 
         Position piecePosition = new Position(4, 4);
         CrazyPiece piece = new TorreHBranca(1, "White");
@@ -1446,6 +1447,7 @@ public class TestSimulador {
         piece.setPosition(piecePosition);
         simulador.crazyPiecesInGame.add(piece);
 
+        return piece;
     }
 
     private void createCrazyPiecePresentInGame_TowerH_Black(int x, int y, Simulador simulador) {
@@ -1535,28 +1537,24 @@ public class TestSimulador {
 
 //  set results and runTestsAuxiliaries
     private List<Comparable> setKingResult() {
-
         List<Comparable> result = new ArrayList<>();
-        result.add(1 + ", " + 2);
-        result.add(3 + ", " + 2);
-        result.add(2 + ", " + 1);
-        result.add(2 + ", " + 3);
-        result.add(1 + ", " + 1);
-        result.add(3 + ", " + 3);
-        result.add(1 + ", " + 3);
-        result.add(3 + ", " + 1);
-
-        return result;
-
+        result.add(new ValidPlay(1, 2, 0));
+        result.add(new ValidPlay(3, 2, 0));
+        result.add(new ValidPlay(2, 1, 0));
+        result.add(new ValidPlay(2, 3, 0));
+        result.add(new ValidPlay(1, 1, 0));
+        result.add(new ValidPlay(3, 3, 0));
+        result.add(new ValidPlay(1, 3, 0));
+        result.add(new ValidPlay(3, 1, 0));
+        return result.stream().sorted().collect(Collectors.toList());
     }
 
     private List<Comparable> setBunnyResult_ParShift() {
 
         List<Comparable> result = new ArrayList<>();
-        result.add(4 + ", " + 4);
-        result.add(6 + ", " + 6);
-        result.add(4 + ", " + 6);
-        result.add(6 + ", " + 4);
+
+        result.add(new ValidPlay(4, 4, 0));
+        result.addAll(set__6_6__4_6__6_4());
 
         return result;
 
@@ -1564,23 +1562,261 @@ public class TestSimulador {
 
     private List<Comparable> setPriestResult() {
 
-        List<Comparable> result = set__6_6__TO__10_10();
-        result.remove(9 + ", " + 9);
-        result.remove(10 + ", " + 10);
+        List<Comparable> result = new ArrayList<>();
+        result.addAll(set__0_0__TO__4_4());
+        result.addAll(set__6_6__TO__10_10());
         result.addAll(set__0_10__TO__4_6());
-        result.remove(1 + ", " + 9);
-        result.remove(0 + ", " + 10);
         result.addAll(set__6_4__TO__10_0());
-        result.remove(9 + ", " + 1);
-        result.remove(10 + ", " + 0);
 
-        return result;
+        return result.stream()
+                .filter((i) -> !i.toString().equals("0, 0, 0"))
+                .filter((i) -> !i.toString().equals("1, 1, 0"))
+                .filter((i) -> !i.toString().equals("0, 10, 0"))
+                .filter((i) -> !i.toString().equals("1, 9, 0"))
+                .filter((i) -> !i.toString().equals("9, 1, 0"))
+                .filter((i) -> !i.toString().equals("10, 0, 0"))
+                .filter((i) -> !i.toString().equals("9, 9, 0"))
+                .filter((i) -> !i.toString().equals("10, 10, 0"))
+                .collect(Collectors.toList());
 
     }
 
     private List<Comparable> setQueenResult() {
 
         List<Comparable> result = set__0_5__TO__4_5();
+        result.addAll(set__Horizontal_RightOf_5_5__VerticalExcept_5_5__Diagonals_Except_5_5());
+
+        return result;
+
+    }
+
+    private List<Comparable> setQueenResult_NotCentered() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(1, 6, 0));
+        result.add(new ValidPlay(2, 7, 0));
+        result.add(new ValidPlay(3, 8, 0));
+        result.add(new ValidPlay(4, 9, 0));
+        result.add(new ValidPlay(5, 10, 0));
+        result.add(new ValidPlay(1, 4, 0));
+        result.add(new ValidPlay(2, 3, 0));
+        result.add(new ValidPlay(3, 2, 0));
+        result.add(new ValidPlay(4, 1, 0));
+        result.add(new ValidPlay(5, 0, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> setPonyResult() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(7, 7, 0));
+        result.add(new ValidPlay(3, 7, 0));
+        result.add(new ValidPlay(3, 3, 0));
+        result.add(new ValidPlay(7, 3, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__0_0__TO__4_4() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(4, 4, 0));
+        result.add(new ValidPlay(3, 3, 0));
+        result.add(new ValidPlay(2, 2, 0));
+        result.add(new ValidPlay(1, 1, 0));
+        result.add(new ValidPlay(0, 0, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__6_6__TO__10_10() {
+
+        List<Comparable> result = new ArrayList<>(set__6_6__TO__8_8());
+        result.add(new ValidPlay(9, 9, 0));
+        result.add(new ValidPlay(10, 10, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__6_6__TO__8_8() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(6, 6, 0));
+        result.add(new ValidPlay(7, 7, 0));
+        result.add(new ValidPlay(8, 8, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__0_10__TO__4_6() {
+
+        List<Comparable> result = new ArrayList<>(set__2_8__TO__4_6());
+
+        result.add(new ValidPlay(1, 9, 0));
+        result.add(new ValidPlay(0, 10, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__2_8__TO__4_6() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(4, 6, 0));
+        result.add(new ValidPlay(3, 7, 0));
+        result.add(new ValidPlay(2, 8, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__6_4__TO__10_0() {
+
+        List<Comparable> result = new ArrayList<>(set__6_4__TO__8_2());
+        result.add(new ValidPlay(9, 1, 0));
+        result.add(new ValidPlay(10, 0, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__6_4__TO__8_2() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(6, 4, 0));
+        result.add(new ValidPlay(7, 3, 0));
+        result.add(new ValidPlay(8, 2, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__5_0__TO__5_4() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(5, 4, 0));
+        result.add(new ValidPlay(5, 3, 0));
+        result.add(new ValidPlay(5, 2, 0));
+        result.add(new ValidPlay(5, 1, 0));
+        result.add(new ValidPlay(5, 0, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__5_6__TO__5_10() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(5, 6, 0));
+        result.add(new ValidPlay(5, 7, 0));
+        result.add(new ValidPlay(5, 8, 0));
+        result.add(new ValidPlay(5, 9, 0));
+        result.add(new ValidPlay(5, 10, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__0_0__TO__0_4() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(0, 4, 0));
+        result.add(new ValidPlay(0, 3, 0));
+        result.add(new ValidPlay(0, 2, 0));
+        result.add(new ValidPlay(0, 1, 0));
+        result.add(new ValidPlay(0, 0, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__0_6__TO__0_10() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(0, 6, 0));
+        result.add(new ValidPlay(0, 7, 0));
+        result.add(new ValidPlay(0, 8, 0));
+        result.add(new ValidPlay(0, 9, 0));
+        result.add(new ValidPlay(0, 10, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__0_5__TO__4_5() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(4, 5, 0));
+        result.add(new ValidPlay(3, 5, 0));
+        result.add(new ValidPlay(2, 5, 0));
+        result.add(new ValidPlay(1, 5, 0));
+        result.add(new ValidPlay(0, 5, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__6_5__TO__10_5() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(6, 5, 0));
+        result.add(new ValidPlay(7, 5, 0));
+        result.add(new ValidPlay(8, 5, 0));
+        result.add(new ValidPlay(9, 5, 0));
+        result.add(new ValidPlay(10, 5, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__1_5__TO__5_5() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(1, 5, 0));
+        result.add(new ValidPlay(2, 5, 0));
+        result.add(new ValidPlay(3, 5, 0));
+        result.add(new ValidPlay(4, 5, 0));
+        result.add(new ValidPlay(5, 5, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__6_6__4_6__6_4() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(6, 6, 0));
+        result.add(new ValidPlay(4, 6, 0));
+        result.add(new ValidPlay(6, 4, 0));
+
+        return result;
+
+    }
+
+    private List<Comparable> set__Horizontal_RightOf_5_5__VerticalExcept_5_5__Diagonals_Except_5_5() {
+
+        List<Comparable> result = new ArrayList<>();
+
         result.addAll(set__6_5__TO__10_5());
         result.addAll(set__5_0__TO__5_4());
         result.addAll(set__5_6__TO__5_10());
@@ -1593,185 +1829,26 @@ public class TestSimulador {
 
     }
 
-    private List<Comparable> setQueenResult_NotCentered() {
+    private List<Comparable> set__Horizontal_Except_5_5() {
 
         List<Comparable> result = new ArrayList<>();
 
-        result.add(1 + ", " + 6);
-        result.add(2 + ", " + 7);
-        result.add(3 + ", " + 8);
-        result.add(4 + ", " + 9);
-        result.add(5 + ", " + 10);
-        result.add(1 + ", " + 4);
-        result.add(2 + ", " + 3);
-        result.add(3 + ", " + 2);
-        result.add(4 + ", " + 1);
-        result.add(5 + ", " + 0);
+        result.addAll(set__0_5__TO__4_5());
+        result.addAll(set__6_5__TO__10_5());
+        result.addAll(set__5_0__TO__5_4());
+        result.addAll(set__5_6__TO__5_10());
 
         return result;
 
     }
 
-    private List<Comparable> setPonyResult() {
-
-        List<Comparable> result = new ArrayList<>();
-        result.add(7 + ", " + 7);
-        result.add(3 + ", " + 7);
-        result.add(3 + ", " + 3);
-        result.add(7 + ", " + 3);
-
-        return result;
-
-    }
-
-    private List<Comparable> set__0_0__TO__4_4() {
+    private List<Comparable> set__Vertical_Except_5_5() {
 
         List<Comparable> result = new ArrayList<>();
 
-        result.add(4 + ", " + 4);
-        result.add(3 + ", " + 3);
-        result.add(2 + ", " + 2);
-        result.add(1 + ", " + 1);
-        result.add(0 + ", " + 0);
-
-        return result;
-
-    }
-
-    private List<Comparable> set__6_6__TO__10_10() {
-
-        List<Comparable> result = new ArrayList<>();
-
-        result.add(6 + ", " + 6);
-        result.add(7 + ", " + 7);
-        result.add(8 + ", " + 8);
-        result.add(9 + ", " + 9);
-        result.add(10 + ", " + 10);
-
-        return result;
-
-    }
-
-    private List<Comparable> set__0_10__TO__4_6() {
-
-        List<Comparable> result = new ArrayList<>();
-
-        result.add(4 + ", " + 6);
-        result.add(3 + ", " + 7);
-        result.add(2 + ", " + 8);
-        result.add(1 + ", " + 9);
-        result.add(0 + ", " + 10);
-
-        return result;
-
-    }
-
-    private List<Comparable> set__6_4__TO__10_0() {
-
-        List<Comparable> result = new ArrayList<>();
-
-        result.add(6 + ", " + 4);
-        result.add(7 + ", " + 3);
-        result.add(8 + ", " + 2);
-        result.add(9 + ", " + 1);
-        result.add(10 + ", " + 0);
-
-        return result;
-
-    }
-
-    private List<Comparable> set__5_0__TO__5_4() {
-
-        List<Comparable> result = new ArrayList<>();
-
-        result.add(5 + ", " + 4);
-        result.add(5 + ", " + 3);
-        result.add(5 + ", " + 2);
-        result.add(5 + ", " + 1);
-        result.add(5 + ", " + 0);
-
-        return result;
-
-    }
-
-    private List<Comparable> set__5_6__TO__5_10() {
-
-        List<Comparable> result = new ArrayList<>();
-
-        result.add(5 + ", " + 6);
-        result.add(5 + ", " + 7);
-        result.add(5 + ", " + 8);
-        result.add(5 + ", " + 9);
-        result.add(5 + ", " + 10);
-
-        return result;
-
-    }
-
-    private List<Comparable> set__0_0__TO__0_4() {
-
-        List<Comparable> result = new ArrayList<>();
-
-        result.add(0 + ", " + 4);
-        result.add(0 + ", " + 3);
-        result.add(0 + ", " + 2);
-        result.add(0 + ", " + 1);
-        result.add(0 + ", " + 0);
-
-        return result;
-
-    }
-
-    private List<Comparable> set__0_6__TO__0_10() {
-
-        List<Comparable> result = new ArrayList<>();
-
-        result.add(0 + ", " + 6);
-        result.add(0 + ", " + 7);
-        result.add(0 + ", " + 8);
-        result.add(0 + ", " + 9);
-        result.add(0 + ", " + 10);
-
-        return result;
-
-    }
-
-    private List<Comparable> set__0_5__TO__4_5() {
-
-        List<Comparable> result = new ArrayList<>();
-
-        result.add(new ValidPlay(4, 5, 3));
-        result.add(new ValidPlay(3, 5, 3));
-        result.add(new ValidPlay(2, 5, 3));
-        result.add(new ValidPlay(1, 5, 3));
-        result.add(new ValidPlay(0, 5, 3));
-
-//        result.add(4 + ", " + 5);
-//        result.add(3 + ", " + 5);
-//        result.add(2 + ", " + 5);
-//        result.add(1 + ", " + 5);
-//        result.add(0 + ", " + 5);
-
-        return result;
-
-    }
-
-    private List<Comparable> set__6_5__TO__10_5() {
-
-        List<Comparable> result = new ArrayList<>();
-
-        result.add(new ValidPlay(6, 5, 3));
-        result.add(new ValidPlay(7, 5, 3));
-        result.add(new ValidPlay(8, 5, 3));
-        result.add(new ValidPlay(9, 5, 3));
-        result.add(new ValidPlay(10, 5, 3));
-
-
-//        result.add(6 + ", " + 5);
-//        result.add(7 + ", " + 5);
-//        result.add(8 + ", " + 5);
-//        result.add(9 + ", " + 5);
-//        result.add(10 + ", " + 5);
+        result.addAll(set__6_6__TO__10_10());
+        result.addAll(set__0_10__TO__4_6());
+        result.addAll(set__6_4__TO__10_0());
 
         return result;
 
@@ -1779,8 +1856,10 @@ public class TestSimulador {
 
     private void setAndTest_PriestResult(Simulador simulador, List<Comparable> result_priest) {
 
-        result_priest.addAll(setPriestResult());
-        assertEquals("Not the the right suggestions!", result_priest.toString(), simulador.obterSugestoesJogada(5, 5).toString());
+        result_priest.addAll(set__6_6__TO__8_8());
+        result_priest.addAll(set__2_8__TO__4_6());
+        result_priest.addAll(set__6_4__TO__8_2());
+        assertEquals("Not the the right suggestions!", result_priest.stream().sorted().collect(Collectors.toList()).toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
