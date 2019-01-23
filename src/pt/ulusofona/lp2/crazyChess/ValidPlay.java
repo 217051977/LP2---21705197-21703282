@@ -8,6 +8,8 @@ public class ValidPlay implements Comparable<ValidPlay>{
     private int yDestiny;
     private int points;
 
+    ValidPlay(){}
+
     ValidPlay(int xDestiny, int yDestiny, int points) {
 
         this.xDestiny = xDestiny;
@@ -38,24 +40,13 @@ public class ValidPlay implements Comparable<ValidPlay>{
     public int compareTo(ValidPlay validPlay) {
 
         return points - validPlay.getPoints();
-//        if ((validPlay) -> validPlay.get)
-/*
-        if ((validPlay.getPoints() > points || ((validPlay.getPoints() == 0) && points != 0))) {
-
-            return 1;
-
-        }
-
-        return 0;
-
-    */
 
     }
 
     @Override
     public String toString() {
 
-        return xDestiny + ", " + yDestiny + ", " + points;
+        return xDestiny + ", " + yDestiny/* + ", " + points + "/n"*/;
 
     }
 

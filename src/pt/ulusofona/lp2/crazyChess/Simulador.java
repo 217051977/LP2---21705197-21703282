@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Simulador {
 
@@ -18,7 +19,7 @@ public class Simulador {
     List<CrazyPiece> crazyPiecesInGame = new ArrayList<>();
     private List<CrazyPiece> allCrazyPieces = new ArrayList<>();
     private List<String> authors = new ArrayList<>();
-    private List<ValidPlay> suggestedPlay = new ArrayList<>();
+    private List<Comparable> suggestedPlay = new ArrayList<>();
     private List<String> scores = new ArrayList<>();
     Shift shift = new Shift();
     boolean firstCapture = false;
@@ -989,19 +990,31 @@ public class Simulador {
 //              guarda todas as pecas em jogo na variavel allCrazyPieces
                 allCrazyPieces.addAll(crazyPiecesInGame);
 
+            } else if (nLines < boardSizeMaxIndex) {
+
+                throw new InvalidSimulatorInputException(
+                        Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                        "DADOS A MENOS (Esperava: " + boardSize + " ; Obtive: " + yPosition + " )");
+
+            } else {
+
+                throw new InvalidSimulatorInputException(
+                        Thread.currentThread().getStackTrace()[1].getLineNumber(),
+                        "DADOS A MAIS (Esperava: " + boardSize + " ; Obtive: " + yPosition + " )");
+
             }
 
         } catch (FileNotFoundException e) {
 
-            new InvalidSimulatorInputException(
+            throw new InvalidSimulatorInputException(
                     Thread.currentThread().getStackTrace()[1].getLineNumber(),
-                    ficheiroInicial.getName() + " not found!").printStackTrace();
+                    ficheiroInicial.getName() + " not found!");
 
         } catch (NumberFormatException notInt) {
 
-            new InvalidSimulatorInputException(
+            throw new InvalidSimulatorInputException(
                     Thread.currentThread().getStackTrace()[1].getLineNumber(),
-                    "The file inputs are not valid!").printStackTrace();
+                    "The file inputs are not valid!");
 
         }
 
@@ -1138,9 +1151,9 @@ public class Simulador {
 
         List<Position> possiblesPositions;
 
-        List<Comparable> validPlaysOrdered = new ArrayList<>();
+        List<Comparable> validPlays = new ArrayList<>();
 
-        ValidPlay validPlay;
+        ValidPlay validPlay = new ValidPlay();
 
 //      clear the list
         suggestedPlay.clear();
@@ -1160,18 +1173,31 @@ public class Simulador {
 //                  Create a list with all the positions possibles for the piece moved
                     possiblesPositions = thisPiece.possiblesPositions(boardSize, crazyPiecesInGame, shift);
 
+                    boolean pieceFound = false;
+
                     for (Position thisPosition : possiblesPositions) {
 
                         for (CrazyPiece piece : crazyPiecesInGame) {
 
                             if (piece.getPosition().equals(thisPosition)) {
 
-//                                Collections.sort();
+                                if (thisPiece.getIDTeam() != piece.getIDTeam()) {
 
-                                validPlay = new ValidPlay(thisPosition.getxActual(), thisPosition.getyActual(),
-                                        piece.getRelativeValue());
+                                    pieceFound = true;
 
-                                suggestedPlay.add(validPlay);
+                                }
+
+                                validPlays.add(createValidPlay(thisPosition, piece));
+
+                                break;
+
+                            }
+
+                            if (!pieceFound) {
+
+                                validPlays.add(createValidPlay(thisPosition, piece));
+
+                                break;
 
                             }
 
@@ -1179,9 +1205,9 @@ public class Simulador {
 
                     }
 
-                    Collections.sort(suggestedPlay);
+                    suggestedPlay = validPlays.stream().sorted().collect(Collectors.toList());
 
-                    return validPlaysOrdered;
+                    return suggestedPlay;
 
                 }
 
@@ -1190,9 +1216,16 @@ public class Simulador {
         }
 
 //      return the list
-        return validPlaysOrdered;
+        return validPlays;
 
     }//*************************************************
+
+    private ValidPlay createValidPlay(Position thisPosition, CrazyPiece thisPiece) {
+
+        return new ValidPlay(thisPosition.getxActual(), thisPosition.getyActual(),
+                thisPiece.getRelativeValue());
+
+    }
 
     private void addEstatistic(String key, Map<String, Integer> hashMap) {
 

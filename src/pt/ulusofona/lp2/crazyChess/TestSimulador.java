@@ -5,12 +5,31 @@ import org.junit.Test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 public class TestSimulador {
+//
+//    @Test
+//    public void cenas() {
+//        List<Position> possiblesPositions = new ArrayList<>();
+//
+//        Position destiny = new Position(1,2);
+//        possiblesPositions.add(destiny);
+//        possiblesPositions.add(new Position(1, 7));
+//        possiblesPositions.add(new Position(1, 6));
+//        possiblesPositions.add(new Position(1, 5));
+//        possiblesPositions.add(new Position(1, 4));
+//        possiblesPositions.add(new Position(1, 3));
+//
+//        long destinyExistes = possiblesPositions.stream().filter((thisPosition) -> (thisPosition.equals(destiny))).count();
+//        assertTrue(destinyExistes == 1);
+//
+//    }
 
 //  Main
     @Test
@@ -41,7 +60,7 @@ public class TestSimulador {
     @Test
     public void testGetAuthors() {
         Simulador simulador = new Simulador();
-        List<String> authors = new ArrayList<>();
+        List<Comparable> authors = new ArrayList<>();
         authors.add("Bruno Miguel Dias Leal, nº 21705197");
         authors.add("João Domingos, nº 21703282");
         assertEquals("That wasn't the right author!", authors, simulador.getAutores());
@@ -245,7 +264,7 @@ public class TestSimulador {
     @Test
     public void testGetScore() {
         Simulador simulador = new Simulador();
-        List<String> list = new ArrayList<>();
+        List<Comparable> list = new ArrayList<>();
         list.add("JOGO DE CRAZY CHESS");
         list.add("Resultado: " + "EMPATE");
         list.add("---");
@@ -341,118 +360,198 @@ public class TestSimulador {
         simulador.processaJogada(0,0,1,0);
         assertFalse("First Capture should be false!", simulador.getFirstCapture());
     }
-/*
+
 //  Start Game
     @Test
     public void testStartGame_FileNotFounded() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_NOT_FOUNDED.txt");
-        assertFalse("There's no info in it!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("The file is missing!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Empty() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_EMPTY.txt");
-        assertFalse("There's no info in it!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("There's no info in it!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Missing_BoardSize() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_MISSING_BOARD_SIZE.txt");
-        assertFalse("Board size or numbers of pieces are missing!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("Board size or numbers of pieces are missing!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Lower_BoardSize() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_LOWER_BOARD_SIZE.txt");
-        assertFalse("Board Size is lower than the layout or is too much info on the layout it self!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("Board Size is lower than the layout or is too much info on the layout it self!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Higher_BoardSize() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_HIGHER_BOARD_SIZE.txt");
-        assertFalse("Board Size is higher than the layout or is missing info on the layout it self!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("Board Size is higher than the layout or is missing info on the layout it self!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Missing_NumberOfPieces() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_MISSING_NUMBER_OF_PIECES.txt");
-        assertFalse("Board size or numbers of pieces are missing!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("Board size or numbers of pieces are missing!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Lower_NumberOfPieces() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_LOWER_NUMBER_OF_PIECES.txt");
-        assertFalse("Board Size is lower than the layout or is too much info on the layout it self!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("Board Size is lower than the layout or is too much info on the layout it self!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Higher_NumberOfPieces() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_HIGHER_NUMBER_OF_PIECES.txt");
-        assertFalse("Board Size is higher than the layout or is missing info on the layout it self!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("Board Size is higher than the layout or is missing info on the layout it self!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Missing_Pieces_LineAndColumn() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_MISSING_PIECES_LINE_AND_COLUMN.txt");
-        assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("There's missing info on the layout it self or board Size is higher than the layout!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Missing_Pieces_Line() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_MISSING_PIECES_LINE.txt");
-        assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("There's missing info on the layout it self or board Size is higher than the layout!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Missing_Pieces_Column() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_MISSING_PIECES_COLUMN.txt");
-        assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("There's missing info on the layout it self or board Size is higher than the layout!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Missing_Board_LineAndColumn() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_MISSING_BOARD_LINE_AND_COLUMN.txt");
-        assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("There's missing info on the layout it self or board Size is higher than the layout!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Missing_Board_Line() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_MISSING_BOARD_LINE.txt");
-        assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("There's missing info on the layout it self or board Size is higher than the layout!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Missing_Board_Column() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_MISSING_BOARD_COLUMN.txt");
-        assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("There's missing info on the layout it self or board Size is higher than the layout!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_2_Pieces_With_The_Same_Id() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_2_PIECES_WITH_THE_SAME_ID.txt");
-        assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("There's missing info on the layout it self or board Size is higher than the layout!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testStartGame_Saved_Game() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_GAME_SAVED.txt");
-        assertTrue("Should be able to run this saveFile!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+            fail("Should be able to run this saveFile!");
+        }
         assertEquals("The playing team should be 20", 20, simulador.shift.getIdTeam());
         assertEquals("The shift count should be 30", 30, simulador.shift.getCount());
         assertEquals("The number of valid plays by black team should be 15", 15, simulador.getNumberOfValidPlaysByBlackTeam());
@@ -469,7 +568,12 @@ public class TestSimulador {
     public void testStartGame_Correct() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/RUN_FILE.txt");
-        assertTrue("Should work!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+            fail("Should work!");
+        }
         searchForAJoker(simulador);
     }
 
@@ -477,16 +581,26 @@ public class TestSimulador {
     public void testStartGame_Correct_All_Pieces() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/RUN_FULL_FILE.txt");
-        assertTrue("Should work!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+            fail("Should work!");
+        }
     }
 
     @Test
     public void testStartGame_Priest_Next_To_Queen() {
         Simulador simulador = new Simulador();
         File file = new File("test-files/FILE_TEST_PRIS_NEXT_TO_QUEEN.txt");
-        assertFalse("There's missing info on the layout it self or board Size is higher than the layout!", simulador.iniciaJogo(file));
+        try {
+            simulador.iniciaJogo(file);
+            fail("There's missing info on the layout it self or board Size is higher than the layout!");
+        } catch (InvalidSimulatorInputException e) {
+            e.printStackTrace();
+        }
     }
-*/
+
 //  Execute The Move
     @Test
     public void testExecuteTheMove_AbleToMoveThePiece_Up() {
@@ -767,8 +881,8 @@ public class TestSimulador {
     public void testGetSuggestedPlay_King() {
         Simulador simulador = createSimulator(5);
         createCrazyPiece_King_Black_PresentInGame(1, 2, 2, simulador);
-        List<String> result = setKingResult();
-        assertEquals("Not the the right suggestions!", result, simulador.obterSugestoesJogada(2, 2));
+        List<Comparable> result = setKingResult();
+        assertEquals("Not the the right suggestions!", result.toString(), simulador.obterSugestoesJogada(2, 2).toString());
 
     }
 
@@ -776,9 +890,9 @@ public class TestSimulador {
     public void testGetSuggestedPlay_King_2X() {
         Simulador simulador = createSimulator(5);
         createCrazyPiece_King_Black_PresentInGame(1, 2, 2, simulador);
-        List<String> result_2x = setKingResult();
+        List<Comparable> result_2x = setKingResult();
         simulador.obterSugestoesJogada(2,2);
-        assertEquals("Not the the right suggestions!", result_2x, simulador.obterSugestoesJogada(2, 2));
+        assertEquals("Not the the right suggestions!", result_2x.toString(), simulador.obterSugestoesJogada(2, 2).toString());
 
     }
 
@@ -786,13 +900,13 @@ public class TestSimulador {
     public void testGetSuggestedPlay_King_NotCentered() {
         Simulador simulador = createSimulator(5);
         createCrazyPiece_King_Black_PresentInGame(1, 0, 2, simulador);
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
         result.add(1 + ", " + 2);
         result.add(0 + ", " + 1);
         result.add(0 + ", " + 3);
         result.add(1 + ", " + 3);
         result.add(1 + ", " + 1);
-        assertEquals("Not the the right suggestions!", result, simulador.obterSugestoesJogada(0, 2));
+        assertEquals("Not the the right suggestions!", result.toString(), simulador.obterSugestoesJogada(0, 2).toString());
 
     }
 
@@ -801,8 +915,7 @@ public class TestSimulador {
         Simulador simulador = createSimulator(5);
         createCrazyPiece_King_Black_PresentInGame(1, 5, 5, simulador);
         createSeveral_Ponies(simulador);
-        List<String> result = new ArrayList<>();
-        result.add("Pedido inválido");
+        List<Comparable> result = new ArrayList<>();
         assertEquals("Not the the right suggestions!", result, simulador.obterSugestoesJogada(0, 2));
     }
 
@@ -811,8 +924,8 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Queen() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
-        List<String> result_queen = setQueenResult();
-        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
+        List<Comparable> result_queen = setQueenResult();
+        assertEquals("Not the the right suggestions!", result_queen.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -820,7 +933,7 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Queen_NotCentered() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Queen_Black(0, simulador);
-        List<String> result_queen = new ArrayList<>();
+        List<Comparable> result_queen = new ArrayList<>();
         result_queen.add(1 + ", " + 5);
         result_queen.add(2 + ", " + 5);
         result_queen.add(3 + ", " + 5);
@@ -829,7 +942,7 @@ public class TestSimulador {
         result_queen.addAll(set__0_0__TO__0_4());
         result_queen.addAll(set__0_6__TO__0_10());
         result_queen.addAll(setQueenResult_NotCentered());
-        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(0, 5));
+        assertEquals("Not the the right suggestions!", result_queen.toString(), simulador.obterSugestoesJogada(0, 5).toString());
 
     }
 
@@ -838,10 +951,9 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         createCrazyPiecePresentInGame_Queen_White(1, 5, simulador);
-        List<String> result_queen = setQueenResult();
-        result_queen.remove(0 + ", " + 5);
-        result_queen.remove(1 + ", " + 5);
-        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
+        List<Comparable> result_queen = setQueenResult();
+        List<Comparable> result = result_queen.stream().filter((i) -> !i.toString().equals("0, 5")).filter((i) -> !i.toString().equals("1, 5")).collect(Collectors.toList());
+        assertEquals("Not the the right suggestions!", result.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -850,10 +962,9 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         createCrazyPiecePresentInGame_Priest_White(1, 5, simulador);
-        List<String> result_queen = setQueenResult();
-        result_queen.remove(0 + ", " + 5);
-        result_queen.remove(2 + ", " + 5);
-        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
+        List<Comparable> result_queen = setQueenResult();
+        List<Comparable> result = result_queen.stream().filter((i) -> !i.toString().equals("0, 5")).filter((i) -> !i.toString().equals("2, 5")).collect(Collectors.toList());
+        assertEquals("Not the the right suggestions!", result.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -862,12 +973,12 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         createCrazyPiecePresentInGame_Pony_White(simulador);
-        List<String> result_queen = setQueenResult();
+        List<Comparable> result_queen = setQueenResult();
         result_queen.remove(0 + ", " + 0);
         result_queen.remove(1 + ", " + 1);
         result_queen.remove(2 + ", " + 2);
         result_queen.remove(3 + ", " + 3);
-        assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
+        assertEquals("Not the the right suggestions!", result_queen.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -876,7 +987,7 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Queen_Black(5, simulador);
         createSeveral_Ponies(simulador);
-        List<String> result_queen = new ArrayList<>();
+        List<Comparable> result_queen = new ArrayList<>();
         assertEquals("Not the the right suggestions!", result_queen, simulador.obterSugestoesJogada(5, 5));
     }
 
@@ -885,8 +996,8 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Pony() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Pony_Black(5, 5, simulador);
-        List<String> result_pony = setPonyResult();
-        assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 5));
+        List<Comparable> result_pony = setPonyResult();
+        assertEquals("Not the the right suggestions!", result_pony.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -894,12 +1005,12 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Pony_NotCentered() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Pony_Black(5, 3, simulador);
-        List<String> result_pony = new ArrayList<>();
+        List<Comparable> result_pony = new ArrayList<>();
         result_pony.add(7 + ", " + 5);
         result_pony.add(3 + ", " + 5);
         result_pony.add(3 + ", " + 1);
         result_pony.add(7 + ", " + 1);
-        assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 3));
+        assertEquals("Not the the right suggestions!", result_pony.toString(), simulador.obterSugestoesJogada(5, 3).toString());
 
     }
 
@@ -907,10 +1018,10 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Pony_NotCentered_OutOfBoard() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Pony_Black(5, 0, simulador);
-        List<String> result_pony = new ArrayList<>();
+        List<Comparable> result_pony = new ArrayList<>();
         result_pony.add(7 + ", " + 2);
         result_pony.add(3 + ", " + 2);
-        assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 0));
+        assertEquals("Not the the right suggestions!", result_pony.toString(), simulador.obterSugestoesJogada(5, 0).toString());
 
     }
 
@@ -919,8 +1030,8 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Pony_Black(5, 5, simulador);
         createCrazyPiece_King_White_PresentInGame(1, 5, 3, simulador);
-        List<String> result_pony = setPonyResult();
-        assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 5));
+        List<Comparable> result_pony = setPonyResult();
+        assertEquals("Not the the right suggestions!", result_pony.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -930,11 +1041,11 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_Pony_Black(5, 5, simulador);
         createCrazyPiece_King_White_PresentInGame(1, 5, 3, simulador);
         createCrazyPiece_King_Black_PresentInGame(1, 3, 5, simulador);
-        List<String> result_pony = new ArrayList<>();
+        List<Comparable> result_pony = new ArrayList<>();
         result_pony.add(7 + ", " + 7);
         result_pony.add(3 + ", " + 7);
         result_pony.add(7 + ", " + 3);
-        assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 5));
+        assertEquals("Not the the right suggestions!", result_pony.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -946,7 +1057,7 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_Pony_Black(5, 5, simulador);
         createCrazyPiece_King_Black_PresentInGame(1, 5, 6, simulador);
         createCrazyPiece_King_Black_PresentInGame(1, 6, 5, simulador);
-        List<String> result_pony = new ArrayList<>();
+        List<Comparable> result_pony = new ArrayList<>();
 //        result_pony.add("Pedido inválido");
         assertEquals("Not the the right suggestions!", result_pony, simulador.obterSugestoesJogada(5, 5));
 
@@ -957,11 +1068,11 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Priest() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Priest_Black(5, 5, simulador);
-        List<String> result_priest = set__0_0__TO__4_4();
+        List<Comparable> result_priest = set__0_0__TO__4_4();
         result_priest.remove(1 + ", " + 1);
         result_priest.remove(0 + ", " + 0);
         result_priest.addAll(setPriestResult());
-        assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
+        assertEquals("Not the the right suggestions!", result_priest.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -969,12 +1080,12 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Priest_NotCentered() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Priest_Black(0, 5, simulador);
-        List<String> result_priest = setQueenResult_NotCentered();
+        List<Comparable> result_priest = setQueenResult_NotCentered();
         result_priest.remove(4 + ", " + 9);
         result_priest.remove(5 + ", " + 10);
         result_priest.remove(4 + ", " + 1);
         result_priest.remove(5 + ", " + 0);
-        assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(0, 5));
+        assertEquals("Not the the right suggestions!", result_priest.toString(), simulador.obterSugestoesJogada(0, 5).toString());
 
     }
 
@@ -983,7 +1094,7 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Priest_Black(5, 5, simulador);
         createCrazyPiecePresentInGame_Queen_White(2, 2, simulador);
-        List<String> result_priest = new ArrayList<>();
+        List<Comparable> result_priest = new ArrayList<>();
         result_priest.add(4 + ", " + 4);
         result_priest.add(2 + ", " + 2);
         setAndTest_PriestResult(simulador, result_priest);
@@ -994,7 +1105,7 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Priest_Black(5, 5, simulador);
         createCrazyPiecePresentInGame_TowerH_White(simulador);
-        List<String> result_priest = new ArrayList<>();
+        List<Comparable> result_priest = new ArrayList<>();
         result_priest.add(4 + ", " + 4);
         setAndTest_PriestResult(simulador, result_priest);
     }
@@ -1007,7 +1118,7 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_Priest_Black(6, 6, simulador);
         createCrazyPiecePresentInGame_Priest_Black(6, 4, simulador);
         createCrazyPiecePresentInGame_Priest_Black(4, 6, simulador);
-        List<String> result_priest = new ArrayList<>();
+        List<Comparable> result_priest = new ArrayList<>();
 //        result_priest.add("Pedido inválido");
         assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
 
@@ -1018,9 +1129,9 @@ public class TestSimulador {
     public void testGetSuggestedPlay_TowerH() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_TowerH_Black(5, 5, simulador);
-        List<String> result_towerH = set__0_5__TO__4_5();
+        List<Comparable> result_towerH = set__0_5__TO__4_5();
         result_towerH.addAll(set__6_5__TO__10_5());
-        assertEquals("Not the the right suggestions!", result_towerH, simulador.obterSugestoesJogada(5, 5));
+        assertEquals("Not the the right suggestions!", result_towerH.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -1028,8 +1139,8 @@ public class TestSimulador {
     public void testGetSuggestedPlay_TowerH_NotCentered() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_TowerH_Black(0, 5, simulador);
-        List<String> result_towerH = new ArrayList<>();
-        List<String> aux = set__0_5__TO__4_5();
+        List<Comparable> result_towerH = new ArrayList<>();
+        List<Comparable> aux = set__0_5__TO__4_5();
         for (int i = aux.size() - 2; i >= 0; i --) {
 
             result_towerH.add(aux.get(i));
@@ -1037,7 +1148,7 @@ public class TestSimulador {
         }
         result_towerH.add(5 + ", " + 5);
         result_towerH.addAll(set__6_5__TO__10_5());
-        assertEquals("Not the the right suggestions!", result_towerH, simulador.obterSugestoesJogada(0, 5));
+        assertEquals("Not the the right suggestions!", result_towerH.toString(), simulador.obterSugestoesJogada(0, 5).toString());
 
     }
 
@@ -1046,9 +1157,9 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_TowerH_Black(5, 5, simulador);
         createCrazyPiecePresentInGame_Priest_White(6, 5, simulador);
-        List<String> result_towerH = set__0_5__TO__4_5();
+        List<Comparable> result_towerH = set__0_5__TO__4_5();
         result_towerH.add(6 + ", " + 5);
-        assertEquals("Not the the right suggestions!", result_towerH, simulador.obterSugestoesJogada(5, 5));
+        assertEquals("Not the the right suggestions!", result_towerH.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -1058,8 +1169,7 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_Priest_Black(4, 5, simulador);
         createCrazyPiecePresentInGame_TowerH_Black(5, 5, simulador);
         createCrazyPiecePresentInGame_Priest_Black(6, 5, simulador);
-        List<String> result_towerH = new ArrayList<>();
-//        result_towerH.add("Pedido inválido");
+        List<Comparable> result_towerH = new ArrayList<>();
         assertEquals("Not the the right suggestions!", result_towerH, simulador.obterSugestoesJogada(5, 5));
 
     }
@@ -1069,18 +1179,18 @@ public class TestSimulador {
     public void testGetSuggestedPlay_TowerV() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_TowerV_Black(5, simulador);
-        List<String> result_towerV = set__5_0__TO__5_4();
+        List<Comparable> result_towerV = set__5_0__TO__5_4();
         result_towerV.addAll(set__5_6__TO__5_10());
-        assertEquals("Not the the right suggestions!", result_towerV, simulador.obterSugestoesJogada(5, 5));
+        assertEquals("Not the the right suggestions!", result_towerV.toString(), simulador.obterSugestoesJogada(5, 5).toString());
     }
 
     @Test
     public void testGetSuggestedPlay_TowerV_NotCentered() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_TowerV_Black(0, simulador);
-        List<String> result_towerV = set__0_0__TO__0_4();
+        List<Comparable> result_towerV = set__0_0__TO__0_4();
         result_towerV.addAll(set__0_6__TO__0_10());
-        assertEquals("Not the the right suggestions!", result_towerV, simulador.obterSugestoesJogada(0, 5));
+        assertEquals("Not the the right suggestions!", result_towerV.toString(), simulador.obterSugestoesJogada(0, 5).toString());
 
     }
 
@@ -1089,10 +1199,10 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_TowerV_Black(5, simulador);
         createCrazyPiecePresentInGame_Priest_White(5, 4, simulador);
-        List<String> result_towerV = new ArrayList<>();
+        List<Comparable> result_towerV = new ArrayList<>();
         result_towerV.add(5 + ", " + 4);
         result_towerV.addAll(set__5_6__TO__5_10());
-        assertEquals("Not the the right suggestions!", result_towerV, simulador.obterSugestoesJogada(5, 5));
+        assertEquals("Not the the right suggestions!", result_towerV.toString(), simulador.obterSugestoesJogada(5, 5).toString());
     }
 
     @Test
@@ -1101,7 +1211,7 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_Priest_Black(5, 4, simulador);
         createCrazyPiecePresentInGame_TowerV_Black(5, simulador);
         createCrazyPiecePresentInGame_Priest_Black(5, 6, simulador);
-        List<String> result_towerV = new ArrayList<>();
+        List<Comparable> result_towerV = new ArrayList<>();
 //        result_towerV.add("Pedido inválido");
         assertEquals("Not the the right suggestions!", result_towerV, simulador.obterSugestoesJogada(5, 5));
 
@@ -1112,8 +1222,8 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Bunny_ParShift() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Bunny_Black(5, 5, simulador);
-        List<String> result_bunny = setBunnyResult_ParShift();
-        assertEquals("Not the the right suggestions!", result_bunny, simulador.obterSugestoesJogada(5, 5));
+        List<Comparable> result_bunny = setBunnyResult_ParShift();
+        assertEquals("Not the the right suggestions!", result_bunny.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -1122,7 +1232,7 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Bunny_White(simulador);
         simulador.shift.addCount(simulador.crazyPiecesInGame);
-        List<String> result_bunny = new ArrayList<>();
+        List<Comparable> result_bunny = new ArrayList<>();
 //        result_bunny.add("Pedido inválido");
         assertEquals("Not the the right suggestions!", result_bunny, simulador.obterSugestoesJogada(5, 5));
 
@@ -1132,10 +1242,10 @@ public class TestSimulador {
     public void testGetSuggestedPlay_Bunny_NotCentered() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Bunny_Black(0, 5, simulador);
-        List<String> result_bunny = new ArrayList<>();
+        List<Comparable> result_bunny = new ArrayList<>();
         result_bunny.add(1 + ", " + 6);
         result_bunny.add(1 + ", " + 4);
-        assertEquals("Not the the right suggestions!", result_bunny, simulador.obterSugestoesJogada(0, 5));
+        assertEquals("Not the the right suggestions!", result_bunny.toString(), simulador.obterSugestoesJogada(0, 5).toString());
 
     }
 
@@ -1147,7 +1257,7 @@ public class TestSimulador {
         createCrazyPiecePresentInGame_Bunny_Black(6, 6, simulador);
         createCrazyPiecePresentInGame_Bunny_Black(4, 6, simulador);
         createCrazyPiecePresentInGame_Bunny_Black(6, 4, simulador);
-        List<String> result_bunny = new ArrayList<>();
+        List<Comparable> result_bunny = new ArrayList<>();
 //        result_bunny.add("Pedido inválido");
         assertEquals("Not the the right suggestions!", result_bunny, simulador.obterSugestoesJogada(5, 5));
 
@@ -1158,8 +1268,8 @@ public class TestSimulador {
     public void testGetSuggestedPlay_BunnyJoker_ParShift() {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Joker_Black(simulador);
-        List<String> result_BunnyJoker = setBunnyResult_ParShift();
-        assertEquals("Not the the right suggestions!", result_BunnyJoker, simulador.obterSugestoesJogada(5, 5));
+        List<Comparable> result_BunnyJoker = setBunnyResult_ParShift();
+        assertEquals("Not the the right suggestions!", result_BunnyJoker.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
@@ -1168,7 +1278,7 @@ public class TestSimulador {
         Simulador simulador = createSimulator(11);
         createCrazyPiecePresentInGame_Joker_White(simulador);
         simulador.shift.addCount(simulador.crazyPiecesInGame);
-        List<String> result_BunnyJoker= new ArrayList<>();
+        List<Comparable> result_BunnyJoker= new ArrayList<>();
 //        result_BunnyJoker.add("Pedido inválido");
         assertEquals("Not the the right suggestions!", result_BunnyJoker, simulador.obterSugestoesJogada(5, 5));
 
@@ -1424,9 +1534,9 @@ public class TestSimulador {
     }
 
 //  set results and runTestsAuxiliaries
-    private List<String> setKingResult() {
+    private List<Comparable> setKingResult() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
         result.add(1 + ", " + 2);
         result.add(3 + ", " + 2);
         result.add(2 + ", " + 1);
@@ -1440,9 +1550,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> setBunnyResult_ParShift() {
+    private List<Comparable> setBunnyResult_ParShift() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
         result.add(4 + ", " + 4);
         result.add(6 + ", " + 6);
         result.add(4 + ", " + 6);
@@ -1452,9 +1562,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> setPriestResult() {
+    private List<Comparable> setPriestResult() {
 
-        List<String> result = set__6_6__TO__10_10();
+        List<Comparable> result = set__6_6__TO__10_10();
         result.remove(9 + ", " + 9);
         result.remove(10 + ", " + 10);
         result.addAll(set__0_10__TO__4_6());
@@ -1468,9 +1578,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> setQueenResult() {
+    private List<Comparable> setQueenResult() {
 
-        List<String> result = set__0_5__TO__4_5();
+        List<Comparable> result = set__0_5__TO__4_5();
         result.addAll(set__6_5__TO__10_5());
         result.addAll(set__5_0__TO__5_4());
         result.addAll(set__5_6__TO__5_10());
@@ -1483,9 +1593,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> setQueenResult_NotCentered() {
+    private List<Comparable> setQueenResult_NotCentered() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
 
         result.add(1 + ", " + 6);
         result.add(2 + ", " + 7);
@@ -1502,9 +1612,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> setPonyResult() {
+    private List<Comparable> setPonyResult() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
         result.add(7 + ", " + 7);
         result.add(3 + ", " + 7);
         result.add(3 + ", " + 3);
@@ -1514,9 +1624,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> set__0_0__TO__4_4() {
+    private List<Comparable> set__0_0__TO__4_4() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
 
         result.add(4 + ", " + 4);
         result.add(3 + ", " + 3);
@@ -1528,9 +1638,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> set__6_6__TO__10_10() {
+    private List<Comparable> set__6_6__TO__10_10() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
 
         result.add(6 + ", " + 6);
         result.add(7 + ", " + 7);
@@ -1542,9 +1652,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> set__0_10__TO__4_6() {
+    private List<Comparable> set__0_10__TO__4_6() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
 
         result.add(4 + ", " + 6);
         result.add(3 + ", " + 7);
@@ -1556,9 +1666,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> set__6_4__TO__10_0() {
+    private List<Comparable> set__6_4__TO__10_0() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
 
         result.add(6 + ", " + 4);
         result.add(7 + ", " + 3);
@@ -1570,9 +1680,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> set__5_0__TO__5_4() {
+    private List<Comparable> set__5_0__TO__5_4() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
 
         result.add(5 + ", " + 4);
         result.add(5 + ", " + 3);
@@ -1584,9 +1694,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> set__5_6__TO__5_10() {
+    private List<Comparable> set__5_6__TO__5_10() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
 
         result.add(5 + ", " + 6);
         result.add(5 + ", " + 7);
@@ -1598,9 +1708,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> set__0_0__TO__0_4() {
+    private List<Comparable> set__0_0__TO__0_4() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
 
         result.add(0 + ", " + 4);
         result.add(0 + ", " + 3);
@@ -1612,9 +1722,9 @@ public class TestSimulador {
 
     }
 
-    private List<String> set__0_6__TO__0_10() {
+    private List<Comparable> set__0_6__TO__0_10() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
 
         result.add(0 + ", " + 6);
         result.add(0 + ", " + 7);
@@ -1626,38 +1736,51 @@ public class TestSimulador {
 
     }
 
-    private List<String> set__0_5__TO__4_5() {
+    private List<Comparable> set__0_5__TO__4_5() {
 
-        List<String> result = new ArrayList<>();
+        List<Comparable> result = new ArrayList<>();
 
-        result.add(4 + ", " + 5);
-        result.add(3 + ", " + 5);
-        result.add(2 + ", " + 5);
-        result.add(1 + ", " + 5);
-        result.add(0 + ", " + 5);
+        result.add(new ValidPlay(4, 5, 3));
+        result.add(new ValidPlay(3, 5, 3));
+        result.add(new ValidPlay(2, 5, 3));
+        result.add(new ValidPlay(1, 5, 3));
+        result.add(new ValidPlay(0, 5, 3));
 
-        return result;
-
-    }
-
-    private List<String> set__6_5__TO__10_5() {
-
-        List<String> result = new ArrayList<>();
-
-        result.add(6 + ", " + 5);
-        result.add(7 + ", " + 5);
-        result.add(8 + ", " + 5);
-        result.add(9 + ", " + 5);
-        result.add(10 + ", " + 5);
+//        result.add(4 + ", " + 5);
+//        result.add(3 + ", " + 5);
+//        result.add(2 + ", " + 5);
+//        result.add(1 + ", " + 5);
+//        result.add(0 + ", " + 5);
 
         return result;
 
     }
 
-    private void setAndTest_PriestResult(Simulador simulador, List<String> result_priest) {
+    private List<Comparable> set__6_5__TO__10_5() {
+
+        List<Comparable> result = new ArrayList<>();
+
+        result.add(new ValidPlay(6, 5, 3));
+        result.add(new ValidPlay(7, 5, 3));
+        result.add(new ValidPlay(8, 5, 3));
+        result.add(new ValidPlay(9, 5, 3));
+        result.add(new ValidPlay(10, 5, 3));
+
+
+//        result.add(6 + ", " + 5);
+//        result.add(7 + ", " + 5);
+//        result.add(8 + ", " + 5);
+//        result.add(9 + ", " + 5);
+//        result.add(10 + ", " + 5);
+
+        return result;
+
+    }
+
+    private void setAndTest_PriestResult(Simulador simulador, List<Comparable> result_priest) {
 
         result_priest.addAll(setPriestResult());
-        assertEquals("Not the the right suggestions!", result_priest, simulador.obterSugestoesJogada(5, 5));
+        assertEquals("Not the the right suggestions!", result_priest.toString(), simulador.obterSugestoesJogada(5, 5).toString());
 
     }
 
