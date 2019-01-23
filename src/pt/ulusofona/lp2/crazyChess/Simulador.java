@@ -37,7 +37,7 @@ public class Simulador {
     private Map<String, Integer> valid = new HashMap<>();
     private Map<String, Integer> invalids = new HashMap<>();
 
-    public Map<String, List<String>> getEstatistivas() {
+    public Map<String, List<String>> getEstatisticas() {
 
         estatisticas.clear();
 
@@ -1134,11 +1134,11 @@ public class Simulador {
     }//*************************************************************
 
 //  jogada
-    public List<ValidPlay> obterSugestoesJogada(int xO, int yO) {
+    public List<Comparable> obterSugestoesJogada(int xO, int yO) {
 
         List<Position> possiblesPositions;
 
-        List<ValidPlay> validPlaysOrdered = new ArrayList<>();
+        List<Comparable> validPlaysOrdered = new ArrayList<>();
 
         ValidPlay validPlay;
 
