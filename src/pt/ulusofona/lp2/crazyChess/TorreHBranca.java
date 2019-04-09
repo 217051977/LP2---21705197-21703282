@@ -7,7 +7,7 @@ class TorreHBranca extends TorreH {
         super.id = id;
         super.idTeam = 20;
         super.name = name;
-     //   super.imagePNG = "Marvel/TowerH/Avenger_Tower.png";
+        super.imagePNG = "Marvel/TowerH/Avenger_Tower.png";
 
     }
 

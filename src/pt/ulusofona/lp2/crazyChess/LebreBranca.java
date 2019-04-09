@@ -7,7 +7,7 @@ class LebreBranca extends Lebre {
         super.id = id;
         super.idTeam = 20;
         super.name = name;
-        //super.imagePNG = "Marvel/Bunny/QuickSilver.png";
+        super.imagePNG = "Marvel/Bunny/QuickSilver.png";
 
     }
 

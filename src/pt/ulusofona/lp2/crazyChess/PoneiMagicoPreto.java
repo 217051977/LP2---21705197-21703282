@@ -7,7 +7,7 @@ class PoneiMagicoPreto extends PoneiMagico {
         super.id = id;
         super.idTeam = 10;
         super.name = name;
-     //   super.imagePNG = "DC/Magic_Pony/Atomic_Skull.png";
+        super.imagePNG = "DC/Magic_Pony/Atomic_Skull.png";
 
     }
 

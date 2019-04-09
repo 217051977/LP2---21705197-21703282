@@ -7,7 +7,7 @@ class RainhaBranca extends Rainha {
         super.id = id;
         super.idTeam = 20;
         super.name = name;
-       // super.imagePNG = "Marvel/Queen/Wasp.png";
+        super.imagePNG = "Marvel/Queen/Wasp.png";
 
     }
 

@@ -125,37 +125,27 @@ public class Simulador {
         int nBlackKing = kingsAndPieces.get(0);
         boolean hasScore = false;
 
-        if (numberOfValidPlaysByWhiteTeam == 3 || numberOfValidPlaysByBlackTeam ==3) {
+        if (piecesInGame <= 2) {
 
-            s = "EMPATE";
+            if (nBlackKing == 1 && nWhiteKing == 1 || nBlackKing == 0 && nWhiteKing == 0) {
 
-            hasScore = true;
+                s = "EMPATE";
 
-        } else {
-
-            if (piecesInGame <= 2) {
-
-                if (nBlackKing == 1 && nWhiteKing == 1 || nBlackKing == 0 && nWhiteKing == 0) {
-
-                    s = "EMPATE";
-
-                    hasScore = true;
-
-                }
+                hasScore = true;
 
             }
 
-            if (!hasScore) {
+        }
 
-                if (nBlackKing == 0) {
+        if (!hasScore) {
 
-                    s = "VENCERAM AS BRANCAS";
+            if (nBlackKing == 0) {
 
-                } else if (nWhiteKing == 0) {
+                s = "VENCERAM AS BRANCAS";
 
-                    s = "VENCERAM AS PRETAS";
+            } else if (nWhiteKing == 0) {
 
-                }
+                s = "VENCERAM AS PRETAS";
 
             }
 
@@ -591,14 +581,6 @@ public class Simulador {
                                 }
                                 break;
 
-//                              cria um joker
-                                case 9: {
-
-                                    piece = new ReiGemeoPreto(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                                }
-                                break;
-
 //                              se o tipo da peca nao for nenhum dos anteriores
                                 default: {
 
@@ -679,14 +661,6 @@ public class Simulador {
                                 case 7: {
 
                                     piece = new JokerBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
-
-                                }
-                                break;
-
-//                              cria um joker
-                                case 9: {
-
-                                    piece = new ReiGemeoBranco(Integer.parseInt(piecesInfo[0]), piecesInfo[3]);
 
                                 }
                                 break;
@@ -1018,7 +992,7 @@ public class Simulador {
             if (nLines == boardSizeMaxIndex) {
 
 //              guarda todas as pecas em jogo na variavel allCrazyPieces
-               // allCrazyPieces.addAll(crazyPiecesInGame);
+//                allCrazyPieces.addAll(crazyPiecesInGame);
 
                 for (CrazyPiece thisCrazyPiece : crazyPiecesInGame) {
 
@@ -1060,10 +1034,6 @@ public class Simulador {
     public boolean jogoTerminado() {
 
         if (crazyPiecesInGame.size() == 0) {
-
-            return true;
-
-        } else if (numberOfValidPlaysByBlackTeam == 3 && numberOfValidPlaysByWhiteTeam == 3) {
 
             return true;
 

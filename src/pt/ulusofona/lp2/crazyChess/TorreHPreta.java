@@ -7,7 +7,7 @@ class TorreHPreta extends TorreH {
         super.id = id;
         super.idTeam = 10;
         super.name = name;
-     //   super.imagePNG = "DC/TowerH/Teen_Titans.png";
+        super.imagePNG = "DC/TowerH/Teen_Titans.png";
 
     }
 

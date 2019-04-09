@@ -1,4 +1,3 @@
-/*
 package pt.ulusofona.lp2.crazyChess;
 
 import org.junit.Test;
@@ -31,9 +30,6 @@ public class TestSimulador {
 //        assertTrue(destinyExistes == 1);
 //
 //    }
-
-    @Test
-    public void testeMax3JogadasValidas
 
 //  Main
     @Test
@@ -1892,4 +1888,3 @@ public class TestSimulador {
     }
 
 }
-*/
