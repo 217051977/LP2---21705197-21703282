@@ -7,7 +7,7 @@ class TorreVPreta extends TorreV {
         super.id = id;
         super.idTeam = 10;
         super.name = name;
-        super.imagePNG = "DC/TowerV/Teen_Titans.png";
+      //  super.imagePNG = "DC/TowerV/Teen_Titans.png";
 
     }
 

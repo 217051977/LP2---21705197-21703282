@@ -59,8 +59,85 @@ public class CrazyPiece {
 
     }
 
+    public CrazyPiece(CrazyPiece newCraziPiece) {
 
-//  gets
+        this.imagePNG = newCraziPiece.getImagePNG();
+        this.name = newCraziPiece.getName();
+        this.position = newCraziPiece.getPosition();
+        this.moveVertical = newCraziPiece.getMoveVertical();
+        this.moveHorizontal = newCraziPiece.getMoveHorizontal();
+        this.moveDiagonal = newCraziPiece.getMoveDiagonal();
+        this.inGame = newCraziPiece.getInGame();
+        this.maxMovHorizontal = newCraziPiece.getMaxMovHorizontal();
+        this.maxMovVertical = newCraziPiece.getMaxMovVertical();
+        this.minMovHorizontal = newCraziPiece.getMinMovHorizontal();
+        this.minMovVertical = newCraziPiece.getMinMovVertical();
+        this.id = newCraziPiece.getId();
+        this.type = newCraziPiece.getType();
+        this.idTeam = newCraziPiece.getIdTeam();
+        this.relativeValue = newCraziPiece.getRelativeValue();
+        this.pieceId = newCraziPiece.getPieceId();
+        this.typeName = newCraziPiece.getTypeName();
+        this.possiblesPositions = newCraziPiece.getPossiblesPositions();
+        this.nPoints = newCraziPiece.getNPoints();
+
+    }
+
+    public List<Position> getPossiblesPositions() {
+
+        return possiblesPositions;
+
+    }
+
+    public int getMinMovVertical() {
+
+        return minMovVertical;
+
+    }
+
+    public int getMinMovHorizontal() {
+
+        return minMovHorizontal;
+
+    }
+
+    public int getIdTeam() {
+
+        return idTeam;
+
+    }
+
+    public int getMaxMovVertical() {
+
+        return maxMovVertical;
+
+    }
+
+    public int getMaxMovHorizontal() {
+
+        return maxMovHorizontal;
+
+    }
+
+    public boolean getMoveDiagonal() {
+
+        return moveDiagonal;
+
+    }
+
+    public boolean getMoveHorizontal() {
+
+        return moveHorizontal;
+
+    }
+
+    public boolean getMoveVertical() {
+
+        return moveVertical;
+
+    }
+
+    //  gets
     public int getId() {
 
 //      return the value of the variable "id" of this same class
@@ -145,110 +222,124 @@ public class CrazyPiece {
 //  movimento
     public String move(Position destiny, int boardSize, List<CrazyPiece> crazyPiecesInGame, List<CrazyPiece> crazyPiece_Removed_From_The_Game_Aux, Shift shift) {
 
-//      Get possiblesPosition
-        possiblesPositions(boardSize, crazyPiecesInGame, shift);
+        Position bottomRightCornerOfTheBoard = new Position((boardSize - 1), (boardSize- 1));
+        Position bottomLeftCornerOfTheBoard = new Position(0, (boardSize- 1));
+        Position upRightCornerOfTheBoard = new Position((boardSize - 1), 0);
+        Position upLeftCornerOfTheBoard = new Position(0, 0);
 
 //      Set destinyFounded and haveScore as false
         boolean haveScore = false;
 
         String score = "";
 
+        if (destiny.equals(bottomRightCornerOfTheBoard) ||
+            destiny.equals(bottomLeftCornerOfTheBoard) ||
+            destiny.equals(upRightCornerOfTheBoard) ||
+            destiny.equals(upLeftCornerOfTheBoard)) {
+
+            return score;
+
+        } else {
+
+//      Get possiblesPosition
+            possiblesPositions(boardSize, crazyPiecesInGame, shift);
+
 //      search in every possible position
-        for (Position thisPosition : possiblesPositions) {
+            for (Position thisPosition : possiblesPositions) {
 
 //          If there destiny is on of them
-            if (thisPosition.equals(destiny)) {
+                if (thisPosition.equals(destiny)) {
 
 //              search in the game pieces
-                for (CrazyPiece thisPiece : crazyPiecesInGame) {
+                    for (CrazyPiece thisPiece : crazyPiecesInGame) {
 
-                    if (thisPiece.getInGame()) {
+                        if (thisPiece.getInGame()) {
 
 //                      if there is one in the destiny
-                        if (thisPiece.getPosition().equals(destiny)) {
+                            if (thisPiece.getPosition().equals(destiny)) {
 
 //                          if the team playing is
-                            switch (shift.getIdTeam()) {
+                                switch (shift.getIdTeam()) {
 
-                                case 10: {
+                                    case 10: {
 
-                                    score = "0,1,0,1";
+                                        score = "0,1,0,1";
 
 ////                              add to black team 1 white piece eaten and 1 valid play
 //                                Simulador.addScoresStats(0, 1, 0, 1);
 
-                                }
-                                break;
+                                    }
+                                    break;
 
-                                case 20: {
+                                    case 20: {
 
-                                    score = "1,0,1,0";
+                                        score = "1,0,1,0";
 
 ////                              add to white team 1 black piece eaten and 1 valid play
 //                                Simulador.addScoresStats(1, 0, 1, 0);
 
+                                    }
+
                                 }
 
-                            }
-
-                            nPoints += thisPiece.getNPoints();
+                                nPoints += thisPiece.getNPoints();
 
 //                          set CRAZYPIECE_REVOMED_FROM_THE_GAME as thisPiece
-                            crazyPiece_Removed_From_The_Game_Aux.add(thisPiece);
+                                crazyPiece_Removed_From_The_Game_Aux.add(thisPiece);
 
 //                      remove thisPiece from crazyPiecesInGame
 //                        crazyPiecesInGame.remove(thisPiece);
 
 //                      set haveScore as true
-                            haveScore = true;
+                                haveScore = true;
 
 //                          leave the cycle
-                            break;
+                                break;
+
+                            }
 
                         }
 
                     }
 
-                }
-
 //              if there's no score setted
-                if (!haveScore) {
+                    if (!haveScore) {
 
 //                  if the team playing is
-                    switch (shift.getIdTeam()) {
+                        switch (shift.getIdTeam()) {
 
-                        case 10: {
+                            case 10: {
 
-                            score = "0,0,0,1";
+                                score = "0,0,0,1";
 
 ////                          add to black team 1 white piece eaten and 1 valid play
 //                            Simulador.addScoresStats(0, 0, 0, 1);
 
-                        }
-                        break;
+                            }
+                            break;
 
-                        case 20: {
+                            case 20: {
 
-                            score = "0,0,1,0";
+                                score = "0,0,1,0";
 
 ////                          add to white team 1 black piece eaten and 1 valid play
 //                            Simulador.addScoresStats(0, 0, 1, 0);
+
+                            }
 
                         }
 
                     }
 
-                }
-
 //              change the position of thisPiece to destiny
-                position.changePosition(destiny);
+                    position.changePosition(destiny);
 
 //              leave the cycle
-                break;
+                    break;
+
+                }
 
             }
-
-        }
 
 ////      if there wasn't any destiny in the possiblesPositions
 //        if (!destinyFounded) {
@@ -262,7 +353,9 @@ public class CrazyPiece {
 //        }
 
 //      return false
-        return score;
+            return score;
+
+        }
 
     }
 

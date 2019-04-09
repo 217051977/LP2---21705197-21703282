@@ -7,7 +7,7 @@ class ReiPreto extends Rei {
         super.id = id;
         super.idTeam = 10;
         super.name = name;
-        super.imagePNG = "DC/King/Atom.png";
+      //  super.imagePNG = "DC/King/Atom.png";
 
     }
 

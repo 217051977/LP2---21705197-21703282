@@ -7,7 +7,7 @@ class TorreVBranca extends TorreV {
         super.id = id;
         super.idTeam = 20;
         super.name = name;
-        super.imagePNG = "Marvel/TowerV/Avenger_Tower.png";
+    //    super.imagePNG = "Marvel/TowerV/Avenger_Tower.png";
 
     }
 

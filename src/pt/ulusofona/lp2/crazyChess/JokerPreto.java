@@ -7,7 +7,7 @@ class JokerPreto extends Joker {
         super.id = id;
         super.idTeam = 10;
         super.name = name;
-        super.imagePNG = "DC/Joker/DeathStroke.png";
+       // super.imagePNG = "DC/Joker/DeathStroke.png";
 
     }
 }

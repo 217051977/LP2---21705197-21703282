@@ -7,7 +7,7 @@ class JokerBranco extends Joker {
         super.id = id;
         super.idTeam = 20;
         super.name = name;
-        super.imagePNG = "Marvel/Joker/DeadPool.png";
+        //super.imagePNG = "Marvel/Joker/DeadPool.png";
 
     }
 }

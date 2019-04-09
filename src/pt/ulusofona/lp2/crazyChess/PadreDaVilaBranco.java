@@ -7,7 +7,7 @@ class PadreDaVilaBranco extends PadreDaVila {
         super.id = id;
         super.idTeam = 20;
         super.name = name;
-        super.imagePNG = "Marvel/Ville_Priest/Dr.Strange.png";
+      //  super.imagePNG = "Marvel/Ville_Priest/Dr.Strange.png";
 
     }
 

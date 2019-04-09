@@ -7,7 +7,7 @@ class PoneiMagicoBranco extends PoneiMagico {
         super.id = id;
         super.idTeam = 20;
         super.name = name;
-        super.imagePNG = "Marvel/Magic_Pony/Ghost_Rider.png";
+      //  super.imagePNG = "Marvel/Magic_Pony/Ghost_Rider.png";
 
     }
 
